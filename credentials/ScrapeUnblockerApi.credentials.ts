@@ -18,19 +18,20 @@ export class ScrapeUnblockerApi implements ICredentialType {
 			description: 'The API key for your ScrapeUnblocker account',
 		},
 	];
+
 	authenticate: IAuthenticateGeneric = {
 		type: 'generic',
 		properties: {
-			qs: {
-				api_key: '={{$credentials.apiKey}}',
+			headers: {
+				'x-scrapeunblocker-key': '={{$credentials.apiKey}}',
 			},
 		},
 	};
 
 	test: ICredentialTestRequest = {
 		request: {
-			baseURL: 'https://api.scrapeunblocker.com/getPageSource',
-			url: '',
+			method: 'POST',
+			url: 'https://api.scrapeunblocker.com/getPageSource',
 			qs: {
 				url: 'https://www.google.com',
 			},
