@@ -3,6 +3,7 @@ import {
 	INodeExecutionData,
 	INodeType,
 	INodeTypeDescription,
+	NodeApiError,
 	NodeConnectionTypes,
 	IHttpRequestOptions
 } from 'n8n-workflow';
@@ -63,17 +64,15 @@ export class ScrapeUnblocker implements INodeType {
 					'scrapeUnblockerApi',
 					options,
 				);
-				returnData.push({ json: responseData });
-
+				returnData.push({ json: responseData, pairedItem: i })
 			} catch (error) {
 				if (this.continueOnFail()) {
 					returnData.push({ json: { error: error.message }, pairedItem: i });
 				} else {
-					throw error;
+					throw new NodeApiError(this.getNode(), error)
 				}
 			}
 		}
-
 		return [returnData];
 	}
 }
