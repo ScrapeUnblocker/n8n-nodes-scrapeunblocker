@@ -38,4 +38,6 @@ n8n 2.8.3 and above
 
 ## Version history
 
-- 0.1.0: Initial Release
+- 0.1.1: Initial Release
+- 0.1.2: Github repo made public
+
