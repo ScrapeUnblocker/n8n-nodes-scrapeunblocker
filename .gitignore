@@ -27,3 +27,9 @@ Thumbs.db
 
 # n8n specific (if you run a local instance for testing)
 .n8n/
+
+# AI
+.claude/
+
+# npm pack tarballs
+*.tgz
