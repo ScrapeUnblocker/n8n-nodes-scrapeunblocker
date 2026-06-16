@@ -13,7 +13,10 @@ export class ScrapeUnblocker implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'ScrapeUnblocker',
 		name: 'scrapeUnblocker',
-		icon: 'file:scrapeunblocker.svg',
+		icon: {
+			light: 'file:scrapeunblocker.svg',
+			dark: 'file:scrapeunblocker.dark.svg',
+		},
 		group: ['transform'],
 		version: 1,
 		description: 'Unblock and scrape any website using ScrapeUnblocker API',

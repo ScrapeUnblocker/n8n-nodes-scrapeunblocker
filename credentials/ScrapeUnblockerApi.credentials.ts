@@ -3,7 +3,10 @@ import { IAuthenticateGeneric, ICredentialType, INodeProperties, ICredentialTest
 export class ScrapeUnblockerApi implements ICredentialType {
 	name = 'scrapeUnblockerApi';
 	displayName = 'ScrapeUnblocker API';
-	icon: Icon = 'file:scrapeunblocker.svg';
+	icon: Icon = {
+		light: 'file:scrapeunblocker.svg',
+		dark: 'file:scrapeunblocker.dark.svg',
+	};
 	documentationUrl = 'https://www.scrapeunblocker.com/documentation';
 	properties: INodeProperties[] = [
 		{
