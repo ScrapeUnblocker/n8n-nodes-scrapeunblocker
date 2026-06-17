@@ -46,7 +46,8 @@ export class ScrapeUnblocker implements INodeType {
 				description: 'The URL of the webpage you want to fetch',
 			},
 			{
-				displayName: 'Proxy Country',
+				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
+				displayName: 'Proxy Country (optional)',
 				name: 'proxy_country',
 				type: 'options',
 				default: '',
@@ -71,7 +72,8 @@ export class ScrapeUnblocker implements INodeType {
 				] as INodePropertyOptions[],
 			},
 			{
-				displayName: 'Wait for Element Method',
+				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
+				displayName: 'Wait for Element Method (optional)',
 				name: 'method',
 				type: 'options',
 				default: '',
@@ -97,7 +99,8 @@ export class ScrapeUnblocker implements INodeType {
 				},
 			},
 			{
-				displayName: 'Parsed Data',
+				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
+				displayName: 'Parsed Data (optional)',
 				name: 'parsed_data',
 				type: 'boolean',
 				default: false,
