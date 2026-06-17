@@ -56,5 +56,6 @@ n8n 2.8.3 and above
 - 0.1.2: Github repo made public
 - 0.1.3: Corrections after n8n manual review
 - 0.1.4: Added `proxy_country`, `method`, `value`, and `parsed_data` parameters to Get Page Source
-- 0.1.5:
+- 0.1.5: Empty version bump
 - 0.1.6: Dark/light logos added
+- 0.1.7: Indicate which parameters are optional
