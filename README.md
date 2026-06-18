@@ -59,3 +59,4 @@ n8n 2.8.3 and above
 - 0.1.5: Empty version bump
 - 0.1.6: Dark/light logos added
 - 0.1.7: Indicate which parameters are optional
+- 0.1.8: Provenance-backed publish, corrections after n8n review

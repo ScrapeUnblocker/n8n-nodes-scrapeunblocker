@@ -19,6 +19,7 @@ export class ScrapeUnblocker implements INodeType {
 		},
 		group: ['transform'],
 		version: 1,
+		subtitle: '={{$parameter["url"]}}',
 		description: 'Unblock and scrape any website using ScrapeUnblocker API',
 		defaults: {
 			name: 'ScrapeUnblocker',
@@ -46,8 +47,7 @@ export class ScrapeUnblocker implements INodeType {
 				description: 'The URL of the webpage you want to fetch',
 			},
 			{
-				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
-				displayName: 'Proxy Country (optional)',
+				displayName: 'Proxy Country',
 				name: 'proxy_country',
 				type: 'options',
 				default: '',
@@ -72,8 +72,7 @@ export class ScrapeUnblocker implements INodeType {
 				] as INodePropertyOptions[],
 			},
 			{
-				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
-				displayName: 'Wait for Element Method (optional)',
+				displayName: 'Wait for Element Method',
 				name: 'method',
 				type: 'options',
 				default: '',
@@ -99,8 +98,7 @@ export class ScrapeUnblocker implements INodeType {
 				},
 			},
 			{
-				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
-				displayName: 'Parsed Data (optional)',
+				displayName: 'Parsed Data',
 				name: 'parsed_data',
 				type: 'boolean',
 				default: false,
@@ -157,7 +155,7 @@ export class ScrapeUnblocker implements INodeType {
 				if (this.continueOnFail()) {
 					returnData.push({ json: { error: error.message }, pairedItem: i });
 				} else {
-					throw new NodeApiError(this.getNode(), error)
+					throw new NodeApiError(this.getNode(), error, { itemIndex: i });
 				}
 			}
 		}
