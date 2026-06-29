@@ -7,7 +7,7 @@ export class ScrapeUnblockerApi implements ICredentialType {
 		light: 'file:scrapeunblocker.svg',
 		dark: 'file:scrapeunblocker.dark.svg',
 	};
-	documentationUrl = 'https://www.scrapeunblocker.com/documentation';
+	documentationUrl = 'https://developers.scrapeunblocker.com/introduction';
 	properties: INodeProperties[] = [
 		{
 			displayName: 'API Key',
@@ -19,6 +19,7 @@ export class ScrapeUnblockerApi implements ICredentialType {
 			default: '',
 			required: true,
 			description: 'The API key for your ScrapeUnblocker account',
+			hint: 'Don\'t have API Key? Get it <a href="https://www.scrapeunblocker.com/pricing" target="_blank">here</a>!',
 		},
 	];
 

@@ -60,3 +60,4 @@ n8n 2.8.3 and above
 - 0.1.6: Dark/light logos added
 - 0.1.7: Indicate which parameters are optional
 - 0.1.8: Provenance-backed publish, corrections after n8n review
+- 0.1.9: Updated credential screen links: "Read our docs" now points to the developer docs, and added a link to obtain an API key
