@@ -19,13 +19,7 @@ export class ScrapeUnblockerApi implements ICredentialType {
 			default: '',
 			required: true,
 			description: 'The API key for your ScrapeUnblocker account',
-		},
-		{
-			displayName:
-				'Get your API Key here: <a href="https://www.scrapeunblocker.com/pricing" target="_blank">https://www.scrapeunblocker.com/pricing</a>',
-			name: 'pricingNotice',
-			type: 'notice',
-			default: '',
+			hint: 'Don\'t have API Key? Get it <a href="https://www.scrapeunblocker.com/pricing" target="_blank">here</a>!',
 		},
 	];
 
