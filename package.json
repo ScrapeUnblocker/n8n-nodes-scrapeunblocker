@@ -1,6 +1,6 @@
 {
     "name": "n8n-nodes-scrapeunblocker",
-    "version": "0.1.8",
+    "version": "0.1.9",
     "description": "ScrapeUnblocker community node for n8n",
     "license": "MIT",
     "homepage": "https://www.scrapeunblocker.com/",
