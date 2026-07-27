@@ -37,7 +37,7 @@ Set **Wait for Element Method** to `css` and **Wait for Element Value** to `.mai
 
 ## Credentials
 
-You can obtain your API KEY for free by signing up at https://app.scrapeunblocker.com/
+You can obtain your API KEY for free by signing up at [app.scrapeunblocker.com](https://app.scrapeunblocker.com/?utm_source=n8n&utm_medium=integration&utm_campaign=n8n-node)
 
 After signing up you will be given 100 free calls for testing ScrapeUnblocker API service.
 
@@ -48,7 +48,7 @@ n8n 2.8.3 and above
 ## Resources
 
 * [n8n community nodes documentation](https://docs.n8n.io/integrations/#community-nodes)
-* [Get Page Source API](https://www.scrapeunblocker.com/documentation)
+* [Get Page Source API](https://www.scrapeunblocker.com/documentation?utm_source=n8n&utm_medium=integration&utm_campaign=n8n-node)
 
 ## Version history
 
