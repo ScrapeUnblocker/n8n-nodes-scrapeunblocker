@@ -30,10 +30,44 @@ Fetches the fully rendered HTML source of a webpage through a residential proxy.
 | **Wait for Element Method** | string | No | Selector strategy to wait for a specific element before capturing HTML. Useful for JavaScript-rendered pages. Must be used together with **Wait for Element Value**. Allowed values: `css`, `xPath`, `className`, `tagName`. |
 | **Wait for Element Value** | string | No | The selector string to wait for, interpreted according to the chosen method. The request returns once a matching element appears (20 second timeout). Only shown when a method is selected. |
 | **Parsed Data** | boolean | No | If enabled, returns structured JSON extracted from the page for supported domains instead of raw HTML. Defaults to `false`. |
+| **Browser Steps** | json | No | A JSON array of browser actions run in a real browser after the page loads, before the HTML is captured. Leave empty to skip. See [Browser steps](#browser-steps) below. |
+| **List Elements** | boolean | No | If enabled, returns structured JSON `{ url, count, elements }` describing the elements found on the page instead of raw HTML. Defaults to `false`. |
 
 #### Example: Wait for a CSS element
 
 Set **Wait for Element Method** to `css` and **Wait for Element Value** to `.main-content` to wait for the element with class `main-content` to appear before the HTML is captured.
+
+#### Browser steps
+
+Paste a JSON array into **Browser Steps** to drive a real browser after the page loads (click, type, scroll, wait for content, etc.) and then capture the resulting HTML. Steps run in order and are **non-idempotent** (they change page state), so use them only when you need interaction. If a step fails, the API responds with HTTP 422 and a JSON body describing the failure (`error`, `step_index`, `action`, `reason`, `selector`, `html`).
+
+Supported actions (each object needs an `action` key):
+
+| Action | Fields |
+|---|---|
+| `wait_for` | `selector`, `selector_type?` (`css` \| `xPath` \| `className` \| `tagName`), `timeout_ms?` |
+| `wait_for_text` | `value`, `timeout_ms?` |
+| `wait` | `value` (milliseconds) |
+| `click` | `selector`, `selector_type?`, `timeout_ms?` |
+| `type` | `selector`, `selector_type?`, `value`, `clear?`, `timeout_ms?` (human-like typing) |
+| `select` | `selector`, `selector_type?`, `value`, `timeout_ms?` |
+| `press_key` | `value` (`Enter`, `Tab`, `Escape`, `Backspace`, `Delete`, `Space`, `Arrow*`, `Home`, `End`, `PageUp`, `PageDown`) |
+| `scroll` | `value` (`"bottom"` or an integer pixel offset) |
+
+Example:
+
+```json
+[
+  { "action": "wait_for", "selector": ".product-list", "selector_type": "css" },
+  { "action": "click", "selector": "#load-more" },
+  { "action": "scroll", "value": "bottom" },
+  { "action": "wait", "value": 1000 }
+]
+```
+
+#### List elements
+
+Enable **List Elements** to receive structured JSON (`{ url, count, elements: [...] }`) describing the elements found on the page instead of raw HTML.
 
 ## Credentials
 
@@ -63,3 +97,5 @@ n8n 2.8.3 and above
 - 0.1.9: Updated credential screen links: "Read our docs" now points to the developer docs, and added a link to obtain an API key
 - 0.1.10: Added UTM parameters to scrapeunblocker.com links for traffic attribution
 - 0.1.11: Fixed the codex `node` identifier to the fully-qualified `n8n-nodes-scrapeunblocker.scrapeUnblocker` format, as required by the n8n review
+- 0.1.12: Expanded the Proxy Country dropdown to all 36 supported countries
+- 0.1.13: Added `Browser Steps` (run browser actions after load) and `List Elements` to Get Page Source

@@ -4,6 +4,7 @@ import {
 	INodeType,
 	INodeTypeDescription,
 	NodeApiError,
+	NodeOperationError,
 	NodeConnectionTypes,
 	IHttpRequestOptions,
 	INodePropertyOptions,
@@ -125,6 +126,21 @@ export class ScrapeUnblocker implements INodeType {
 				default: false,
 				description: 'Whether to return structured JSON extracted from the page for supported domains instead of raw HTML',
 			},
+			{
+				displayName: 'Browser Steps',
+				name: 'steps',
+				type: 'json',
+				default: '',
+				placeholder: '[{"action":"wait_for","selector":".main-content"},{"action":"click","selector":"#load-more"}]',
+				description: 'A JSON array of browser actions to run in a real browser after the page loads, before the HTML is captured. Supported actions: wait_for, wait_for_text, wait, click, type, select, press_key, scroll. Leave empty to skip. A failing step returns an HTTP 422 error describing which step failed.',
+			},
+			{
+				displayName: 'List Elements',
+				name: 'list_elements',
+				type: 'boolean',
+				default: false,
+				description: 'Whether to return structured JSON listing the elements found on the page (with a total count and per-element details) instead of raw HTML',
+			},
 		],
 	};
 
@@ -138,7 +154,9 @@ export class ScrapeUnblocker implements INodeType {
 				const proxyCountry = this.getNodeParameter('proxy_country', i) as string;
 				const method = this.getNodeParameter('method', i) as string;
 				const parsedData = this.getNodeParameter('parsed_data', i) as boolean;
-				
+				const listElements = this.getNodeParameter('list_elements', i) as boolean;
+				const steps = this.getNodeParameter('steps', i, '') as string;
+
 				const query: Record<string, string | boolean> = {
 					url,
 				};
@@ -157,6 +175,33 @@ export class ScrapeUnblocker implements INodeType {
 
 				if (parsedData) {
 					query.parsed_data = true;
+				}
+
+				if (listElements) {
+					query.list_elements = true;
+				}
+
+				if (typeof steps === 'string' && steps.trim() !== '') {
+					let parsedSteps: unknown;
+					try {
+						parsedSteps = JSON.parse(steps);
+					} catch {
+						throw new NodeOperationError(
+							this.getNode(),
+							'Browser Steps must be a valid JSON array of actions',
+							{ itemIndex: i },
+						);
+					}
+					if (!Array.isArray(parsedSteps)) {
+						throw new NodeOperationError(
+							this.getNode(),
+							'Browser Steps must be a JSON array of actions',
+							{ itemIndex: i },
+						);
+					}
+					if (parsedSteps.length > 0) {
+						query.steps = JSON.stringify(parsedSteps);
+					}
 				}
 
 				const options: IHttpRequestOptions = {
