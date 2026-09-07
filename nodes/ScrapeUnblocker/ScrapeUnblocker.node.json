@@ -6,12 +6,12 @@
 	"resources": {
 		"credentialDocumentation": [
 			{
-				"url": "https://www.scrapeunblocker.com/documentation"
+				"url": "https://www.scrapeunblocker.com/documentation?utm_source=n8n&utm_medium=integration&utm_campaign=n8n-node"
 			}
 		],
 		"primaryDocumentation": [
 			{
-				"url": "https://www.scrapeunblocker.com/documentation"
+				"url": "https://www.scrapeunblocker.com/documentation?utm_source=n8n&utm_medium=integration&utm_campaign=n8n-node"
 			}
 		]
 	}
