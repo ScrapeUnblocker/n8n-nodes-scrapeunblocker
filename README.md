@@ -99,3 +99,4 @@ n8n 2.8.3 and above
 - 0.1.11: Fixed the codex `node` identifier to the fully-qualified `n8n-nodes-scrapeunblocker.scrapeUnblocker` format, as required by the n8n review
 - 0.1.12: Expanded the Proxy Country dropdown to all 36 supported countries
 - 0.1.13: Added `Browser Steps` (run browser actions after load) and `List Elements` to Get Page Source
+- 0.1.14: Added UTM attribution to the in-UI credential and documentation links (signup, docs) so users arriving via the n8n node are attributed
