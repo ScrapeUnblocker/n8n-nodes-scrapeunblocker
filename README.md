@@ -71,7 +71,7 @@ Enable **List Elements** to receive structured JSON (`{ url, count, elements: [.
 
 ## Credentials
 
-You can obtain your API KEY for free by signing up at [app.scrapeunblocker.com](https://app.scrapeunblocker.com/?utm_source=n8n&utm_medium=integration&utm_campaign=n8n-node)
+You can obtain your API KEY for free by signing up at [scrapeunblocker.com/pricing](https://www.scrapeunblocker.com/pricing?utm_source=n8n&utm_medium=integration&utm_campaign=n8n-node)
 
 After signing up you will be given 100 free calls for testing ScrapeUnblocker API service.
 
@@ -100,3 +100,4 @@ n8n 2.8.3 and above
 - 0.1.12: Expanded the Proxy Country dropdown to all 36 supported countries
 - 0.1.13: Added `Browser Steps` (run browser actions after load) and `List Elements` to Get Page Source
 - 0.1.14: Added UTM attribution to the in-UI credential and documentation links (signup, docs) so users arriving via the n8n node are attributed
+- 0.1.15: Signup link now points to www.scrapeunblocker.com/pricing instead of the app subdomain, which immediately redirected to the login page before attribution could be recorded, so signups originating from the node are now attributed
