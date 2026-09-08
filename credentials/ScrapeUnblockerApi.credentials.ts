@@ -7,7 +7,7 @@ export class ScrapeUnblockerApi implements ICredentialType {
 		light: 'file:scrapeunblocker.svg',
 		dark: 'file:scrapeunblocker.dark.svg',
 	};
-	documentationUrl = 'https://developers.scrapeunblocker.com/introduction?utm_source=n8n&utm_medium=integration&utm_campaign=n8n-node';
+	documentationUrl = 'https://docs.scrapeunblocker.com/introduction?utm_source=n8n&utm_medium=integration&utm_campaign=n8n-node';
 	properties: INodeProperties[] = [
 		{
 			displayName: 'API Key',
