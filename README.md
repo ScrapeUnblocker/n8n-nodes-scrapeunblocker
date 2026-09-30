@@ -41,6 +41,10 @@ Set **Wait for Element Method** to `css` and **Wait for Element Value** to `.mai
 
 If the target website answers **HTTP 404 or 410** (the page does not exist), the node does not fail. It outputs one item with `pageNotFound: true`, `originStatus` (404 or 410), `billed: true`, a `message`, and the target's own page in `body`. The call is billed like any fetched page, and retrying it returns the same answer, so route these items with an IF node on `pageNotFound` rather than retrying.
 
+#### When nothing can be parsed
+
+With **Parsed Data** on, a page that loads but holds no structured data does not fail the node either. It outputs one item with `noDataExtracted: true`, `billed: false` and a `message`; there is no HTML in it. Turn Parsed Data off to get the page HTML.
+
 #### Browser steps
 
 Paste a JSON array into **Browser Steps** to drive a real browser after the page loads (click, type, scroll, wait for content, etc.) and then capture the resulting HTML. Steps run in order and are **non-idempotent** (they change page state), so use them only when you need interaction. If a step fails, the API responds with HTTP 422 and a JSON body describing the failure (`error`, `step_index`, `action`, `reason`, `selector`, `html`).
@@ -106,3 +110,4 @@ n8n 2.8.3 and above
 - 0.1.14: Added UTM attribution to the in-UI credential and documentation links (signup, docs) so users arriving via the n8n node are attributed
 - 0.1.15: Signup link now points to www.scrapeunblocker.com/pricing instead of the app subdomain, which immediately redirected to the login page before attribution could be recorded, so signups originating from the node are now attributed
 - 0.1.16: A missing target page (HTTP 404/410 from the website) is output as an item with `pageNotFound: true`, `originStatus` and the target page, instead of failing the node with a generic error
+- 0.1.17: With Parsed Data, a page with no structured data is output as an item with `noDataExtracted: true` (not billed) instead of failing the node with a validation error
