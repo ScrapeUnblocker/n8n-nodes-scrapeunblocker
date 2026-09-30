@@ -7,8 +7,25 @@ import {
 	NodeOperationError,
 	NodeConnectionTypes,
 	IHttpRequestOptions,
+	IN8nHttpFullResponse,
 	INodePropertyOptions,
+	JsonObject,
 } from 'n8n-workflow';
+
+const TARGET_GONE = new Set([404, 410]);
+
+/**
+ * The target's own "page does not exist" answer (404/410), or null.
+ *
+ * `/getPageSource` always exists, so a 404/410 from it is the target site's
+ * answer, sent with `X-Origin-Status`. Older API versions returned that same
+ * answer as a 200 carrying the header, so the header is checked first.
+ */
+function targetGoneStatus(status: number, originStatus: unknown): number | null {
+	const origin = Number(Array.isArray(originStatus) ? originStatus[0] : originStatus);
+	if (TARGET_GONE.has(origin)) return origin;
+	return TARGET_GONE.has(status) ? status : null;
+}
 
 export class ScrapeUnblocker implements INodeType {
 	description: INodeTypeDescription = {
@@ -209,14 +226,48 @@ export class ScrapeUnblocker implements INodeType {
 					url: 'https://api.scrapeunblocker.com/getPageSource',
 					qs: query,
 					json: true,
+					returnFullResponse: true,
+					ignoreHttpStatusErrors: true,
 				};
 
-				const responseData = await this.helpers.httpRequestWithAuthentication.call(
+				const response = (await this.helpers.httpRequestWithAuthentication.call(
 					this,
 					'scrapeUnblockerApi',
 					options,
-				);
-				returnData.push({ json: responseData, pairedItem: i });
+				)) as IN8nHttpFullResponse;
+
+				// A missing target page is a result, not a node failure: the page was
+				// fetched and the call billed, and a retry returns the same answer.
+				const gone = targetGoneStatus(response.statusCode, response.headers['x-origin-status']);
+				if (gone !== null) {
+					returnData.push({
+						json: {
+							url,
+							pageNotFound: true,
+							originStatus: gone,
+							billed: true,
+							message:
+								`The target page does not exist: it answered HTTP ${gone}. This is the ` +
+								"website's own answer, not a block or an API failure. The call was " +
+								'billed, and retrying returns the same result.',
+							body: response.body as JsonObject,
+						},
+						pairedItem: i,
+					});
+					continue;
+				}
+
+				if (response.statusCode >= 400) {
+					const body =
+						typeof response.body === 'string' ? response.body : JSON.stringify(response.body);
+					throw new NodeApiError(
+						this.getNode(),
+						{ message: body, httpCode: String(response.statusCode) } as JsonObject,
+						{ itemIndex: i, httpCode: String(response.statusCode) },
+					);
+				}
+
+				returnData.push({ json: response.body as JsonObject, pairedItem: i });
 			} catch (error) {
 				if (this.continueOnFail()) {
 					returnData.push({ json: { error: error.message }, pairedItem: i });
