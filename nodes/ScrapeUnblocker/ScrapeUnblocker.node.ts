@@ -257,30 +257,6 @@ export class ScrapeUnblocker implements INodeType {
 					continue;
 				}
 
-				// With Parsed Data the API answers a page without structured data as a
-				// 422 `no_data_extracted`: not billed and without HTML - also a result.
-				const body = response.body as JsonObject | string;
-				if (
-					response.statusCode === 422 &&
-					typeof body === 'object' &&
-					body !== null &&
-					body.error === 'no_data_extracted'
-				) {
-					returnData.push({
-						json: {
-							url,
-							noDataExtracted: true,
-							billed: false,
-							message:
-								'No structured data could be extracted from this page: it loaded, but ' +
-								'nothing on it matched a structured shape. The call was not billed. To get ' +
-								'the HTML, run the node again with Parsed Data turned off.',
-						},
-						pairedItem: i,
-					});
-					continue;
-				}
-
 				if (response.statusCode >= 400) {
 					const body =
 						typeof response.body === 'string' ? response.body : JSON.stringify(response.body);
