@@ -43,7 +43,7 @@ If the target website answers **HTTP 404 or 410** (the page does not exist), the
 
 #### When nothing can be parsed
 
-With **Parsed Data** on, a page that loads but holds no structured data does not fail the node either. It outputs one item with `noDataExtracted: true`, `billed: false` and a `message`; there is no HTML in it. Turn Parsed Data off to get the page HTML.
+With **Parsed Data** on, a page that loads but holds no structured data still returns HTTP 200 and does not fail the node. The item keeps the usual shape (`data.page_type` is `unknown`, `data.data` is empty) and adds `data_extracted: false`, a `detail` line and the rendered page in `html`. The call is billed like a plain page fetch, so use that `html` instead of running the node again; route these items with an IF node on `data_extracted`.
 
 #### Browser steps
 
@@ -111,3 +111,4 @@ n8n 2.8.3 and above
 - 0.1.15: Signup link now points to www.scrapeunblocker.com/pricing instead of the app subdomain, which immediately redirected to the login page before attribution could be recorded, so signups originating from the node are now attributed
 - 0.1.16: A missing target page (HTTP 404/410 from the website) is output as an item with `pageNotFound: true`, `originStatus` and the target page, instead of failing the node with a generic error
 - 0.1.17: With Parsed Data, a page with no structured data is output as an item with `noDataExtracted: true` (not billed) instead of failing the node with a validation error
+- 0.1.18: With Parsed Data, a page with no structured data is output as the API's 200 answer: `data_extracted: false`, a `detail` line and the rendered page in `html` (billed like a page fetch). Replaces the `noDataExtracted` item from 0.1.17, which the API no longer produces
