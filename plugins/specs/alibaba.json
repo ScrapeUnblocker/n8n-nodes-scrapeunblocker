@@ -1,0 +1,233 @@
+{
+	"resource": "Alibaba",
+	"value": "alibaba",
+	"operations": [
+		{
+			"name": "Search Products",
+			"value": "searchProducts",
+			"action": "Search alibaba products",
+			"description": "Find wholesale products and their suppliers that match a keyword on Alibaba.com",
+			"endpoint": "/marketplace/alibaba-search",
+			"fields": [
+				{
+					"param": "q",
+					"displayName": "Search Query",
+					"type": "string",
+					"required": true,
+					"placeholder": "bluetooth speaker",
+					"description": "What to search for, in any language"
+				},
+				{
+					"param": "max_results",
+					"displayName": "Max Results",
+					"type": "number",
+					"default": 48,
+					"min": 1,
+					"max": 480,
+					"description": "How many products to collect across pages (up to 480). Alibaba shows 48 per page and each page is one billed call, so a multiple of 48 gets every product of the pages you pay for."
+				}
+			],
+			"options": [
+				{
+					"param": "page",
+					"displayName": "Start Page",
+					"type": "number",
+					"default": 1,
+					"min": 1,
+					"max": 100,
+					"description": "Which results page to start from. To continue an earlier search, use its nextPage value."
+				},
+				{
+					"param": "verified",
+					"displayName": "Verified Suppliers Only",
+					"type": "boolean",
+					"default": false,
+					"description": "Whether to return only products of Verified suppliers (checked by an independent inspector)"
+				},
+				{
+					"param": "verified_pro",
+					"displayName": "Verified Pro Suppliers Only",
+					"type": "boolean",
+					"default": false,
+					"description": "Whether to return only products of Verified Pro suppliers"
+				},
+				{
+					"param": "trade_assurance",
+					"displayName": "Trade Assurance Only",
+					"type": "boolean",
+					"default": false,
+					"description": "Whether to return only products covered by Alibaba's Trade Assurance"
+				},
+				{
+					"param": "supplier_country",
+					"displayName": "Supplier Country",
+					"type": "string",
+					"placeholder": "CN",
+					"description": "Only suppliers located in this country, as a two-letter country code"
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Alibaba is opened from. Automatic picks a suitable one. Search prices are always in USD."
+				}
+			],
+			"sort": [
+				{
+					"param": "sort",
+					"displayName": "Sort By",
+					"type": "options",
+					"default": "relevance",
+					"description": "The order of the products. Most Sold ranks by sales in the last 180 days.",
+					"options": [
+						{
+							"name": "Most Sold",
+							"value": "sales"
+						},
+						{
+							"name": "Relevance",
+							"value": "relevance"
+						}
+					]
+				}
+			],
+			"listKey": "products",
+			"outputFields": [
+				"productId",
+				"title",
+				"url",
+				"image",
+				"thumbnail",
+				"images",
+				"priceText",
+				"priceMin",
+				"priceMax",
+				"currency",
+				"currencySymbol",
+				"priceTiers",
+				"promotionPriceText",
+				"promotionPriceMin",
+				"promotionPriceMax",
+				"discountText",
+				"moq",
+				"moqUnit",
+				"moqText",
+				"sold",
+				"soldText",
+				"rating",
+				"reviewsCount",
+				"leadTimeDays",
+				"category",
+				"sponsored",
+				"certifications",
+				"supplier"
+			],
+			"idField": "productId",
+			"simplify": [
+				"productId",
+				"title",
+				"priceMin",
+				"priceMax",
+				"currency",
+				"moq",
+				"moqUnit",
+				"supplier.name",
+				"supplier.country",
+				"url"
+			],
+			"test": {
+				"params": {
+					"q": "bluetooth speaker",
+					"max_results": 3
+				},
+				"minItems": 3,
+				"maxFields": 10
+			}
+		},
+		{
+			"name": "Get Product",
+			"value": "getProduct",
+			"action": "Get alibaba product",
+			"description": "Get the full details of one Alibaba.com product: price tiers, variants, lead times and supplier",
+			"endpoint": "/marketplace/alibaba-product",
+			"fields": [
+				{
+					"param": "url",
+					"displayName": "Product URL",
+					"type": "string",
+					"placeholder": "https://www.alibaba.com/product-detail/_1601919386560.html",
+					"description": "Link to the Alibaba.com product page. Either this or a Product ID (under Options) is needed."
+				}
+			],
+			"options": [
+				{
+					"param": "product_id",
+					"displayName": "Product ID",
+					"type": "string",
+					"placeholder": "1601919386560",
+					"description": "The number in the product link right before .html, used instead of a Product URL. Either this or a Product URL is needed."
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Alibaba is opened from. Prices are shown in that country's currency, and USD prices are always included. Automatic picks a suitable one."
+				}
+			],
+			"itemKey": "product",
+			"outputFields": [
+				"productId",
+				"url",
+				"title",
+				"categoryId",
+				"categories",
+				"images",
+				"videos",
+				"currency",
+				"currencySymbol",
+				"priceText",
+				"priceMin",
+				"priceMax",
+				"priceMinUsd",
+				"priceMaxUsd",
+				"priceTiers",
+				"moq",
+				"unit",
+				"unitPlural",
+				"variants",
+				"attributes",
+				"keyAttributes",
+				"leadTimes",
+				"packaging",
+				"shippingMethods",
+				"shipFrom",
+				"tradeAssurance",
+				"tradeTerm",
+				"supplier",
+				"visitCountry"
+			],
+			"idField": "productId",
+			"simplify": [
+				"productId",
+				"title",
+				"priceMinUsd",
+				"priceMaxUsd",
+				"moq",
+				"unit",
+				"supplier.name",
+				"supplier.country",
+				"tradeAssurance",
+				"url"
+			],
+			"test": {
+				"params": {
+					"url": "https://www.alibaba.com/product-detail/_1601919386560.html"
+				},
+				"minItems": 1,
+				"maxFields": 10
+			}
+		}
+	]
+}

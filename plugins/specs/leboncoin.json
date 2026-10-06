@@ -1,0 +1,328 @@
+{
+	"resource": "Leboncoin",
+	"value": "leboncoin",
+	"operations": [
+		{
+			"name": "Search Listings",
+			"value": "searchListings",
+			"action": "Search leboncoin listings",
+			"description": "Find classified ads in France that match a keyword",
+			"endpoint": "/marketplace/leboncoin-search",
+			"fields": [
+				{
+					"param": "query",
+					"displayName": "Search Query",
+					"type": "string",
+					"required": true,
+					"placeholder": "velo electrique",
+					"description": "What to search for: a product, a brand or a model"
+				},
+				{
+					"param": "max_results",
+					"displayName": "Max Results",
+					"type": "number",
+					"default": 35,
+					"min": 1,
+					"max": 500,
+					"description": "How many ads to return, collected across pages (35 per page)"
+				}
+			],
+			"options": [
+				{
+					"param": "category",
+					"displayName": "Category",
+					"type": "options",
+					"default": "",
+					"description": "Only ads in this Leboncoin category",
+					"options": [
+						{
+							"name": "Any",
+							"value": ""
+						},
+						{
+							"name": "Animals",
+							"value": "animals"
+						},
+						{
+							"name": "Antiques",
+							"value": "antiques"
+						},
+						{
+							"name": "Appliances",
+							"value": "appliances"
+						},
+						{
+							"name": "Baby Equipment",
+							"value": "baby_equipment"
+						},
+						{
+							"name": "Bags and Accessories",
+							"value": "bags_accessories"
+						},
+						{
+							"name": "Bikes",
+							"value": "bikes"
+						},
+						{
+							"name": "Books",
+							"value": "books"
+						},
+						{
+							"name": "Car Parts",
+							"value": "car_parts"
+						},
+						{
+							"name": "Cars",
+							"value": "cars"
+						},
+						{
+							"name": "Clothing",
+							"value": "clothing"
+						},
+						{
+							"name": "Collectibles",
+							"value": "collectibles"
+						},
+						{
+							"name": "Commercial Property",
+							"value": "commercial_property"
+						},
+						{
+							"name": "Computer Accessories",
+							"value": "computer_accessories"
+						},
+						{
+							"name": "Computers",
+							"value": "computers"
+						},
+						{
+							"name": "Consoles",
+							"value": "consoles"
+						},
+						{
+							"name": "Decoration",
+							"value": "decoration"
+						},
+						{
+							"name": "DIY",
+							"value": "diy"
+						},
+						{
+							"name": "Electronics (All)",
+							"value": "electronics"
+						},
+						{
+							"name": "Fashion (All)",
+							"value": "fashion"
+						},
+						{
+							"name": "Flatshare",
+							"value": "flatshare"
+						},
+						{
+							"name": "Furniture",
+							"value": "furniture"
+						},
+						{
+							"name": "Garden",
+							"value": "garden"
+						},
+						{
+							"name": "Holiday Rentals",
+							"value": "holiday_rentals"
+						},
+						{
+							"name": "Home and Garden (All)",
+							"value": "home_garden"
+						},
+						{
+							"name": "Job Offers",
+							"value": "job_offers"
+						},
+						{
+							"name": "Jobs (All)",
+							"value": "jobs"
+						},
+						{
+							"name": "Leisure (All)",
+							"value": "leisure"
+						},
+						{
+							"name": "Motorcycles",
+							"value": "motorcycles"
+						},
+						{
+							"name": "Musical Instruments",
+							"value": "music_instruments"
+						},
+						{
+							"name": "Phones",
+							"value": "phones"
+						},
+						{
+							"name": "Photo, Audio and Video",
+							"value": "photo_audio_video"
+						},
+						{
+							"name": "Real Estate (All)",
+							"value": "real_estate"
+						},
+						{
+							"name": "Real Estate for Sale",
+							"value": "real_estate_sale"
+						},
+						{
+							"name": "Rentals",
+							"value": "rentals"
+						},
+						{
+							"name": "Shoes",
+							"value": "shoes"
+						},
+						{
+							"name": "Sports",
+							"value": "sports"
+						},
+						{
+							"name": "Toys",
+							"value": "toys"
+						},
+						{
+							"name": "Vans",
+							"value": "vans"
+						},
+						{
+							"name": "Vehicles (All)",
+							"value": "vehicles"
+						},
+						{
+							"name": "Video Games",
+							"value": "video_games"
+						},
+						{
+							"name": "Watches and Jewelry",
+							"value": "watches_jewelry"
+						}
+					]
+				},
+				{
+					"param": "location",
+					"displayName": "Location",
+					"type": "string",
+					"placeholder": "Toulouse 31000",
+					"description": "Where to search: a city (Bordeaux), a city with its postcode (Toulouse 31000), a department number (75) or a region (Ile-de-France). A postcode alone is not enough."
+				},
+				{
+					"param": "min_price",
+					"displayName": "Min Price (EUR)",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Lowest price to include, in euros. 0 means no minimum."
+				},
+				{
+					"param": "max_price",
+					"displayName": "Max Price (EUR)",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Highest price to include, in euros. 0 means no limit."
+				},
+				{
+					"param": "page",
+					"displayName": "Start Page",
+					"type": "number",
+					"default": 1,
+					"min": 1,
+					"max": 100,
+					"description": "Which results page to start from (1 is the first page)"
+				},
+				{
+					"param": "include_sponsored",
+					"displayName": "Include Sponsored",
+					"type": "boolean",
+					"default": false,
+					"description": "Whether to also return Leboncoin's paid 'à la une' placements (marked sponsored). They ignore the search query, category and sort."
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Leboncoin is opened from. Automatic picks one that suits the site."
+				}
+			],
+			"sort": [
+				{
+					"param": "sort",
+					"displayName": "Sort By",
+					"type": "options",
+					"default": "relevance",
+					"description": "The order of the ads",
+					"options": [
+						{
+							"name": "Relevance",
+							"value": "relevance"
+						},
+						{
+							"name": "Newest First",
+							"value": "newest"
+						},
+						{
+							"name": "Price: Lowest First",
+							"value": "price_low"
+						},
+						{
+							"name": "Price: Highest First",
+							"value": "price_high"
+						}
+					]
+				}
+			],
+			"listKey": "listings",
+			"outputFields": [
+				"id",
+				"title",
+				"price",
+				"currency",
+				"location",
+				"city",
+				"zipcode",
+				"department",
+				"region",
+				"category",
+				"categoryId",
+				"date",
+				"image",
+				"url",
+				"sellerType",
+				"sellerName",
+				"sponsored",
+				"attributes"
+			],
+			"idField": "id",
+			"simplify": [
+				"id",
+				"title",
+				"price",
+				"currency",
+				"city",
+				"zipcode",
+				"category",
+				"date",
+				"sellerType",
+				"url"
+			],
+			"test": {
+				"params": {
+					"query": "velo",
+					"max_results": 5
+				},
+				"minItems": 3,
+				"maxFields": 10
+			}
+		}
+	]
+}

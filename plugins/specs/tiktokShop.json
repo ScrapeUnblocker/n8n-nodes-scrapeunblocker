@@ -1,0 +1,183 @@
+{
+	"resource": "TikTok Shop",
+	"value": "tiktokShop",
+	"operations": [
+		{
+			"name": "Get Product",
+			"value": "getProduct",
+			"action": "Get tiktok shop product",
+			"description": "Retrieve a US product page with price, variants, shipping, seller and top reviews",
+			"endpoint": "/social/tiktok-shop-product",
+			"fields": [
+				{
+					"param": "url",
+					"displayName": "Product URL",
+					"type": "string",
+					"placeholder": "https://www.tiktok.com/shop/pdp/goli-ashwagandha/1729527313880355335",
+					"description": "A TikTok Shop product URL or the bare product ID. Either this or Product ID (in Options) is needed."
+				}
+			],
+			"options": [
+				{
+					"param": "product_id",
+					"displayName": "Product ID",
+					"type": "string",
+					"placeholder": "1729527313880355335",
+					"description": "The numeric product ID, instead of a Product URL. Either this or Product URL is needed."
+				}
+			],
+			"outputFields": [
+				"productId",
+				"url",
+				"region",
+				"title",
+				"seoTitle",
+				"description",
+				"descriptionImages",
+				"status",
+				"available",
+				"brand",
+				"price",
+				"soldCount",
+				"rating",
+				"reviewCount",
+				"ratingDistribution",
+				"categories",
+				"images",
+				"options",
+				"variants",
+				"specifications",
+				"shipping",
+				"labels",
+				"seller",
+				"reviews",
+				"safetyWarnings",
+				"keywords"
+			],
+			"idField": "productId",
+			"simplify": [
+				"productId",
+				"title",
+				"price.current",
+				"price.currency",
+				"available",
+				"rating",
+				"reviewCount",
+				"soldCount",
+				"seller.name",
+				"url"
+			],
+			"test": {
+				"params": {
+					"url": "https://www.tiktok.com/shop/pdp/goli-ashwagandha/1729527313880355335"
+				},
+				"minItems": 1,
+				"maxFields": 10
+			}
+		},
+		{
+			"name": "Search Products",
+			"value": "searchProducts",
+			"action": "Search tiktok shop products",
+			"description": "Find US products that match a keyword, or list the products of a category",
+			"endpoint": "/social/tiktok-shop-search",
+			"fields": [
+				{
+					"param": "q",
+					"displayName": "Search Query",
+					"type": "string",
+					"placeholder": "led face mask",
+					"description": "What to search for, or a TikTok Shop keyword page URL. Either this or Category (in Options) is needed."
+				},
+				{
+					"param": "max_results",
+					"displayName": "Max Results",
+					"type": "number",
+					"default": 30,
+					"min": 1,
+					"max": 30,
+					"description": "How many products to return (1-30). One page is read: a search lists up to 30 products, a category about 15."
+				}
+			],
+			"options": [
+				{
+					"param": "category",
+					"displayName": "Category",
+					"type": "string",
+					"placeholder": "https://www.tiktok.com/shop/c/beauty-personal-care/601450",
+					"description": "List a category instead of searching: a TikTok Shop category URL or its numeric ID (601450 is beauty and personal care). Either this or Search Query is needed."
+				}
+			],
+			"listKey": "products",
+			"outputFields": [
+				"productId",
+				"url",
+				"title",
+				"image",
+				"price",
+				"rating",
+				"reviewCount",
+				"soldCount",
+				"brand",
+				"seller",
+				"labels",
+				"video"
+			],
+			"idField": "productId",
+			"simplify": [
+				"productId",
+				"title",
+				"price.current",
+				"price.currency",
+				"rating",
+				"reviewCount",
+				"soldCount",
+				"brand",
+				"seller.name",
+				"url"
+			],
+			"test": {
+				"params": {
+					"q": "led face mask",
+					"max_results": 3
+				},
+				"minItems": 2,
+				"maxFields": 10
+			}
+		},
+		{
+			"name": "Get Store",
+			"value": "getStore",
+			"action": "Get tiktok shop store",
+			"description": "Retrieve a US store's profile, ratings and the products on its storefront",
+			"endpoint": "/social/tiktok-shop-store",
+			"fields": [
+				{
+					"param": "store",
+					"displayName": "Store",
+					"type": "string",
+					"required": true,
+					"placeholder": "https://www.tiktok.com/shop/store/goli-nutrition/7495794203056835079",
+					"description": "A TikTok Shop store URL or the seller's numeric ID"
+				},
+				{
+					"param": "max_results",
+					"displayName": "Max Products",
+					"type": "number",
+					"default": 20,
+					"min": 0,
+					"max": 20,
+					"description": "How many storefront products to include in the products list (0-20). 0 returns the store profile only."
+				}
+			],
+			"test": {
+				"params": {
+					"store": "7495794203056835079",
+					"max_results": 3
+				},
+				"minItems": 1,
+				"maxFields": 10
+			}
+		}
+	]
+}

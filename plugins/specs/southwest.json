@@ -1,0 +1,118 @@
+{
+	"resource": "Southwest Airlines",
+	"value": "southwest",
+	"operations": [
+		{
+			"name": "Search Flights",
+			"value": "searchFlights",
+			"action": "Search southwest airlines flights",
+			"description": "Find every Southwest flight on a route and date with the price of each fare: one item per flight",
+			"endpoint": "/flights/southwest-quotes",
+			"fields": [
+				{
+					"param": "origin",
+					"displayName": "Origin Airport",
+					"type": "string",
+					"required": true,
+					"placeholder": "DAL",
+					"description": "Three-letter code of the airport to fly from (e.g. DAL for Dallas Love Field)"
+				},
+				{
+					"param": "dest",
+					"displayName": "Destination Airport",
+					"type": "string",
+					"required": true,
+					"placeholder": "HOU",
+					"description": "Three-letter code of the airport to fly to (e.g. HOU for Houston Hobby)"
+				},
+				{
+					"param": "depart_date",
+					"displayName": "Departure Date",
+					"type": "string",
+					"required": true,
+					"placeholder": "2026-11-20",
+					"description": "Outbound date as YYYY-MM-DD"
+				}
+			],
+			"options": [
+				{
+					"param": "return_date",
+					"displayName": "Return Date",
+					"type": "string",
+					"placeholder": "2026-11-23",
+					"description": "Return date as YYYY-MM-DD for a round trip. Leave empty for a one-way search."
+				},
+				{
+					"param": "adults",
+					"displayName": "Adults",
+					"type": "number",
+					"default": 1,
+					"min": 1,
+					"max": 8,
+					"description": "Number of adult passengers"
+				},
+				{
+					"param": "fare_type",
+					"displayName": "Fare Type",
+					"type": "options",
+					"default": "dollars",
+					"description": "Price the fares in US dollars or in Rapid Rewards points",
+					"options": [
+						{
+							"name": "US Dollars",
+							"value": "dollars"
+						},
+						{
+							"name": "Rapid Rewards Points",
+							"value": "points"
+						}
+					]
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Southwest is opened from. Automatic uses the US, which is recommended."
+				}
+			],
+			"listKey": "data.searchResults.airProducts.details",
+			"outputFields": [
+				"originationAirportCode",
+				"destinationAirportCode",
+				"flightNumbers",
+				"departureDateTime",
+				"arrivalDateTime",
+				"departureTime",
+				"arrivalTime",
+				"totalDuration",
+				"nextDay",
+				"fareProducts",
+				"segments",
+				"filterTags"
+			],
+			"simplify": [
+				"flightNumbers",
+				"originationAirportCode:origin",
+				"destinationAirportCode:destination",
+				"departureDateTime",
+				"arrivalDateTime",
+				"totalDuration:durationMinutes",
+				"fareProducts.ADULT.WGA.fare.totalFare.value:wannaGetAwayPrice",
+				"fareProducts.ADULT.PLU.fare.totalFare.value:wannaGetAwayPlusPrice",
+				"fareProducts.ADULT.ANY.fare.totalFare.value:anytimePrice",
+				"fareProducts.ADULT.BUS.fare.totalFare.value:businessSelectPrice"
+			],
+			"idField": "flightNumbers",
+			"test": {
+				"params": {
+					"origin": "DAL",
+					"dest": "HOU",
+					"depart_date": "2026-11-20"
+				},
+				"minItems": 2,
+				"maxFields": 10
+			}
+		}
+	]
+}

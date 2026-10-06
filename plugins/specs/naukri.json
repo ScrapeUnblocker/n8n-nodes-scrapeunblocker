@@ -1,0 +1,167 @@
+{
+	"resource": "Naukri",
+	"value": "naukri",
+	"operations": [
+		{
+			"name": "Search Jobs",
+			"value": "searchJobs",
+			"action": "Search naukri jobs",
+			"description": "Find job listings in India that match a keyword",
+			"endpoint": "/jobs/naukri",
+			"fields": [
+				{
+					"param": "keyword",
+					"displayName": "Search Query",
+					"type": "string",
+					"required": true,
+					"placeholder": "python developer",
+					"description": "What to search for: a job title, skill or company"
+				},
+				{
+					"param": "max_results",
+					"displayName": "Max Results",
+					"type": "number",
+					"default": 40,
+					"min": 1,
+					"max": 1000,
+					"description": "How many jobs to collect across result pages (1-1000, about 20 per page)"
+				}
+			],
+			"options": [
+				{
+					"param": "location",
+					"displayName": "Location",
+					"type": "string",
+					"placeholder": "Bangalore",
+					"description": "City to search in. Leave empty for all of India."
+				},
+				{
+					"param": "experience",
+					"displayName": "Experience (Years)",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"max": 30,
+					"description": "The candidate's experience in years (0-30). Only jobs open to this much experience are returned."
+				},
+				{
+					"param": "days",
+					"displayName": "Posted Within",
+					"type": "options",
+					"default": "",
+					"description": "Only jobs posted within this time window",
+					"options": [
+						{
+							"name": "Any Time",
+							"value": ""
+						},
+						{
+							"name": "Last 24 Hours",
+							"value": "1"
+						},
+						{
+							"name": "Last 3 Days",
+							"value": "3"
+						},
+						{
+							"name": "Last 7 Days",
+							"value": "7"
+						},
+						{
+							"name": "Last 15 Days",
+							"value": "15"
+						},
+						{
+							"name": "Last 30 Days",
+							"value": "30"
+						}
+					]
+				},
+				{
+					"param": "remote",
+					"displayName": "Remote Only",
+					"type": "boolean",
+					"default": false,
+					"description": "Whether to return only work-from-home and remote jobs"
+				},
+				{
+					"param": "page",
+					"displayName": "Start Page",
+					"type": "number",
+					"default": 1,
+					"min": 1,
+					"description": "Which results page to start collecting from"
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Naukri is opened from. Automatic picks one that works well for Naukri."
+				}
+			],
+			"sort": [
+				{
+					"param": "sort",
+					"displayName": "Sort By",
+					"type": "options",
+					"default": "relevance",
+					"description": "The order of the jobs",
+					"options": [
+						{
+							"name": "Date (Newest First)",
+							"value": "date"
+						},
+						{
+							"name": "Relevance",
+							"value": "relevance"
+						}
+					]
+				}
+			],
+			"listKey": "jobs",
+			"outputFields": [
+				"jobId",
+				"title",
+				"url",
+				"company",
+				"companyUrl",
+				"companyRating",
+				"reviewsCount",
+				"experience",
+				"experienceMinYears",
+				"experienceMaxYears",
+				"location",
+				"locations",
+				"workMode",
+				"workFromHome",
+				"skills",
+				"description",
+				"postedDate",
+				"companyLogo",
+				"salary"
+			],
+			"idField": "jobId",
+			"simplify": [
+				"jobId",
+				"title",
+				"company",
+				"location",
+				"workMode",
+				"experience",
+				"salary.text",
+				"skills",
+				"postedDate",
+				"url"
+			],
+			"test": {
+				"params": {
+					"keyword": "python developer",
+					"max_results": 5
+				},
+				"minItems": 3,
+				"maxFields": 10
+			}
+		}
+	]
+}

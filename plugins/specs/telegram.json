@@ -1,0 +1,127 @@
+{
+	"resource": "Telegram",
+	"value": "telegram",
+	"operations": [
+		{
+			"name": "Get Channel Posts",
+			"value": "getChannelPosts",
+			"action": "Get telegram channel posts",
+			"description": "Retrieve the newest posts of a public channel, or page back through its history",
+			"endpoint": "/social/telegram-channel",
+			"fields": [
+				{
+					"param": "channel",
+					"displayName": "Channel",
+					"type": "string",
+					"required": true,
+					"placeholder": "durov",
+					"description": "The public channel's username, with or without @, or its t.me link. A post link (t.me/durov/400) returns that one post."
+				},
+				{
+					"param": "max_posts",
+					"displayName": "Max Posts",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"max": 500,
+					"skipZero": true,
+					"description": "How many posts to collect, newest first (up to 500), paging back through the channel's history. Each page of about 20 posts is one billed call. 0 returns one page."
+				}
+			],
+			"options": [
+				{
+					"param": "q",
+					"displayName": "Search Within Channel",
+					"type": "string",
+					"placeholder": "giveaway",
+					"description": "Only posts that contain this text"
+				},
+				{
+					"param": "since",
+					"displayName": "Since",
+					"type": "dateTime",
+					"description": "Only posts published on or after this date (UTC unless the value has a time zone)"
+				},
+				{
+					"param": "before",
+					"displayName": "Before Post ID",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Only posts older than this post ID. To continue a previous run, use the ID of the oldest post it returned. 0 means no limit."
+				},
+				{
+					"param": "after",
+					"displayName": "After Post ID",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Only posts newer than this post ID. 0 means no limit."
+				},
+				{
+					"param": "post_id",
+					"displayName": "Post ID",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Return only this post of the channel. 0 returns the channel's posts."
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Telegram is opened from. Automatic picks a suitable one."
+				}
+			],
+			"listKey": "posts",
+			"outputFields": [
+				"id",
+				"url",
+				"channel",
+				"type",
+				"date",
+				"text",
+				"textHtml",
+				"views",
+				"viewsRaw",
+				"author",
+				"edited",
+				"forwardedFrom",
+				"replyTo",
+				"media",
+				"poll",
+				"linkPreview",
+				"reactions",
+				"buttons",
+				"links",
+				"hashtags",
+				"mentions"
+			],
+			"idField": "id",
+			"simplify": [
+				"id",
+				"date",
+				"text",
+				"views",
+				"media",
+				"reactions",
+				"forwardedFrom",
+				"hashtags",
+				"links",
+				"url"
+			],
+			"test": {
+				"params": {
+					"channel": "durov",
+					"max_posts": 3
+				},
+				"minItems": 2,
+				"maxFields": 10
+			}
+		}
+	]
+}

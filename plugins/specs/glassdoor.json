@@ -1,0 +1,594 @@
+{
+	"resource": "Glassdoor",
+	"value": "glassdoor",
+	"operations": [
+		{
+			"name": "Search Jobs",
+			"value": "searchJobs",
+			"action": "Search glassdoor jobs",
+			"description": "Find job listings with salary estimates that match a keyword",
+			"endpoint": "/jobs/glassdoor",
+			"fields": [
+				{
+					"param": "keyword",
+					"displayName": "Search Query",
+					"type": "string",
+					"required": true,
+					"placeholder": "software engineer",
+					"description": "What to search for: a job title or keywords"
+				},
+				{
+					"param": "max_results",
+					"displayName": "Max Results",
+					"type": "number",
+					"default": 30,
+					"min": 1,
+					"max": 900,
+					"description": "How many jobs to collect across result pages (1-900, about 30 per page)"
+				}
+			],
+			"options": [
+				{
+					"param": "location",
+					"displayName": "Location",
+					"type": "string",
+					"placeholder": "New York, NY",
+					"description": "City, state or country to search in. A name Glassdoor does not know fails the call; use Location ID then."
+				},
+				{
+					"param": "loc_id",
+					"displayName": "Location ID",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Glassdoor's own number for a place, used instead of Location. It appears in Glassdoor job search URLs (IC1139761 is the city 1139761). Set Location ID Type to match. 0 means not set."
+				},
+				{
+					"param": "loc_type",
+					"displayName": "Location ID Type",
+					"type": "options",
+					"default": "C",
+					"description": "What kind of place the Location ID is (the letter after I in the URL: C, S, N or M)",
+					"options": [
+						{
+							"name": "City",
+							"value": "C"
+						},
+						{
+							"name": "Country",
+							"value": "N"
+						},
+						{
+							"name": "Metro Area",
+							"value": "M"
+						},
+						{
+							"name": "State",
+							"value": "S"
+						}
+					]
+				},
+				{
+					"param": "radius",
+					"displayName": "Radius",
+					"type": "number",
+					"default": 25,
+					"min": 0,
+					"description": "Search radius around the location, in miles"
+				},
+				{
+					"param": "job_type",
+					"displayName": "Job Type",
+					"type": "options",
+					"default": "",
+					"description": "Only jobs of this employment type",
+					"options": [
+						{
+							"name": "Any",
+							"value": ""
+						},
+						{
+							"name": "Apprenticeship",
+							"value": "apprenticeship"
+						},
+						{
+							"name": "Contract",
+							"value": "contract"
+						},
+						{
+							"name": "Full-Time",
+							"value": "fulltime"
+						},
+						{
+							"name": "Internship",
+							"value": "internship"
+						},
+						{
+							"name": "Part-Time",
+							"value": "parttime"
+						},
+						{
+							"name": "Temporary",
+							"value": "temporary"
+						}
+					]
+				},
+				{
+					"param": "experience",
+					"displayName": "Experience Level",
+					"type": "options",
+					"default": "",
+					"description": "Only jobs for this seniority level",
+					"options": [
+						{
+							"name": "Any",
+							"value": ""
+						},
+						{
+							"name": "Director",
+							"value": "director"
+						},
+						{
+							"name": "Entry Level",
+							"value": "entrylevel"
+						},
+						{
+							"name": "Executive",
+							"value": "executive"
+						},
+						{
+							"name": "Internship",
+							"value": "internship"
+						},
+						{
+							"name": "Mid-Senior Level",
+							"value": "midseniorlevel"
+						}
+					]
+				},
+				{
+					"param": "from_age",
+					"displayName": "Posted Within",
+					"type": "options",
+					"default": "",
+					"description": "Only jobs posted within this time window",
+					"options": [
+						{
+							"name": "Any Time",
+							"value": ""
+						},
+						{
+							"name": "Last 24 Hours",
+							"value": "1"
+						},
+						{
+							"name": "Last 3 Days",
+							"value": "3"
+						},
+						{
+							"name": "Last 7 Days",
+							"value": "7"
+						},
+						{
+							"name": "Last 14 Days",
+							"value": "14"
+						},
+						{
+							"name": "Last 30 Days",
+							"value": "30"
+						}
+					]
+				},
+				{
+					"param": "min_salary",
+					"displayName": "Min Salary",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Lowest annual salary to include. 0 means no minimum."
+				},
+				{
+					"param": "remote",
+					"displayName": "Remote Only",
+					"type": "boolean",
+					"default": false,
+					"description": "Whether to return only remote jobs"
+				},
+				{
+					"param": "page",
+					"displayName": "Start Page",
+					"type": "number",
+					"default": 1,
+					"min": 1,
+					"description": "Which results page to start collecting from"
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Glassdoor is opened from. Automatic uses the US."
+				}
+			],
+			"sort": [
+				{
+					"param": "sort",
+					"displayName": "Sort By",
+					"type": "options",
+					"default": "recency",
+					"description": "The order of the jobs",
+					"options": [
+						{
+							"name": "Most Recent",
+							"value": "recency"
+						},
+						{
+							"name": "Most Relevant",
+							"value": "relevance"
+						}
+					]
+				}
+			],
+			"listKey": "jobs",
+			"outputFields": [
+				"jobId",
+				"title",
+				"url",
+				"company",
+				"companyId",
+				"companyRating",
+				"companyLogo",
+				"location",
+				"locationType",
+				"countryId",
+				"ageInDays",
+				"salary",
+				"snippet",
+				"skills",
+				"easyApply",
+				"sponsored",
+				"category"
+			],
+			"idField": "jobId",
+			"simplify": [
+				"jobId",
+				"title",
+				"company",
+				"location",
+				"salary.min",
+				"salary.max",
+				"salary.currency",
+				"salary.payPeriod",
+				"ageInDays",
+				"url"
+			],
+			"test": {
+				"params": {
+					"keyword": "software engineer",
+					"max_results": 5
+				},
+				"options": {
+					"location": "Austin, TX"
+				},
+				"minItems": 3,
+				"maxFields": 10
+			}
+		},
+		{
+			"name": "Get Reviews",
+			"value": "getReviews",
+			"action": "Get glassdoor company reviews",
+			"description": "Read what employees say about a company: ratings, pros and cons",
+			"endpoint": "/reviews/glassdoor",
+			"fields": [
+				{
+					"param": "company",
+					"displayName": "Company",
+					"type": "string",
+					"required": true,
+					"placeholder": "Microsoft",
+					"description": "The company: its name (matched with Glassdoor's company search), its Glassdoor employer ID (e.g. 9079) or any Glassdoor company URL"
+				},
+				{
+					"param": "max_results",
+					"displayName": "Max Results",
+					"type": "number",
+					"default": 3,
+					"min": 1,
+					"max": 25,
+					"description": "How many reviews to return (1-25). Glassdoor shows visitors who are not signed in 3 reviews per sort order or filter; above 3 the node also reads the other sort orders and each star rating and merges the distinct reviews. Each of these reads is one billed call."
+				}
+			],
+			"options": [
+				{
+					"param": "rating",
+					"displayName": "Star Rating",
+					"type": "options",
+					"default": "",
+					"description": "Only reviews with this overall star rating",
+					"options": [
+						{
+							"name": "Any",
+							"value": ""
+						},
+						{
+							"name": "1 Star",
+							"value": "1"
+						},
+						{
+							"name": "2 Stars",
+							"value": "2"
+						},
+						{
+							"name": "3 Stars",
+							"value": "3"
+						},
+						{
+							"name": "4 Stars",
+							"value": "4"
+						},
+						{
+							"name": "5 Stars",
+							"value": "5"
+						}
+					]
+				},
+				{
+					"param": "job_title",
+					"displayName": "Job Title",
+					"type": "string",
+					"placeholder": "software engineer",
+					"description": "Only reviews from employees whose job title matches this text"
+				},
+				{
+					"param": "keyword",
+					"displayName": "Keyword",
+					"type": "string",
+					"placeholder": "remote",
+					"description": "Only reviews that mention this keyword"
+				},
+				{
+					"param": "topic",
+					"displayName": "Topic",
+					"type": "options",
+					"default": "",
+					"description": "Only reviews about this topic",
+					"options": [
+						{
+							"name": "Any",
+							"value": ""
+						},
+						{
+							"name": "Career Development",
+							"value": "career_development"
+						},
+						{
+							"name": "Compensation",
+							"value": "compensation"
+						},
+						{
+							"name": "Culture",
+							"value": "culture"
+						},
+						{
+							"name": "Diversity and Inclusion",
+							"value": "diversity_and_inclusion"
+						},
+						{
+							"name": "Management",
+							"value": "management"
+						},
+						{
+							"name": "Work/Life Balance",
+							"value": "work_life_balance"
+						}
+					]
+				},
+				{
+					"param": "employment_status",
+					"displayName": "Employment Status",
+					"type": "multiOptions",
+					"description": "Only reviews by employees with these employment types. Leave empty for Glassdoor's own view: full-time and part-time.",
+					"options": [
+						{
+							"name": "Contract",
+							"value": "contract"
+						},
+						{
+							"name": "Freelance",
+							"value": "freelance"
+						},
+						{
+							"name": "Full-Time",
+							"value": "full_time"
+						},
+						{
+							"name": "Intern",
+							"value": "intern"
+						},
+						{
+							"name": "Part-Time",
+							"value": "part_time"
+						}
+					]
+				},
+				{
+					"param": "language",
+					"displayName": "Languages",
+					"type": "multiOptions",
+					"description": "Only reviews written in these languages. Leave empty for English.",
+					"options": [
+						{
+							"name": "Dutch",
+							"value": "nld"
+						},
+						{
+							"name": "English",
+							"value": "eng"
+						},
+						{
+							"name": "French",
+							"value": "fra"
+						},
+						{
+							"name": "German",
+							"value": "deu"
+						},
+						{
+							"name": "Italian",
+							"value": "ita"
+						},
+						{
+							"name": "Portuguese",
+							"value": "por"
+						},
+						{
+							"name": "Spanish",
+							"value": "spa"
+						}
+					]
+				},
+				{
+					"param": "current_only",
+					"displayName": "Current Employees Only",
+					"type": "boolean",
+					"default": false,
+					"description": "Whether to return only reviews by current employees"
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Glassdoor is opened from. Only Automatic or the United States work: Glassdoor sends visitors from other countries to their local site, where these review pages do not exist."
+				}
+			],
+			"sort": [
+				{
+					"param": "sort",
+					"displayName": "Sort By",
+					"type": "options",
+					"default": "recent",
+					"description": "The order of the reviews",
+					"options": [
+						{
+							"name": "Highest Rated",
+							"value": "highest"
+						},
+						{
+							"name": "Lowest Rated",
+							"value": "lowest"
+						},
+						{
+							"name": "Most Helpful",
+							"value": "helpful"
+						},
+						{
+							"name": "Most Recent",
+							"value": "recent"
+						}
+					]
+				}
+			],
+			"listKey": "reviews",
+			"outputFields": [
+				"id",
+				"url",
+				"title",
+				"rating",
+				"subratings",
+				"recommendToFriend",
+				"ceoApproval",
+				"businessOutlook",
+				"pros",
+				"cons",
+				"advice",
+				"jobTitle",
+				"employmentStatus",
+				"isCurrentEmployee",
+				"yearsOfEmployment",
+				"location",
+				"date",
+				"helpfulCount",
+				"notHelpfulCount",
+				"featured",
+				"employerResponse",
+				"view"
+			],
+			"idField": "id",
+			"simplify": [
+				"id",
+				"title",
+				"rating",
+				"pros",
+				"cons",
+				"jobTitle",
+				"isCurrentEmployee",
+				"location",
+				"date",
+				"url"
+			],
+			"test": {
+				"params": {
+					"company": "Microsoft",
+					"max_results": 3
+				},
+				"minItems": 3,
+				"maxFields": 10
+			}
+		},
+		{
+			"name": "Get Salaries",
+			"value": "getSalaries",
+			"action": "Get glassdoor company salaries",
+			"description": "Pay ranges at a company for each job title, most-reported titles first",
+			"endpoint": "/salaries/glassdoor",
+			"fields": [
+				{
+					"param": "company",
+					"displayName": "Company",
+					"type": "string",
+					"required": true,
+					"placeholder": "Microsoft",
+					"description": "The company: its name (matched with Glassdoor's company search), its Glassdoor employer ID (e.g. 9079) or any Glassdoor company URL"
+				},
+				{
+					"param": "max_results",
+					"displayName": "Max Results",
+					"type": "number",
+					"default": 20,
+					"min": 1,
+					"max": 100,
+					"description": "How many job titles to return (1-100), most-reported first. Glassdoor lists 10 per page and each page is one billed call."
+				}
+			],
+			"options": [
+				{
+					"param": "job_title",
+					"displayName": "Job Title",
+					"type": "string",
+					"placeholder": "software engineer",
+					"description": "Only job titles that match this text"
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Glassdoor is opened from, which sets the market and currency of the pay figures. Automatic uses the US, with pay in USD."
+				}
+			],
+			"listKey": "salaries",
+			"test": {
+				"params": {
+					"company": "Microsoft",
+					"max_results": 10
+				},
+				"minItems": 5,
+				"maxFields": 10
+			}
+		}
+	]
+}

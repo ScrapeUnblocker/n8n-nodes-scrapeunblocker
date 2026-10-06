@@ -1,0 +1,175 @@
+{
+	"resource": "Crunchbase",
+	"value": "crunchbase",
+	"operations": [
+		{
+			"name": "Get Company",
+			"value": "getCompany",
+			"action": "Get crunchbase company",
+			"description": "Profile, funding, people, rank and web traffic of one organization",
+			"endpoint": "/companies/crunchbase",
+			"fields": [
+				{
+					"param": "organization",
+					"displayName": "Organization",
+					"type": "string",
+					"required": true,
+					"placeholder": "stripe",
+					"description": "The part of the Crunchbase profile URL after /organization/ (e.g. stripe or tesla-motors), or the full profile URL"
+				}
+			],
+			"options": [
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Crunchbase is opened from. Automatic picks one; if Crunchbase blocks the call, try another country."
+				}
+			],
+			"itemKey": "organization",
+			"outputFields": [
+				"name",
+				"slug",
+				"uuid",
+				"url",
+				"legalName",
+				"aliases",
+				"shortDescription",
+				"description",
+				"logo",
+				"website",
+				"headquarters",
+				"locationGroups",
+				"operatingStatus",
+				"companyType",
+				"ipoStatus",
+				"stockSymbol",
+				"stockExchange",
+				"foundedOn",
+				"closedOn",
+				"wentPublicOn",
+				"exitedOn",
+				"employeeRange",
+				"industries",
+				"industryGroups",
+				"hubTags",
+				"diversitySpotlights",
+				"rank",
+				"rankDelta90d",
+				"growthScore",
+				"growthScoreDelta90d",
+				"heatScore",
+				"heatScoreDelta90d",
+				"founders",
+				"lastFundingType",
+				"lastFundingAt",
+				"fundingTotal",
+				"numFundingRounds",
+				"numInvestors",
+				"numLeadInvestors",
+				"numAcquisitions",
+				"numInvestments",
+				"numLeadInvestments",
+				"numPortfolioOrganizations",
+				"numExits",
+				"numSubOrganizations",
+				"numEmployeeProfiles",
+				"numContacts",
+				"numArticles",
+				"numEventAppearances",
+				"investorType",
+				"investorStage",
+				"acquiredBy",
+				"owner",
+				"fundingRounds",
+				"investors",
+				"acquisitions",
+				"investments",
+				"exits",
+				"subOrganizations",
+				"keyPeople",
+				"boardMembers",
+				"similarCompanies",
+				"products",
+				"contactEmail",
+				"phone",
+				"socialLinks",
+				"webTraffic",
+				"technology",
+				"predictions",
+				"events",
+				"offices",
+				"news",
+				"paywalledFields"
+			],
+			"idField": "url",
+			"simplify": [
+				"name",
+				"shortDescription",
+				"website",
+				"headquarters.city",
+				"headquarters.country",
+				"employeeRange",
+				"industries",
+				"lastFundingType",
+				"rank",
+				"url"
+			],
+			"test": {
+				"params": {
+					"organization": "stripe"
+				},
+				"minItems": 1,
+				"maxItems": 1,
+				"maxFields": 10
+			},
+			"disabled": "Crunchbase blocks the API (502 on every try, 2026-10-06)"
+		},
+		{
+			"name": "Search Companies",
+			"value": "searchCompanies",
+			"action": "Search crunchbase companies",
+			"description": "Find organizations by name, to look up their full profiles",
+			"endpoint": "/companies/crunchbase",
+			"fields": [
+				{
+					"param": "query",
+					"displayName": "Company Name",
+					"type": "string",
+					"required": true,
+					"placeholder": "Revolut",
+					"description": "The company name to search for. Use a result's URL with Get Company for the full profile."
+				},
+				{
+					"param": "max_results",
+					"displayName": "Max Results",
+					"type": "number",
+					"default": 10,
+					"min": 1,
+					"max": 25,
+					"description": "How many matching organizations to return (1-25)"
+				}
+			],
+			"options": [
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Crunchbase is opened from. Automatic picks one; if Crunchbase blocks the call, try another country."
+				}
+			],
+			"listKey": "results",
+			"test": {
+				"params": {
+					"query": "Revolut",
+					"max_results": 3
+				},
+				"minItems": 1,
+				"maxFields": 10
+			},
+			"disabled": "Crunchbase blocks the API (502 on every try, 2026-10-06)"
+		}
+	]
+}

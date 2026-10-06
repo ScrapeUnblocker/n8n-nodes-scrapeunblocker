@@ -1,0 +1,359 @@
+{
+	"resource": "Zillow",
+	"value": "zillow",
+	"operations": [
+		{
+			"name": "Search Properties",
+			"value": "searchProperties",
+			"action": "Search zillow properties",
+			"description": "Find homes for sale, for rent or recently sold in a US city or ZIP code",
+			"endpoint": "/realestate/zillow",
+			"fields": [
+				{
+					"param": "location",
+					"displayName": "Location",
+					"type": "string",
+					"required": true,
+					"placeholder": "Austin, TX",
+					"description": "The city and state or the ZIP code to search, e.g. Austin, TX or 78704"
+				},
+				{
+					"param": "max_results",
+					"displayName": "Max Results",
+					"type": "number",
+					"default": 41,
+					"min": 1,
+					"max": 820,
+					"description": "How many homes to return, collected across pages (about 41 per page)"
+				}
+			],
+			"options": [
+				{
+					"param": "status",
+					"displayName": "Listing Status",
+					"type": "options",
+					"default": "for_sale",
+					"description": "Homes for sale, for rent or recently sold",
+					"options": [
+						{
+							"name": "For Rent",
+							"value": "for_rent"
+						},
+						{
+							"name": "For Sale",
+							"value": "for_sale"
+						},
+						{
+							"name": "Recently Sold",
+							"value": "sold"
+						}
+					]
+				},
+				{
+					"param": "home_type",
+					"displayName": "Home Type",
+					"type": "options",
+					"default": "",
+					"description": "Only homes of this type",
+					"options": [
+						{
+							"name": "Any",
+							"value": ""
+						},
+						{
+							"name": "Apartments",
+							"value": "apartments"
+						},
+						{
+							"name": "Condos",
+							"value": "condos"
+						},
+						{
+							"name": "Houses",
+							"value": "houses"
+						},
+						{
+							"name": "Lots / Land",
+							"value": "lots_land"
+						},
+						{
+							"name": "Manufactured",
+							"value": "manufactured"
+						},
+						{
+							"name": "Multi-Family",
+							"value": "multi_family"
+						},
+						{
+							"name": "Townhomes",
+							"value": "townhomes"
+						}
+					]
+				},
+				{
+					"param": "min_price",
+					"displayName": "Min Price (USD)",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Lowest price in US dollars, or lowest monthly rent for homes for rent. 0 means no minimum."
+				},
+				{
+					"param": "max_price",
+					"displayName": "Max Price (USD)",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Highest price in US dollars, or highest monthly rent for homes for rent. 0 means no limit."
+				},
+				{
+					"param": "beds",
+					"displayName": "Min Bedrooms",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Fewest bedrooms. 0 means any."
+				},
+				{
+					"param": "baths",
+					"displayName": "Min Bathrooms",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Fewest bathrooms. 0 means any."
+				},
+				{
+					"param": "page",
+					"displayName": "Start Page",
+					"type": "number",
+					"default": 1,
+					"min": 1,
+					"description": "Which results page to start from (1 is the first page)"
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Zillow is opened from. Automatic uses the US."
+				}
+			],
+			"sort": [
+				{
+					"param": "sort",
+					"displayName": "Sort By",
+					"type": "options",
+					"default": "newest",
+					"description": "The order of the homes",
+					"options": [
+						{
+							"name": "Bedrooms",
+							"value": "beds"
+						},
+						{
+							"name": "Lot Size",
+							"value": "lot"
+						},
+						{
+							"name": "Most Relevant",
+							"value": "relevant"
+						},
+						{
+							"name": "Newest",
+							"value": "newest"
+						},
+						{
+							"name": "Price: Highest First",
+							"value": "price_desc"
+						},
+						{
+							"name": "Price: Lowest First",
+							"value": "price_asc"
+						},
+						{
+							"name": "Square Feet",
+							"value": "sqft"
+						}
+					]
+				}
+			],
+			"listKey": "homes",
+			"outputFields": [
+				"zpid",
+				"price",
+				"priceText",
+				"currency",
+				"beds",
+				"baths",
+				"area",
+				"lotArea",
+				"lotAreaUnit",
+				"homeType",
+				"status",
+				"statusText",
+				"address",
+				"street",
+				"city",
+				"state",
+				"zipcode",
+				"latitude",
+				"longitude",
+				"zestimate",
+				"rentZestimate",
+				"taxAssessedValue",
+				"daysOnZillow",
+				"broker",
+				"isZillowOwned",
+				"hasImage",
+				"has3DModel",
+				"hasVideo",
+				"image",
+				"url",
+				"isBuilding",
+				"lotId",
+				"buildingName",
+				"maxPrice",
+				"units",
+				"availableUnits"
+			],
+			"idField": "zpid",
+			"simplify": [
+				"zpid",
+				"address",
+				"price",
+				"beds",
+				"baths",
+				"area",
+				"homeType",
+				"zestimate",
+				"daysOnZillow",
+				"url"
+			],
+			"test": {
+				"params": {
+					"location": "78704",
+					"max_results": 5
+				},
+				"minItems": 3,
+				"maxFields": 10
+			}
+		},
+		{
+			"name": "Get Property",
+			"value": "getProperty",
+			"action": "Get a zillow property",
+			"description": "Get the full record of one home, with price and tax history, schools, facts and photos",
+			"endpoint": "/realestate/zillow-detail",
+			"fields": [
+				{
+					"param": "url",
+					"displayName": "Property URL",
+					"type": "string",
+					"placeholder": "https://www.zillow.com/homedetails/1307-Meadgreen-Dr-Austin-TX-78758/29432984_zpid/",
+					"description": "The Zillow page of the home, e.g. the URL of a search result. Either this or the Zillow Property ID (in Options) is needed."
+				}
+			],
+			"options": [
+				{
+					"param": "zpid",
+					"displayName": "Zillow Property ID",
+					"type": "string",
+					"placeholder": "29432984",
+					"description": "The number Zillow gives the home, shown in its URL before _zpid. Use it instead of the Property URL; either one is needed."
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Zillow is opened from. Automatic picks a suitable one."
+				}
+			],
+			"itemKey": "property",
+			"outputFields": [
+				"zpid",
+				"url",
+				"status",
+				"statusText",
+				"price",
+				"priceText",
+				"currency",
+				"zestimate",
+				"rentZestimate",
+				"priceChange",
+				"priceChangeDate",
+				"lastSoldPrice",
+				"dateSold",
+				"taxAssessedValue",
+				"propertyTaxRate",
+				"beds",
+				"baths",
+				"bathsFull",
+				"bathsHalf",
+				"area",
+				"areaUnit",
+				"lotSize",
+				"lotSizeUnit",
+				"lotSizeText",
+				"yearBuilt",
+				"homeType",
+				"propertySubType",
+				"pricePerSqft",
+				"monthlyHoaFee",
+				"daysOnZillow",
+				"description",
+				"address",
+				"street",
+				"city",
+				"state",
+				"zipcode",
+				"county",
+				"neighborhood",
+				"parcelId",
+				"latitude",
+				"longitude",
+				"mlsid",
+				"mlsName",
+				"brokerName",
+				"brokerPhone",
+				"listingAgent",
+				"photoCount",
+				"photos",
+				"virtualTourUrl",
+				"facts",
+				"parking",
+				"priceHistory",
+				"taxHistory",
+				"schools",
+				"isShowcaseListing",
+				"newConstruction",
+				"timeZone"
+			],
+			"idField": "zpid",
+			"simplify": [
+				"zpid",
+				"address",
+				"price",
+				"statusText",
+				"beds",
+				"baths",
+				"area",
+				"yearBuilt",
+				"zestimate",
+				"url"
+			],
+			"test": {
+				"params": {
+					"url": "https://www.zillow.com/homedetails/1307-Meadgreen-Dr-Austin-TX-78758/29432984_zpid/"
+				},
+				"minItems": 1,
+				"maxItems": 1,
+				"maxFields": 10
+			}
+		}
+	]
+}

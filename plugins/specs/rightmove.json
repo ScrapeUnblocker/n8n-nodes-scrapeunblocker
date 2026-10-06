@@ -1,0 +1,212 @@
+{
+	"resource": "Rightmove",
+	"value": "rightmove",
+	"operations": [
+		{
+			"name": "Search Properties",
+			"value": "searchProperties",
+			"action": "Search rightmove properties",
+			"description": "Find UK properties for sale or to rent in a town, city or area",
+			"endpoint": "/realestate/rightmove",
+			"fields": [
+				{
+					"param": "location",
+					"displayName": "Location",
+					"type": "string",
+					"required": true,
+					"placeholder": "Manchester",
+					"description": "A UK place name, e.g. London, Manchester or Milton Keynes"
+				},
+				{
+					"param": "max_results",
+					"displayName": "Max Results",
+					"type": "number",
+					"default": 48,
+					"min": 1,
+					"max": 1008,
+					"description": "How many properties to return, collected across pages (about 24 per page)"
+				}
+			],
+			"options": [
+				{
+					"param": "channel",
+					"displayName": "For Sale or To Rent",
+					"type": "options",
+					"default": "buy",
+					"description": "Whether to search properties for sale or to rent",
+					"options": [
+						{
+							"name": "For Sale",
+							"value": "buy"
+						},
+						{
+							"name": "To Rent",
+							"value": "rent"
+						}
+					]
+				},
+				{
+					"param": "min_price",
+					"displayName": "Min Price (GBP)",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Lowest price in pounds: the asking price for sale, the monthly rent to rent. 0 means no minimum."
+				},
+				{
+					"param": "max_price",
+					"displayName": "Max Price (GBP)",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Highest price in pounds: the asking price for sale, the monthly rent to rent. 0 means no limit."
+				},
+				{
+					"param": "min_bedrooms",
+					"displayName": "Min Bedrooms",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Fewest bedrooms. 0 means any."
+				},
+				{
+					"param": "max_bedrooms",
+					"displayName": "Max Bedrooms",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Most bedrooms. 0 means no limit."
+				},
+				{
+					"param": "property_type",
+					"displayName": "Property Types",
+					"type": "multiOptions",
+					"default": [],
+					"description": "Only properties of these types. Leave empty for all types.",
+					"options": [
+						{
+							"name": "Bungalow",
+							"value": "bungalow"
+						},
+						{
+							"name": "Detached",
+							"value": "detached"
+						},
+						{
+							"name": "Flat",
+							"value": "flat"
+						},
+						{
+							"name": "Land",
+							"value": "land"
+						},
+						{
+							"name": "Park Home",
+							"value": "park-home"
+						},
+						{
+							"name": "Semi-Detached",
+							"value": "semi-detached"
+						},
+						{
+							"name": "Terraced",
+							"value": "terraced"
+						}
+					]
+				},
+				{
+					"param": "page",
+					"displayName": "Start Page",
+					"type": "number",
+					"default": 1,
+					"min": 1,
+					"max": 42,
+					"description": "Which results page to start from (1 is the first page)"
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Rightmove is opened from. Automatic picks a suitable one."
+				}
+			],
+			"sort": [
+				{
+					"param": "sort",
+					"displayName": "Sort By",
+					"type": "options",
+					"default": "relevance",
+					"description": "The order of the properties",
+					"options": [
+						{
+							"name": "Newest Listed",
+							"value": "newest"
+						},
+						{
+							"name": "Oldest Listed",
+							"value": "oldest"
+						},
+						{
+							"name": "Price: Highest First",
+							"value": "price_desc"
+						},
+						{
+							"name": "Price: Lowest First",
+							"value": "price_asc"
+						},
+						{
+							"name": "Relevance",
+							"value": "relevance"
+						}
+					]
+				}
+			],
+			"listKey": "properties",
+			"outputFields": [
+				"id",
+				"url",
+				"address",
+				"price",
+				"transactionType",
+				"bedrooms",
+				"bathrooms",
+				"propertyType",
+				"propertyTypeFull",
+				"summary",
+				"coordinates",
+				"images",
+				"agent",
+				"addedOrReduced",
+				"firstVisibleDate",
+				"listingUpdateReason",
+				"listingUpdateDate"
+			],
+			"idField": "id",
+			"simplify": [
+				"id",
+				"address",
+				"price.amount",
+				"price.display",
+				"bedrooms",
+				"bathrooms",
+				"propertyType",
+				"agent.name",
+				"addedOrReduced",
+				"url"
+			],
+			"test": {
+				"params": {
+					"location": "London",
+					"max_results": 5
+				},
+				"minItems": 3,
+				"maxFields": 10
+			}
+		}
+	]
+}

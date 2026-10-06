@@ -1,0 +1,118 @@
+{
+	"resource": "AliExpress",
+	"value": "aliExpress",
+	"operations": [
+		{
+			"name": "Search Products",
+			"value": "searchProducts",
+			"action": "Search aliexpress products",
+			"description": "Find products that match a keyword on AliExpress, with prices, ratings and orders",
+			"endpoint": "/goods/aliexpress-search",
+			"fields": [
+				{
+					"param": "keyword",
+					"displayName": "Search Query",
+					"type": "string",
+					"required": true,
+					"placeholder": "wireless earbuds",
+					"description": "What to search for: a keyword or product name"
+				},
+				{
+					"param": "max_results",
+					"displayName": "Max Results",
+					"type": "number",
+					"default": 60,
+					"min": 1,
+					"max": 1200,
+					"description": "How many products to collect across pages (up to 1200). AliExpress shows about 60 per page."
+				}
+			],
+			"options": [
+				{
+					"param": "page",
+					"displayName": "Start Page",
+					"type": "number",
+					"default": 1,
+					"min": 1,
+					"max": 20,
+					"description": "Which results page to start from"
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country AliExpress is opened from. It also sets the price currency. Automatic picks a suitable one."
+				}
+			],
+			"sort": [
+				{
+					"param": "sort",
+					"displayName": "Sort By",
+					"type": "options",
+					"default": "relevance",
+					"description": "The order of the products",
+					"options": [
+						{
+							"name": "Most Orders",
+							"value": "orders"
+						},
+						{
+							"name": "Newest",
+							"value": "newest"
+						},
+						{
+							"name": "Price: Highest First",
+							"value": "price_desc"
+						},
+						{
+							"name": "Price: Lowest First",
+							"value": "price_asc"
+						},
+						{
+							"name": "Relevance",
+							"value": "relevance"
+						}
+					]
+				}
+			],
+			"listKey": "products",
+			"outputFields": [
+				"productId",
+				"url",
+				"title",
+				"price",
+				"priceFormatted",
+				"currency",
+				"currencySymbol",
+				"originalPrice",
+				"originalPriceFormatted",
+				"rating",
+				"ordersText",
+				"orders",
+				"image",
+				"images"
+			],
+			"idField": "productId",
+			"simplify": [
+				"productId",
+				"title",
+				"price",
+				"currency",
+				"originalPrice",
+				"rating",
+				"orders",
+				"url",
+				"image"
+			],
+			"test": {
+				"params": {
+					"keyword": "phone case",
+					"max_results": 3
+				},
+				"minItems": 3,
+				"maxFields": 10
+			}
+		}
+	]
+}

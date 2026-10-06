@@ -1,0 +1,100 @@
+{
+	"resource": "Zalando",
+	"value": "zalando",
+	"operations": [
+		{
+			"name": "Search Products",
+			"value": "searchProducts",
+			"action": "Search zalando products",
+			"description": "Find fashion products that match a keyword in a European Zalando store",
+			"endpoint": "/marketplace/zalando-search",
+			"fields": [
+				{
+					"param": "query",
+					"displayName": "Search Query",
+					"type": "string",
+					"required": true,
+					"placeholder": "nike sneakers",
+					"description": "What to search for: a brand, product or style"
+				},
+				{
+					"param": "domain",
+					"displayName": "Store",
+					"type": "options",
+					"default": "en.zalando.de",
+					"description": "Which Zalando store to search. Prices, currency and language follow the store.",
+					"options": [
+						{
+							"name": "France (www.zalando.fr)",
+							"value": "www.zalando.fr"
+						},
+						{
+							"name": "Germany (www.zalando.de)",
+							"value": "www.zalando.de"
+						},
+						{
+							"name": "Germany, English (en.zalando.de)",
+							"value": "en.zalando.de"
+						},
+						{
+							"name": "Italy (www.zalando.it)",
+							"value": "www.zalando.it"
+						},
+						{
+							"name": "Netherlands (www.zalando.nl)",
+							"value": "www.zalando.nl"
+						},
+						{
+							"name": "Poland (www.zalando.pl)",
+							"value": "www.zalando.pl"
+						},
+						{
+							"name": "Spain (www.zalando.es)",
+							"value": "www.zalando.es"
+						},
+						{
+							"name": "United Kingdom (www.zalando.co.uk)",
+							"value": "www.zalando.co.uk"
+						}
+					],
+					"name": "marketplace"
+				},
+				{
+					"param": "max_results",
+					"displayName": "Max Results",
+					"type": "number",
+					"default": 48,
+					"min": 1,
+					"max": 500,
+					"description": "How many products to collect across pages (up to 500). A page holds about 48."
+				}
+			],
+			"options": [
+				{
+					"param": "page",
+					"displayName": "Start Page",
+					"type": "number",
+					"default": 1,
+					"min": 1,
+					"description": "Which results page to start from"
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Zalando is opened from. Automatic uses a country in the EU."
+				}
+			],
+			"listKey": "products",
+			"test": {
+				"params": {
+					"query": "sneakers",
+					"max_results": 3
+				},
+				"minItems": 3,
+				"maxFields": 10
+			}
+		}
+	]
+}

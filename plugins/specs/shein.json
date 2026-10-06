@@ -1,0 +1,83 @@
+{
+	"resource": "SHEIN",
+	"value": "shein",
+	"operations": [
+		{
+			"name": "Search Products",
+			"value": "searchProducts",
+			"action": "Search SHEIN products",
+			"description": "Find products that match a keyword in the SHEIN US store",
+			"endpoint": "/marketplace/shein-search",
+			"fields": [
+				{
+					"param": "query",
+					"displayName": "Search Query",
+					"type": "string",
+					"required": true,
+					"placeholder": "summer dress",
+					"description": "What to search for: a keyword or product name"
+				},
+				{
+					"param": "max_results",
+					"displayName": "Max Results",
+					"type": "number",
+					"default": 20,
+					"min": 1,
+					"max": 20,
+					"description": "How many products to return (up to 20: SHEIN shows only its first results page)"
+				}
+			],
+			"options": [
+				{
+					"param": "min_price",
+					"displayName": "Min Price",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Lowest price to include, as a whole number in USD. 0 means no minimum."
+				},
+				{
+					"param": "max_price",
+					"displayName": "Max Price",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Highest price to include, as a whole number in USD. 0 means no limit."
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country SHEIN is opened from. Results always come from the US store."
+				}
+			],
+			"sort": [
+				{
+					"param": "sort",
+					"displayName": "Sort By",
+					"type": "options",
+					"default": "relevance",
+					"description": "The order of the products",
+					"options": [
+						{ "name": "Price: Highest First", "value": "price_high" },
+						{ "name": "Price: Lowest First", "value": "price_low" },
+						{ "name": "Relevance", "value": "relevance" }
+					]
+				}
+			],
+			"listKey": "products",
+			"outputFields": [
+				"id", "sku", "title", "url", "price", "originalPrice", "currency", "discountPercent", "rating", "reviewCount",
+				"category", "categoryId", "image", "soldOut", "storeCode"
+			],
+			"idField": "id",
+			"simplify": [
+				"id", "title", "price", "originalPrice", "currency", "discountPercent", "rating", "reviewCount", "url", "image"
+			],
+			"test": { "params": { "query": "dress", "max_results": 3 }, "minItems": 3, "maxFields": 10 }
+		}
+	]
+}

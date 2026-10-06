@@ -1,0 +1,174 @@
+{
+	"resource": "Capterra",
+	"value": "capterra",
+	"operations": [
+		{
+			"name": "Get Reviews",
+			"value": "getReviews",
+			"action": "Get capterra product reviews",
+			"description": "Read user reviews of a software product: ratings, pros, cons and reviewer details",
+			"endpoint": "/reviews/capterra",
+			"fixed": {
+				"mode": "reviews"
+			},
+			"fields": [
+				{
+					"param": "product",
+					"displayName": "Product",
+					"type": "string",
+					"required": true,
+					"placeholder": "135003/Slack",
+					"description": "The product as in its Capterra URL (capterra.com/p/135003/Slack/): the number (135003), the number and name (135003/Slack), or the full URL"
+				},
+				{
+					"param": "max_results",
+					"displayName": "Max Results",
+					"type": "number",
+					"default": 25,
+					"min": 1,
+					"max": 500,
+					"description": "How many reviews to collect (1-500), in Capterra's Most Helpful order. Capterra lists 25 reviews per page and each page is one billed call."
+				}
+			],
+			"options": [
+				{
+					"param": "page",
+					"displayName": "Start Page",
+					"type": "number",
+					"default": 1,
+					"min": 1,
+					"max": 100,
+					"description": "Which review page to start from (25 reviews per page, at most 100 pages)"
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Capterra is opened from. Automatic picks one that works well for Capterra."
+				}
+			],
+			"listKey": "reviews",
+			"outputFields": [
+				"id",
+				"globalId",
+				"url",
+				"title",
+				"rating",
+				"ratings",
+				"date",
+				"reviewer",
+				"comments",
+				"pros",
+				"cons",
+				"reasonsForChoosing",
+				"reasonsForSwitching",
+				"advice",
+				"alternativesConsidered",
+				"switchedFrom",
+				"answers",
+				"text",
+				"incentive",
+				"incentivized",
+				"vendorReferred",
+				"reviewSource",
+				"source",
+				"vendorResponse"
+			],
+			"idField": "id",
+			"simplify": [
+				"id",
+				"title",
+				"rating",
+				"date",
+				"pros",
+				"cons",
+				"comments",
+				"reviewer.title",
+				"reviewer.companySize",
+				"url"
+			],
+			"test": {
+				"params": {
+					"product": "135003",
+					"max_results": 3
+				},
+				"minItems": 3,
+				"maxFields": 10
+			}
+		},
+		{
+			"name": "Search Products",
+			"value": "searchProducts",
+			"action": "Search capterra products",
+			"description": "Find software products in Capterra's catalog by name or keyword",
+			"endpoint": "/reviews/capterra",
+			"fixed": {
+				"mode": "search"
+			},
+			"fields": [
+				{
+					"param": "query",
+					"displayName": "Search Query",
+					"type": "string",
+					"required": true,
+					"placeholder": "crm",
+					"description": "What to search for: a product name or a kind of software"
+				},
+				{
+					"param": "max_results",
+					"displayName": "Max Results",
+					"type": "number",
+					"default": 20,
+					"min": 1,
+					"max": 20,
+					"description": "How many products to return (1-20, one page of results)"
+				}
+			],
+			"options": [
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Capterra is opened from. Automatic picks one that works well for Capterra."
+				}
+			],
+			"listKey": "results",
+			"outputFields": [
+				"id",
+				"uuid",
+				"slug",
+				"name",
+				"position",
+				"rating",
+				"reviewCount",
+				"description",
+				"logo",
+				"url",
+				"reviewsUrl"
+			],
+			"idField": "id",
+			"simplify": [
+				"id",
+				"name",
+				"rating",
+				"reviewCount",
+				"description",
+				"url",
+				"reviewsUrl",
+				"logo",
+				"slug",
+				"position"
+			],
+			"test": {
+				"params": {
+					"query": "crm",
+					"max_results": 3
+				},
+				"minItems": 3,
+				"maxFields": 10
+			}
+		}
+	]
+}

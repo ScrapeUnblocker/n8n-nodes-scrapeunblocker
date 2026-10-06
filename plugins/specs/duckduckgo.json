@@ -1,0 +1,69 @@
+{
+	"resource": "DuckDuckGo",
+	"value": "duckduckgo",
+	"operations": [
+		{
+			"name": "Search",
+			"value": "search",
+			"action": "Search duckduckgo",
+			"description": "Get the organic results and ads DuckDuckGo shows for a query",
+			"endpoint": "/search/duckduckgo",
+			"fields": [
+				{
+					"param": "keyword",
+					"displayName": "Search Query",
+					"type": "string",
+					"required": true,
+					"placeholder": "espresso machine",
+					"description": "What to search for"
+				},
+				{
+					"param": "pages_to_check",
+					"displayName": "Result Pages",
+					"type": "number",
+					"default": 1,
+					"min": 1,
+					"max": 10,
+					"description": "How many result pages to collect, about 10 results each. Ads come from the first page only. Each page is one billed call."
+				}
+			],
+			"options": [
+				{
+					"param": "language",
+					"displayName": "Language",
+					"type": "string",
+					"placeholder": "de",
+					"description": "Two-letter code of the language DuckDuckGo is shown in. Empty uses English."
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country DuckDuckGo is opened from. It sets the results market and the ads shown. Automatic uses the US."
+				}
+			],
+			"listKeys": [
+				{
+					"key": "organic",
+					"type": "organic"
+				},
+				{
+					"key": "topAds",
+					"type": "ad_top"
+				},
+				{
+					"key": "bottomAds",
+					"type": "ad_bottom"
+				}
+			],
+			"test": {
+				"params": {
+					"keyword": "espresso machine"
+				},
+				"minItems": 3,
+				"maxFields": 10
+			}
+		}
+	]
+}

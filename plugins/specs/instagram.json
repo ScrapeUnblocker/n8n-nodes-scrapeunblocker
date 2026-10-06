@@ -1,0 +1,134 @@
+{
+	"resource": "Instagram",
+	"value": "instagram",
+	"operations": [
+		{
+			"name": "Get Profile",
+			"value": "getProfile",
+			"action": "Get instagram profile",
+			"description": "Retrieve a public profile with follower counts, bio, links and recent posts",
+			"endpoint": "/social/instagram",
+			"fields": [
+				{
+					"param": "username",
+					"displayName": "Username",
+					"type": "string",
+					"required": true,
+					"placeholder": "nasa",
+					"description": "The Instagram handle, with or without @"
+				}
+			],
+			"options": [
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Instagram is opened from. Automatic picks a suitable one."
+				}
+			],
+			"itemKey": "data",
+			"outputFields": [
+				"username",
+				"full_name",
+				"user_id",
+				"verified",
+				"private",
+				"avatar_url",
+				"url",
+				"biography",
+				"followers",
+				"following",
+				"posts_count",
+				"external_urls",
+				"recent_posts"
+			],
+			"idField": "username",
+			"simplify": [
+				"username",
+				"full_name",
+				"verified",
+				"biography",
+				"followers",
+				"following",
+				"posts_count",
+				"external_urls",
+				"url",
+				"recent_posts"
+			],
+			"test": {
+				"params": {
+					"username": "nasa"
+				},
+				"minItems": 1,
+				"maxFields": 10
+			}
+		},
+		{
+			"name": "Get Post",
+			"value": "getPost",
+			"action": "Get instagram post",
+			"description": "Retrieve one post or reel with its caption, likes, comments and media",
+			"endpoint": "/social/instagram",
+			"fields": [
+				{
+					"param": "url",
+					"displayName": "Post URL",
+					"type": "string",
+					"required": true,
+					"placeholder": "https://www.instagram.com/p/DdHyaYAifb6/",
+					"description": "The URL of an Instagram post or reel"
+				}
+			],
+			"options": [
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Instagram is opened from. Automatic picks a suitable one."
+				}
+			],
+			"itemKey": "data",
+			"outputFields": [
+				"url",
+				"shortcode",
+				"post_id",
+				"caption",
+				"likes",
+				"comments",
+				"counts_hidden",
+				"posted_at",
+				"posted_timestamp",
+				"media_type",
+				"product_type",
+				"carousel_count",
+				"thumbnail_url",
+				"video_url",
+				"location",
+				"hashtags",
+				"author"
+			],
+			"idField": "shortcode",
+			"simplify": [
+				"shortcode",
+				"caption",
+				"likes",
+				"comments",
+				"posted_at",
+				"media_type",
+				"author.username",
+				"thumbnail_url",
+				"video_url",
+				"url"
+			],
+			"test": {
+				"params": {
+					"url": "https://www.instagram.com/p/DdHyaYAifb6/"
+				},
+				"minItems": 1,
+				"maxFields": 10
+			}
+		}
+	]
+}

@@ -1,0 +1,254 @@
+{
+	"resource": "Redfin",
+	"value": "redfin",
+	"operations": [
+		{
+			"name": "Search Properties",
+			"value": "searchProperties",
+			"action": "Search redfin properties",
+			"description": "Find homes for sale or recently sold in a US ZIP code or city",
+			"endpoint": "/realestate/redfin",
+			"fixed": {
+				"mode": "search"
+			},
+			"fields": [
+				{
+					"param": "location",
+					"displayName": "Location",
+					"type": "string",
+					"placeholder": "78704",
+					"description": "The ZIP code or the city and state to search, e.g. 78704 or Austin, TX. Either this or a Search Page URL (in Options) is needed."
+				},
+				{
+					"param": "max_results",
+					"displayName": "Max Results",
+					"type": "number",
+					"default": 350,
+					"min": 1,
+					"max": 1750,
+					"description": "How many homes to return, collected across pages (about 350 per page)"
+				}
+			],
+			"options": [
+				{
+					"param": "url",
+					"displayName": "Search Page URL",
+					"type": "string",
+					"placeholder": "https://www.redfin.com/city/30818/TX/Austin",
+					"description": "A Redfin city or ZIP code page to take the homes from, used instead of Location. Either this or Location is needed."
+				},
+				{
+					"param": "status",
+					"displayName": "Listing Status",
+					"type": "options",
+					"default": "for_sale",
+					"description": "Homes for sale or recently sold homes",
+					"options": [
+						{
+							"name": "For Sale",
+							"value": "for_sale"
+						},
+						{
+							"name": "Recently Sold",
+							"value": "sold"
+						}
+					]
+				},
+				{
+					"param": "sold_within_days",
+					"displayName": "Sold Within Days",
+					"type": "number",
+					"default": 90,
+					"min": 1,
+					"max": 1825,
+					"description": "For recently sold homes: how many days to look back"
+				},
+				{
+					"param": "property_type",
+					"displayName": "Property Type",
+					"type": "options",
+					"default": "",
+					"description": "Only homes of this type",
+					"options": [
+						{
+							"name": "Any",
+							"value": ""
+						},
+						{
+							"name": "Condos",
+							"value": "condos"
+						},
+						{
+							"name": "Houses",
+							"value": "houses"
+						},
+						{
+							"name": "Land",
+							"value": "land"
+						},
+						{
+							"name": "Manufactured",
+							"value": "manufactured"
+						},
+						{
+							"name": "Multi-Family",
+							"value": "multi_family"
+						},
+						{
+							"name": "Other",
+							"value": "other"
+						},
+						{
+							"name": "Townhomes",
+							"value": "townhomes"
+						}
+					]
+				},
+				{
+					"param": "min_price",
+					"displayName": "Min Price (USD)",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Lowest price to include, in US dollars. 0 means no minimum."
+				},
+				{
+					"param": "max_price",
+					"displayName": "Max Price (USD)",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Highest price to include, in US dollars. 0 means no limit."
+				},
+				{
+					"param": "beds",
+					"displayName": "Min Bedrooms",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Fewest bedrooms. 0 means any."
+				},
+				{
+					"param": "baths",
+					"displayName": "Min Bathrooms",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Fewest bathrooms. 0 means any."
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Redfin is opened from. Automatic uses the US."
+				}
+			],
+			"sort": [
+				{
+					"param": "sort",
+					"displayName": "Sort By",
+					"type": "options",
+					"default": "recommended",
+					"description": "The order of the homes",
+					"options": [
+						{
+							"name": "Newest",
+							"value": "newest"
+						},
+						{
+							"name": "Price per Square Foot: Lowest First",
+							"value": "price_per_sqft"
+						},
+						{
+							"name": "Price: Highest First",
+							"value": "price_desc"
+						},
+						{
+							"name": "Price: Lowest First",
+							"value": "price_asc"
+						},
+						{
+							"name": "Recommended",
+							"value": "recommended"
+						},
+						{
+							"name": "Square Feet: Largest First",
+							"value": "sqft"
+						}
+					]
+				}
+			],
+			"listKey": "homes",
+			"outputFields": [
+				"propertyId",
+				"listingId",
+				"mlsId",
+				"mlsStatus",
+				"searchStatus",
+				"listingType",
+				"price",
+				"hoaMonthly",
+				"pricePerSqFt",
+				"beds",
+				"baths",
+				"fullBaths",
+				"partialBaths",
+				"sqFt",
+				"lotSize",
+				"yearBuilt",
+				"stories",
+				"streetLine",
+				"city",
+				"state",
+				"zip",
+				"countryCode",
+				"latitude",
+				"longitude",
+				"propertyType",
+				"propertyTypeId",
+				"rawPropertyType",
+				"daysOnMarket",
+				"soldDate",
+				"listingRemarks",
+				"numPhotos",
+				"photoFormat",
+				"garageSpaces",
+				"parkingSpaces",
+				"hasVirtualTour",
+				"has3DTour",
+				"hasVideoTour",
+				"isNewConstruction",
+				"isHot",
+				"openHouseStart",
+				"openHouseEnd",
+				"url"
+			],
+			"idField": "propertyId",
+			"simplify": [
+				"propertyId",
+				"streetLine",
+				"city",
+				"zip",
+				"price",
+				"beds",
+				"baths",
+				"sqFt",
+				"propertyType",
+				"url"
+			],
+			"test": {
+				"params": {
+					"location": "78704",
+					"max_results": 5
+				},
+				"minItems": 3,
+				"maxFields": 10
+			}
+		}
+	]
+}

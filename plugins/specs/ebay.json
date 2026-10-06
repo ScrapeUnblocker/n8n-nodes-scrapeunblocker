@@ -1,0 +1,317 @@
+{
+	"resource": "eBay",
+	"value": "ebay",
+	"operations": [
+		{
+			"name": "Search Listings",
+			"value": "searchListings",
+			"action": "Search ebay listings",
+			"description": "Find listings that match a keyword on any regional eBay site",
+			"endpoint": "/marketplace/ebay-search",
+			"fields": [
+				{
+					"param": "keyword",
+					"displayName": "Search Query",
+					"type": "string",
+					"required": true,
+					"placeholder": "iphone 13",
+					"description": "What to search for: a keyword, product name or part number"
+				},
+				{
+					"param": "marketplace",
+					"displayName": "Marketplace",
+					"type": "options",
+					"default": "ebay.com",
+					"description": "Which regional eBay site to search. Prices, currency and availability differ per marketplace.",
+					"options": [
+						{
+							"name": "Australia (ebay.com.au)",
+							"value": "ebay.com.au"
+						},
+						{
+							"name": "Austria (ebay.at)",
+							"value": "ebay.at"
+						},
+						{
+							"name": "Belgium (ebay.be)",
+							"value": "ebay.be"
+						},
+						{
+							"name": "Canada (ebay.ca)",
+							"value": "ebay.ca"
+						},
+						{
+							"name": "France (ebay.fr)",
+							"value": "ebay.fr"
+						},
+						{
+							"name": "Germany (ebay.de)",
+							"value": "ebay.de"
+						},
+						{
+							"name": "Hong Kong (ebay.com.hk)",
+							"value": "ebay.com.hk"
+						},
+						{
+							"name": "India (ebay.in)",
+							"value": "ebay.in"
+						},
+						{
+							"name": "Ireland (ebay.ie)",
+							"value": "ebay.ie"
+						},
+						{
+							"name": "Italy (ebay.it)",
+							"value": "ebay.it"
+						},
+						{
+							"name": "Malaysia (ebay.com.my)",
+							"value": "ebay.com.my"
+						},
+						{
+							"name": "Netherlands (ebay.nl)",
+							"value": "ebay.nl"
+						},
+						{
+							"name": "Philippines (ebay.ph)",
+							"value": "ebay.ph"
+						},
+						{
+							"name": "Poland (ebay.pl)",
+							"value": "ebay.pl"
+						},
+						{
+							"name": "Singapore (ebay.com.sg)",
+							"value": "ebay.com.sg"
+						},
+						{
+							"name": "Spain (ebay.es)",
+							"value": "ebay.es"
+						},
+						{
+							"name": "Switzerland (ebay.ch)",
+							"value": "ebay.ch"
+						},
+						{
+							"name": "United Kingdom (ebay.co.uk)",
+							"value": "ebay.co.uk"
+						},
+						{
+							"name": "United States (ebay.com)",
+							"value": "ebay.com"
+						}
+					]
+				},
+				{
+					"param": "page",
+					"displayName": "Page",
+					"type": "number",
+					"default": 1,
+					"min": 1,
+					"description": "Which results page to return. Each page is one billed call."
+				}
+			],
+			"options": [
+				{
+					"param": "page_size",
+					"displayName": "Listings Per Page",
+					"type": "options",
+					"default": 60,
+					"description": "How many listings one page holds, as on eBay itself",
+					"options": [
+						{
+							"name": "60",
+							"value": 60
+						},
+						{
+							"name": "120",
+							"value": 120
+						},
+						{
+							"name": "240",
+							"value": 240
+						}
+					]
+				},
+				{
+					"param": "condition",
+					"displayName": "Condition",
+					"type": "options",
+					"default": "",
+					"description": "Only listings in this condition",
+					"options": [
+						{
+							"name": "Any",
+							"value": ""
+						},
+						{
+							"name": "For Parts / Not Working",
+							"value": "for_parts"
+						},
+						{
+							"name": "New",
+							"value": "new"
+						},
+						{
+							"name": "Open Box",
+							"value": "open_box"
+						},
+						{
+							"name": "Refurbished",
+							"value": "refurbished"
+						},
+						{
+							"name": "Used",
+							"value": "used"
+						}
+					]
+				},
+				{
+					"param": "listing_type",
+					"displayName": "Listing Type",
+					"type": "options",
+					"default": "all",
+					"description": "Auctions, fixed-price (Buy It Now) listings or both",
+					"options": [
+						{
+							"name": "All",
+							"value": "all"
+						},
+						{
+							"name": "Auction",
+							"value": "auction"
+						},
+						{
+							"name": "Buy It Now",
+							"value": "buy_it_now"
+						}
+					]
+				},
+				{
+					"param": "min_price",
+					"displayName": "Min Price",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Lowest price to include, in the marketplace's currency. 0 means no minimum."
+				},
+				{
+					"param": "max_price",
+					"displayName": "Max Price",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Highest price to include, in the marketplace's currency. 0 means no limit."
+				},
+				{
+					"param": "free_shipping",
+					"displayName": "Free Shipping Only",
+					"type": "boolean",
+					"default": false,
+					"description": "Whether to return only listings eBay marks as free delivery"
+				},
+				{
+					"param": "seller",
+					"displayName": "Seller",
+					"type": "string",
+					"placeholder": "bestbuy",
+					"description": "Only listings of this seller (their eBay username)"
+				},
+				{
+					"param": "category",
+					"displayName": "Category ID",
+					"type": "string",
+					"placeholder": "131090",
+					"description": "The eBay category to search inside, by its ID (131090 is vehicle parts and accessories)"
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country eBay is opened from. Automatic picks one that suits the marketplace."
+				}
+			],
+			"sort": [
+				{
+					"param": "sort",
+					"displayName": "Sort By",
+					"type": "options",
+					"default": "best_match",
+					"description": "The order of the listings",
+					"options": [
+						{
+							"name": "Best Match",
+							"value": "best_match"
+						},
+						{
+							"name": "Ending Soonest",
+							"value": "ending_soon"
+						},
+						{
+							"name": "Newly Listed",
+							"value": "newly_listed"
+						},
+						{
+							"name": "Price + Shipping: Highest First",
+							"value": "price_desc"
+						},
+						{
+							"name": "Price + Shipping: Lowest First",
+							"value": "price_asc"
+						}
+					]
+				}
+			],
+			"listKey": "results",
+			"outputFields": [
+				"position",
+				"listingId",
+				"title",
+				"url",
+				"image",
+				"condition",
+				"conditionCode",
+				"itemSpecifics",
+				"seller",
+				"price",
+				"currency",
+				"priceRaw",
+				"shippingCost",
+				"shippingRaw",
+				"freeShipping",
+				"sold",
+				"watchers",
+				"bids",
+				"buyItNow",
+				"bestOffer",
+				"freeReturns",
+				"timeLeftRaw",
+				"locationRaw",
+				"attributes"
+			],
+			"idField": "listingId",
+			"simplify": [
+				"listingId",
+				"title",
+				"price",
+				"currency",
+				"shippingCost",
+				"condition",
+				"seller.username",
+				"locationRaw",
+				"url",
+				"image"
+			],
+			"test": {
+				"params": {
+					"keyword": "nintendo switch"
+				},
+				"minItems": 10,
+				"maxFields": 10
+			}
+		}
+	]
+}

@@ -1,0 +1,142 @@
+{
+	"resource": "Best Buy",
+	"value": "bestBuy",
+	"operations": [
+		{
+			"name": "Search Products",
+			"value": "searchProducts",
+			"action": "Search best buy products",
+			"description": "Find electronics and appliances that match a keyword in the Best Buy US store",
+			"endpoint": "/marketplace/bestbuy-search",
+			"fields": [
+				{
+					"param": "query",
+					"displayName": "Search Query",
+					"type": "string",
+					"required": true,
+					"placeholder": "noise cancelling headphones",
+					"description": "What to search for: a keyword, product name or model"
+				},
+				{
+					"param": "max_results",
+					"displayName": "Max Results",
+					"type": "number",
+					"default": 24,
+					"min": 1,
+					"max": 500,
+					"description": "How many products to collect across pages (up to 500)"
+				}
+			],
+			"options": [
+				{
+					"param": "page",
+					"displayName": "Start Page",
+					"type": "number",
+					"default": 1,
+					"min": 1,
+					"max": 40,
+					"description": "Which results page to start from (48 products per page, up to page 40)"
+				},
+				{
+					"param": "min_price",
+					"displayName": "Min Price",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Lowest price to include, as a whole number in USD. 0 means no minimum."
+				},
+				{
+					"param": "max_price",
+					"displayName": "Max Price",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Highest price to include, as a whole number in USD. 0 means no limit."
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Best Buy is opened from. Automatic picks a suitable one."
+				}
+			],
+			"sort": [
+				{
+					"param": "sort",
+					"displayName": "Sort By",
+					"type": "options",
+					"default": "relevance",
+					"description": "The order of the products",
+					"options": [
+						{
+							"name": "Best Selling",
+							"value": "best_selling"
+						},
+						{
+							"name": "Biggest Discount",
+							"value": "discount"
+						},
+						{
+							"name": "Highest Rated",
+							"value": "rating"
+						},
+						{
+							"name": "Newest",
+							"value": "newest"
+						},
+						{
+							"name": "Price: Highest First",
+							"value": "price_high"
+						},
+						{
+							"name": "Price: Lowest First",
+							"value": "price_low"
+						},
+						{
+							"name": "Relevance",
+							"value": "relevance"
+						}
+					]
+				}
+			],
+			"listKey": "products",
+			"outputFields": [
+				"sku",
+				"title",
+				"brand",
+				"model",
+				"price",
+				"originalPrice",
+				"currency",
+				"rating",
+				"reviewCount",
+				"image",
+				"url"
+			],
+			"idField": "sku",
+			"simplify": [
+				"sku",
+				"title",
+				"brand",
+				"model",
+				"price",
+				"originalPrice",
+				"rating",
+				"reviewCount",
+				"url",
+				"image"
+			],
+			"test": {
+				"params": {
+					"query": "headphones",
+					"max_results": 3
+				},
+				"minItems": 3,
+				"maxFields": 10
+			}
+		}
+	]
+}

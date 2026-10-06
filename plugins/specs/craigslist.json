@@ -1,0 +1,84 @@
+{
+	"resource": "Craigslist",
+	"value": "craigslist",
+	"operations": [
+		{
+			"name": "Search Listings",
+			"value": "searchListings",
+			"action": "Search craigslist listings",
+			"description": "Find classified ads that match a keyword in one Craigslist city area",
+			"endpoint": "/marketplace/craigslist-search",
+			"fields": [
+				{
+					"param": "query",
+					"displayName": "Search Query",
+					"type": "string",
+					"required": true,
+					"placeholder": "bicycle",
+					"description": "What to search for: an item, a brand or a model"
+				},
+				{
+					"param": "site",
+					"displayName": "City Area",
+					"type": "string",
+					"default": "newyork",
+					"placeholder": "sfbay",
+					"description": "The Craigslist area to search: the part of its web address before .craigslist.org, e.g. newyork, sfbay or chicago"
+				},
+				{
+					"param": "max_results",
+					"displayName": "Max Results",
+					"type": "number",
+					"default": 120,
+					"min": 1,
+					"max": 500,
+					"description": "How many listings to return"
+				}
+			],
+			"options": [
+				{
+					"param": "category",
+					"displayName": "Category Code",
+					"type": "string",
+					"default": "sss",
+					"placeholder": "cta",
+					"description": "The Craigslist section to search, by its code: sss for everything for sale, cta for cars and trucks, apa for apartments and housing, jjj for jobs. Any other Craigslist section code works too."
+				},
+				{
+					"param": "min_price",
+					"displayName": "Min Price (USD)",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Lowest price to include, in US dollars. 0 means no minimum."
+				},
+				{
+					"param": "max_price",
+					"displayName": "Max Price (USD)",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Highest price to include, in US dollars. 0 means no limit."
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Craigslist is opened from. Automatic uses the US."
+				}
+			],
+			"listKey": "listings",
+			"test": {
+				"params": {
+					"query": "bike",
+					"site": "sfbay",
+					"max_results": 5
+				},
+				"minItems": 3
+			}
+		}
+	]
+}

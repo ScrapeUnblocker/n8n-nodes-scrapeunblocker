@@ -1,0 +1,126 @@
+{
+	"resource": "Temu",
+	"value": "temu",
+	"operations": [
+		{
+			"name": "Search Products",
+			"value": "searchProducts",
+			"action": "Search temu products",
+			"description": "Find the links of Temu products that match a keyword",
+			"endpoint": "/goods/temu-search",
+			"fields": [
+				{
+					"param": "keyword",
+					"displayName": "Search Query",
+					"type": "string",
+					"required": true,
+					"placeholder": "kids toys",
+					"description": "What to search for. Only the product links come back; pass them to Get Product for name, price and rating."
+				},
+				{
+					"param": "limit",
+					"name": "max_results",
+					"displayName": "Max Results",
+					"type": "number",
+					"default": 40,
+					"min": 1,
+					"max": 100,
+					"description": "How many product links to return (up to 100). One Temu search page holds about 40."
+				}
+			],
+			"sort": [
+				{
+					"param": "sort",
+					"displayName": "Sort By",
+					"type": "options",
+					"default": "relevance",
+					"description": "The order of the products, as Temu sorts them",
+					"options": [
+						{
+							"name": "Best Selling",
+							"value": "best_selling"
+						},
+						{
+							"name": "Most Recent",
+							"value": "recent"
+						},
+						{
+							"name": "Price: Highest First",
+							"value": "price_desc"
+						},
+						{
+							"name": "Price: Lowest First",
+							"value": "price_asc"
+						},
+						{
+							"name": "Relevance",
+							"value": "relevance"
+						}
+					]
+				}
+			],
+			"listKey": "urls",
+			"test": {
+				"params": {
+					"keyword": "phone case",
+					"max_results": 3
+				},
+				"minItems": 3,
+				"maxFields": 10
+			}
+		},
+		{
+			"name": "Get Product",
+			"value": "getProduct",
+			"action": "Get temu product",
+			"description": "Get the name, price, rating, images and video of one Temu product",
+			"endpoint": "/goods/temu-product",
+			"fields": [
+				{
+					"param": "url",
+					"displayName": "Product URL",
+					"type": "string",
+					"required": true,
+					"placeholder": "https://www.temu.com/phone-case-g-601100246697626.html",
+					"description": "Link to a Temu product page, ending in -g-, the product number and .html, as Search Products returns them. Search and category pages are not accepted."
+				}
+			],
+			"outputFields": [
+				"url",
+				"name",
+				"description",
+				"sku",
+				"brand",
+				"price",
+				"priceCurrency",
+				"availability",
+				"rating",
+				"reviewCount",
+				"itemCondition",
+				"variantGroupId",
+				"images",
+				"reviews",
+				"video"
+			],
+			"idField": "url",
+			"simplify": [
+				"name",
+				"price",
+				"priceCurrency",
+				"rating",
+				"reviewCount",
+				"availability",
+				"variantGroupId",
+				"images",
+				"url"
+			],
+			"test": {
+				"params": {
+					"url": "https://www.temu.com/phone-case-magical-luxury-matte-translucent-shockproof-case-compatible-with-iphone-18-17-16-15-14-13-12-11-pro-max-17-air--wireless-charging-cover-for-16e-g-601100246697626.html"
+				},
+				"minItems": 1,
+				"maxFields": 10
+			}
+		}
+	]
+}

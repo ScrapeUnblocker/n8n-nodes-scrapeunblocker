@@ -1,0 +1,212 @@
+{
+	"resource": "Google Play",
+	"value": "googlePlay",
+	"operations": [
+		{
+			"name": "Get App",
+			"value": "getApp",
+			"action": "Get a google play app",
+			"description": "Get the full Play Store listing of one app: rating, installs, price, developer contact and more",
+			"endpoint": "/apps/google-play",
+			"fixed": {
+				"mode": "app"
+			},
+			"fields": [
+				{
+					"param": "app_id",
+					"displayName": "App ID",
+					"type": "string",
+					"required": true,
+					"placeholder": "com.whatsapp",
+					"description": "The app's package name: the part of its Play Store URL after id="
+				}
+			],
+			"options": [
+				{
+					"param": "hl",
+					"displayName": "Language",
+					"type": "string",
+					"default": "en",
+					"placeholder": "de",
+					"description": "Two-letter code of the language the listing is shown in"
+				},
+				{
+					"param": "gl",
+					"displayName": "Store Country",
+					"type": "string",
+					"default": "us",
+					"placeholder": "de",
+					"description": "Two-letter country code of the Play Store to read. Prices and availability differ per country."
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Google Play is opened from. Automatic picks one."
+				}
+			],
+			"itemKey": "app",
+			"outputFields": [
+				"appId",
+				"title",
+				"description",
+				"descriptionText",
+				"summary",
+				"developer",
+				"developerId",
+				"developerLegalName",
+				"developerWebsite",
+				"developerEmail",
+				"developerAddress",
+				"developerPhone",
+				"genre",
+				"genreId",
+				"score",
+				"scoreText",
+				"ratings",
+				"reviews",
+				"histogram",
+				"installs",
+				"minInstalls",
+				"realInstalls",
+				"priceMicros",
+				"price",
+				"priceText",
+				"currency",
+				"free",
+				"offersInAppPurchases",
+				"inAppPurchases",
+				"contentRating",
+				"contentRatingDescription",
+				"adSupported",
+				"icon",
+				"headerImage",
+				"screenshots",
+				"video",
+				"videoImage",
+				"released",
+				"updated",
+				"updatedISO",
+				"updatedText",
+				"version",
+				"whatsNew",
+				"whatsNewText",
+				"privacyPolicy",
+				"url",
+				"similarApps",
+				"similarAppsCount"
+			],
+			"idField": "appId",
+			"simplify": [
+				"appId",
+				"title",
+				"developer",
+				"genre",
+				"score",
+				"ratings",
+				"installs",
+				"price",
+				"updatedISO",
+				"url"
+			],
+			"test": {
+				"params": {
+					"app_id": "com.whatsapp"
+				},
+				"minItems": 1,
+				"maxFields": 10
+			}
+		},
+		{
+			"name": "Search Apps",
+			"value": "searchApps",
+			"action": "Search google play apps",
+			"description": "Find Play Store apps that match a keyword",
+			"endpoint": "/apps/google-play",
+			"fixed": {
+				"mode": "search"
+			},
+			"fields": [
+				{
+					"param": "q",
+					"displayName": "Search Query",
+					"type": "string",
+					"required": true,
+					"placeholder": "vpn",
+					"description": "What to search for, as in the Play Store search box"
+				},
+				{
+					"param": "max_results",
+					"displayName": "Max Results",
+					"type": "number",
+					"default": 30,
+					"min": 1,
+					"max": 100,
+					"description": "How many apps to return, from the first page of results"
+				}
+			],
+			"options": [
+				{
+					"param": "hl",
+					"displayName": "Language",
+					"type": "string",
+					"default": "en",
+					"placeholder": "de",
+					"description": "Two-letter code of the language the results are shown in"
+				},
+				{
+					"param": "gl",
+					"displayName": "Store Country",
+					"type": "string",
+					"default": "us",
+					"placeholder": "de",
+					"description": "Two-letter country code of the Play Store to search"
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Google Play is opened from. Automatic picks one."
+				}
+			],
+			"listKey": "apps",
+			"outputFields": [
+				"appId",
+				"title",
+				"developer",
+				"score",
+				"scoreText",
+				"genre",
+				"installs",
+				"summary",
+				"icon",
+				"contentRating",
+				"inAppPurchases",
+				"url"
+			],
+			"idField": "appId",
+			"simplify": [
+				"appId",
+				"title",
+				"developer",
+				"genre",
+				"score",
+				"installs",
+				"summary",
+				"inAppPurchases",
+				"icon",
+				"url"
+			],
+			"test": {
+				"params": {
+					"q": "vpn",
+					"max_results": 5
+				},
+				"minItems": 3,
+				"maxFields": 10
+			}
+		}
+	]
+}

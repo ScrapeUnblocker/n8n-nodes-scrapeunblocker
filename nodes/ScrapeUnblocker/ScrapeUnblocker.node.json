@@ -2,7 +2,10 @@
 	"node": "n8n-nodes-scrapeunblocker.scrapeUnblocker",
 	"nodeVersion": "1.0",
 	"codexVersion": "1.0",
-	"categories": ["Development", "Utility"],
+	"categories": [
+		"Development",
+		"Utility"
+	],
 	"resources": {
 		"credentialDocumentation": [
 			{
@@ -14,5 +17,60 @@
 				"url": "https://www.scrapeunblocker.com/documentation?utm_source=n8n&utm_medium=integration&utm_campaign=n8n-node"
 			}
 		]
-	}
+	},
+	"alias": [
+		"scraper",
+		"web scraping",
+		"unblock",
+		"Airbnb",
+		"Alibaba",
+		"AliExpress",
+		"Amazon",
+		"App Store",
+		"AutoScout24",
+		"Best Buy",
+		"Bing",
+		"Booking.com",
+		"Brave",
+		"Capterra",
+		"Craigslist",
+		"DuckDuckGo",
+		"eBay",
+		"Etsy",
+		"G2",
+		"Glassdoor",
+		"Google",
+		"Google Play",
+		"Home Depot",
+		"ImmobilienScout24",
+		"Indeed",
+		"Instagram",
+		"Leboncoin",
+		"LinkedIn",
+		"Meta Ad Library",
+		"mobile.de",
+		"Naukri",
+		"Oopbuy",
+		"Product Hunt",
+		"Redfin",
+		"Rightmove",
+		"SHEIN",
+		"Similarweb",
+		"Skyscanner",
+		"Southwest Airlines",
+		"Target",
+		"Telegram",
+		"Temu",
+		"Threads",
+		"TikTok",
+		"TikTok Shop",
+		"Tripadvisor",
+		"Trustpilot",
+		"Vinted",
+		"Yahoo",
+		"Yelp",
+		"YouTube",
+		"Zalando",
+		"Zillow"
+	]
 }

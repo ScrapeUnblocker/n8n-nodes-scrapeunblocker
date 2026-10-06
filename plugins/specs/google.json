@@ -1,0 +1,722 @@
+{
+	"resource": "Google",
+	"value": "google",
+	"operations": [
+		{
+			"name": "Search",
+			"value": "search",
+			"action": "Search google",
+			"description": "Get the organic results, ads and AI Overview Google shows for a query",
+			"endpoint": "/serpApi",
+			"fields": [
+				{
+					"param": "keyword",
+					"displayName": "Search Query",
+					"type": "string",
+					"required": true,
+					"placeholder": "espresso machine",
+					"description": "What to search for. Google search operators such as site: and quotes work."
+				},
+				{
+					"param": "pages_to_check",
+					"displayName": "Result Pages",
+					"type": "number",
+					"default": 1,
+					"min": 1,
+					"max": 10,
+					"description": "How many result pages to collect, about 10 results each. Each page is one billed call."
+				}
+			],
+			"options": [
+				{
+					"param": "wait_after_load",
+					"displayName": "Extra Wait (Seconds)",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"description": "Seconds to wait after each results page loads before reading it. Can help when ads show up late."
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Google is opened from. Results and ads are for that country. Automatic picks any available country, so set one when the results must be for a specific market."
+				}
+			],
+			"listKeys": [
+				{
+					"key": "organic",
+					"type": "organic"
+				},
+				{
+					"key": "topAds",
+					"type": "ad_top"
+				},
+				{
+					"key": "bottomAds",
+					"type": "ad_bottom"
+				},
+				{
+					"key": "aiOverview",
+					"type": "ai_overview"
+				}
+			],
+			"test": {
+				"params": {
+					"keyword": "espresso machine"
+				},
+				"minItems": 3,
+				"maxFields": 10
+			}
+		},
+		{
+			"name": "Search Images",
+			"value": "searchImages",
+			"action": "Search google images",
+			"description": "Find images that match a keyword, with links to the full-size image and the page it is on",
+			"endpoint": "/images/google-search",
+			"fields": [
+				{
+					"param": "q",
+					"displayName": "Search Query",
+					"type": "string",
+					"required": true,
+					"placeholder": "eiffel tower",
+					"description": "What to search images for"
+				},
+				{
+					"param": "pages",
+					"displayName": "Result Pages",
+					"type": "number",
+					"default": 1,
+					"min": 1,
+					"max": 5,
+					"description": "How many result pages to fetch, about 100 images each. Google stops at about 400-500 images per search. Each page is one billed call."
+				}
+			],
+			"options": [
+				{
+					"param": "max_results",
+					"displayName": "Max Results",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"max": 500,
+					"skipZero": true,
+					"description": "The most images to return. 0 returns all images of the fetched pages."
+				},
+				{
+					"param": "gl",
+					"displayName": "Google Market",
+					"type": "string",
+					"placeholder": "de",
+					"description": "Two-letter country code of the Google market whose images rank. Empty follows Browse From Country, or the US when that is automatic."
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Google Images is opened from. Image results depend on the market, which follows this country unless Google Market is set."
+				}
+			],
+			"listKey": "results",
+			"test": {
+				"params": {
+					"q": "red panda"
+				},
+				"options": {
+					"max_results": 5
+				},
+				"minItems": 3,
+				"maxFields": 10
+			}
+		},
+		{
+			"name": "Search Jobs",
+			"value": "searchJobs",
+			"action": "Search google jobs",
+			"description": "Find job listings that Google collects from job boards and company sites",
+			"endpoint": "/jobs/google-jobs",
+			"fields": [
+				{
+					"param": "q",
+					"displayName": "Search Query",
+					"type": "string",
+					"required": true,
+					"placeholder": "software engineer",
+					"description": "The job to search for: a title, skill or company"
+				},
+				{
+					"param": "max_results",
+					"displayName": "Max Results",
+					"type": "number",
+					"default": 10,
+					"min": 1,
+					"max": 100,
+					"description": "How many jobs to return. One search returns about 10 jobs."
+				}
+			],
+			"options": [
+				{
+					"param": "location",
+					"displayName": "Location",
+					"type": "string",
+					"placeholder": "Austin, TX",
+					"description": "Where the jobs should be. It is added to the search query."
+				},
+				{
+					"param": "hl",
+					"displayName": "Language",
+					"type": "string",
+					"default": "en",
+					"placeholder": "de",
+					"description": "Two-letter code of the language Google is shown in"
+				},
+				{
+					"param": "gl",
+					"displayName": "Search Country",
+					"type": "string",
+					"default": "us",
+					"placeholder": "de",
+					"description": "Two-letter country code of the country Google searches jobs in"
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Google Jobs is opened from. Jobs depend on location, so pick the market you want."
+				}
+			],
+			"listKey": "jobs",
+			"outputFields": [
+				"position",
+				"jobId",
+				"title",
+				"company",
+				"location",
+				"via",
+				"postedAge",
+				"employmentType",
+				"salary",
+				"remote",
+				"qualifications",
+				"benefits",
+				"logo",
+				"shareUrl"
+			],
+			"idField": "jobId",
+			"simplify": [
+				"jobId",
+				"title",
+				"company",
+				"location",
+				"salary",
+				"employmentType",
+				"remote",
+				"postedAge",
+				"via",
+				"shareUrl"
+			],
+			"test": {
+				"params": {
+					"q": "nurse jobs in Boston",
+					"max_results": 5
+				},
+				"minItems": 3,
+				"maxFields": 10
+			}
+		},
+		{
+			"name": "Search Local Businesses",
+			"value": "searchLocalBusinesses",
+			"action": "Search google local businesses",
+			"description": "Find businesses for a query such as coffee shops in a city, with rating, address, phone and website",
+			"endpoint": "/maps/google-local",
+			"fields": [
+				{
+					"param": "keyword",
+					"displayName": "Search Query",
+					"type": "string",
+					"required": true,
+					"placeholder": "coffee shops in chicago",
+					"description": "What and where to search, as you would type it into Google. Returns up to about 20 businesses."
+				}
+			],
+			"options": [
+				{
+					"param": "hl",
+					"displayName": "Language",
+					"type": "string",
+					"default": "en",
+					"placeholder": "de",
+					"description": "Two-letter code of the language Google is shown in"
+				},
+				{
+					"param": "gl",
+					"displayName": "Search Country",
+					"type": "string",
+					"placeholder": "us",
+					"description": "Two-letter country code of the country Google searches in"
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Google is opened from. Local results depend on location, so pick the country you want results for."
+				}
+			],
+			"listKey": "results",
+			"outputFields": [
+				"position",
+				"name",
+				"sponsored",
+				"rating",
+				"reviews",
+				"price",
+				"category",
+				"address",
+				"phone",
+				"website",
+				"hours",
+				"review_snippet"
+			],
+			"idField": "name",
+			"simplify": [
+				"name",
+				"rating",
+				"reviews",
+				"category",
+				"address",
+				"phone",
+				"website",
+				"hours",
+				"price",
+				"position"
+			],
+			"test": {
+				"params": {
+					"keyword": "coffee shops in Austin TX"
+				},
+				"minItems": 5,
+				"maxFields": 10
+			}
+		},
+		{
+			"name": "Get Place",
+			"value": "getPlace",
+			"action": "Get a google maps place",
+			"description": "Get the full details of one Google Maps place: address, phone, opening hours, rating and more",
+			"endpoint": "/maps/place-details",
+			"fields": [
+				{
+					"param": "url",
+					"displayName": "Place URL",
+					"type": "string",
+					"placeholder": "https://www.google.com/maps/place/Eiffel+Tower/...",
+					"description": "A Google Maps link to the place: a share link or a /maps/place/ URL. One of Place URL, Place ID or Feature ID is needed."
+				}
+			],
+			"options": [
+				{
+					"param": "place_id",
+					"displayName": "Place ID",
+					"type": "string",
+					"placeholder": "ChIJN1t_tDeuEmsRUsoyG83frY4",
+					"description": "Google's place ID, which starts with ChIJ. One of Place URL, Place ID or Feature ID is needed."
+				},
+				{
+					"param": "feature_id",
+					"displayName": "Feature ID",
+					"type": "string",
+					"placeholder": "0x47e66e2964e34e2d:0x8ddca9ee380ef7e0",
+					"description": "The place's Google Maps feature ID: two hexadecimal numbers joined by a colon. The fastest of the three. One of Place URL, Place ID or Feature ID is needed."
+				},
+				{
+					"param": "hl",
+					"displayName": "Language",
+					"type": "string",
+					"default": "en",
+					"placeholder": "de",
+					"description": "Two-letter code of the language Google is shown in"
+				},
+				{
+					"param": "gl",
+					"displayName": "Google Country",
+					"type": "string",
+					"default": "us",
+					"placeholder": "de",
+					"description": "Two-letter country code Google uses for the place data"
+				},
+				{
+					"param": "raw",
+					"displayName": "Include Raw Place Data",
+					"type": "boolean",
+					"default": false,
+					"description": "Whether to also return Google's undecoded place data (under Raw), for details this operation does not extract"
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Google Maps is opened from. Automatic uses the US: from Europe, Google shows a cookie consent page instead of the place."
+				}
+			],
+			"itemKey": "place",
+			"outputFields": [
+				"name",
+				"address",
+				"addressLines",
+				"phone",
+				"website",
+				"rating",
+				"reviewCount",
+				"priceLevel",
+				"categories",
+				"featureId",
+				"cid",
+				"latitude",
+				"longitude",
+				"plusCode",
+				"hours",
+				"openNow",
+				"description",
+				"photo",
+				"photos",
+				"relatedPlaces",
+				"googleMapsUrl",
+				"raw"
+			],
+			"idField": "featureId",
+			"simplify": [
+				"featureId",
+				"name",
+				"address",
+				"phone",
+				"website",
+				"rating",
+				"reviewCount",
+				"categories",
+				"hours",
+				"googleMapsUrl"
+			],
+			"test": {
+				"params": {
+					"url": "https://www.google.com/maps/place/Eiffel+Tower/@48.8583701,2.2944813,17z/data=!3m1!4b1!4m6!3m5!1s0x47e66e2964e34e2d:0x8ddca9ee380ef7e0!8m2!3d48.8583701!4d2.2944813"
+				},
+				"minItems": 1,
+				"maxFields": 10
+			}
+		},
+		{
+			"name": "Search Shopping",
+			"value": "searchShopping",
+			"action": "Search google shopping",
+			"description": "Find products with their prices, stores and ratings on Google Shopping",
+			"endpoint": "/goods/google-shopping",
+			"fields": [
+				{
+					"param": "q",
+					"displayName": "Search Query",
+					"type": "string",
+					"required": true,
+					"placeholder": "wireless headphones",
+					"description": "The product to search for"
+				},
+				{
+					"param": "max_results",
+					"displayName": "Max Results",
+					"type": "number",
+					"default": 60,
+					"min": 1,
+					"max": 100,
+					"description": "How many products to return, from the first page of results"
+				}
+			],
+			"options": [
+				{
+					"param": "gl",
+					"displayName": "Market",
+					"type": "string",
+					"default": "us",
+					"placeholder": "de",
+					"description": "Two-letter country code of the market to search. It sets the prices, currency and stores."
+				},
+				{
+					"param": "min_price",
+					"displayName": "Min Price",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Lowest price to include, in whole units of the market's currency. 0 means no minimum."
+				},
+				{
+					"param": "max_price",
+					"displayName": "Max Price",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Highest price to include, in whole units of the market's currency. 0 means no limit."
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Google Shopping is opened from. Prices and stores depend on the market."
+				}
+			],
+			"listKey": "products",
+			"test": {
+				"params": {
+					"q": "wireless earbuds",
+					"max_results": 5
+				},
+				"minItems": 3,
+				"maxFields": 10
+			}
+		},
+		{
+			"name": "Get Trends",
+			"value": "getTrends",
+			"action": "Get google trends data",
+			"description": "Compare search interest in up to 5 terms over time and by region, with related queries",
+			"endpoint": "/trends/google-trends",
+			"fields": [
+				{
+					"param": "keywords",
+					"displayName": "Search Terms",
+					"type": "string",
+					"required": true,
+					"placeholder": "coffee,tea",
+					"description": "1-5 search terms to compare, separated by commas. A Google topic ID such as /m/0dl567 also works. Each term is one billed call."
+				}
+			],
+			"options": [
+				{
+					"param": "geo",
+					"displayName": "Location",
+					"type": "string",
+					"default": "",
+					"placeholder": "US-CA",
+					"description": "Where to measure: empty for worldwide, a two-letter country code (US), a region (US-CA) or a US metro area (US-CA-807)"
+				},
+				{
+					"param": "timeframe",
+					"displayName": "Time Range",
+					"type": "options",
+					"default": "today 12-m",
+					"description": "The period to measure. For a custom range, use an expression with two dates such as 2025-01-01 2025-06-30, or two hours such as 2025-06-01T08 2025-06-02T08 within the last 7 days.",
+					"options": [
+						{
+							"name": "Past Hour",
+							"value": "now 1-H"
+						},
+						{
+							"name": "Past 4 Hours",
+							"value": "now 4-H"
+						},
+						{
+							"name": "Past Day",
+							"value": "now 1-d"
+						},
+						{
+							"name": "Past 7 Days",
+							"value": "now 7-d"
+						},
+						{
+							"name": "Past 30 Days",
+							"value": "today 1-m"
+						},
+						{
+							"name": "Past 90 Days",
+							"value": "today 3-m"
+						},
+						{
+							"name": "Past 12 Months",
+							"value": "today 12-m"
+						},
+						{
+							"name": "Past 5 Years",
+							"value": "today 5-y"
+						},
+						{
+							"name": "Since 2004",
+							"value": "all"
+						}
+					]
+				},
+				{
+					"param": "property",
+					"displayName": "Search Type",
+					"type": "options",
+					"default": "web",
+					"description": "Which Google search to measure",
+					"options": [
+						{
+							"name": "Google Shopping",
+							"value": "shopping"
+						},
+						{
+							"name": "Image Search",
+							"value": "images"
+						},
+						{
+							"name": "News Search",
+							"value": "news"
+						},
+						{
+							"name": "Web Search",
+							"value": "web"
+						},
+						{
+							"name": "YouTube Search",
+							"value": "youtube"
+						}
+					]
+				},
+				{
+					"param": "category",
+					"displayName": "Category ID",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"description": "The Google Trends category to measure in, by its ID. 0 is all categories, 71 is Food & Drink, 5 is Computers & Electronics."
+				},
+				{
+					"param": "sections",
+					"displayName": "Data to Get",
+					"type": "multiOptions",
+					"default": [
+						"interest_over_time",
+						"interest_by_region",
+						"related_queries"
+					],
+					"description": "What to return. Fewer is faster. Google often returns related topics empty.",
+					"options": [
+						{
+							"name": "Interest Over Time",
+							"value": "interest_over_time"
+						},
+						{
+							"name": "Interest by Region",
+							"value": "interest_by_region"
+						},
+						{
+							"name": "Related Queries",
+							"value": "related_queries"
+						},
+						{
+							"name": "Related Topics",
+							"value": "related_topics"
+						}
+					]
+				},
+				{
+					"param": "region_resolution",
+					"displayName": "Region Level",
+					"type": "options",
+					"default": "",
+					"description": "The level of the interest by region data. Automatic uses countries for worldwide and regions inside a country.",
+					"options": [
+						{
+							"name": "Automatic",
+							"value": ""
+						},
+						{
+							"name": "City",
+							"value": "city"
+						},
+						{
+							"name": "Country",
+							"value": "country"
+						},
+						{
+							"name": "Region",
+							"value": "region"
+						},
+						{
+							"name": "US Metro Area",
+							"value": "dma"
+						}
+					]
+				},
+				{
+					"param": "include_low_volume",
+					"displayName": "Include Low Volume Regions",
+					"type": "boolean",
+					"default": false,
+					"description": "Whether to include regions with low search volume in the interest by region data"
+				},
+				{
+					"param": "hl",
+					"displayName": "Language",
+					"type": "string",
+					"default": "en-US",
+					"placeholder": "de",
+					"description": "Language of region names and topic titles"
+				},
+				{
+					"param": "tz",
+					"displayName": "Time Zone Offset (Minutes)",
+					"type": "number",
+					"default": 0,
+					"min": -840,
+					"max": 840,
+					"description": "Minutes behind UTC that days and hours are aligned to, as Google Trends counts them: 300 is UTC-5, -60 is UTC+1, 0 is UTC"
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Google Trends is opened from. The data follows Location, not this setting. Automatic picks a country outside the US and Europe."
+				}
+			],
+			"outputFields": [
+				"keywords",
+				"geo",
+				"timeframe",
+				"category",
+				"property",
+				"hl",
+				"tz",
+				"resolution",
+				"exploreUrl",
+				"interestOverTime",
+				"averages",
+				"interestByRegion",
+				"regionResolution",
+				"relatedQueries",
+				"relatedTopics",
+				"errors"
+			],
+			"idField": "keywords",
+			"simplify": [
+				"keywords",
+				"timeframe",
+				"geo",
+				"interestOverTime",
+				"averages",
+				"interestByRegion",
+				"relatedQueries",
+				"relatedTopics",
+				"exploreUrl",
+				"errors"
+			],
+			"test": {
+				"params": {
+					"keywords": "chatgpt"
+				},
+				"minItems": 1,
+				"maxFields": 10
+			}
+		}
+	]
+}

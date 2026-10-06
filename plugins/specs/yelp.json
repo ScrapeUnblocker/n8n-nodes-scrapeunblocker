@@ -1,0 +1,414 @@
+{
+	"resource": "Yelp",
+	"value": "yelp",
+	"operations": [
+		{
+			"name": "Search Businesses",
+			"value": "searchBusinesses",
+			"action": "Search yelp businesses",
+			"description": "Find businesses by keyword or category in a city or area, with rating and price level",
+			"endpoint": "/local/yelp",
+			"fixed": {
+				"mode": "search"
+			},
+			"fields": [
+				{
+					"param": "find_desc",
+					"displayName": "Search Query",
+					"type": "string",
+					"required": true,
+					"placeholder": "coffee",
+					"description": "A keyword or category, e.g. plumbers"
+				},
+				{
+					"param": "find_loc",
+					"displayName": "Location",
+					"type": "string",
+					"required": true,
+					"placeholder": "San Francisco, CA",
+					"description": "The city, area or ZIP code to search in"
+				},
+				{
+					"param": "max_results",
+					"displayName": "Max Results",
+					"type": "number",
+					"default": 30,
+					"min": 1,
+					"max": 240,
+					"description": "How many businesses to collect. Yelp shows 10 per page."
+				}
+			],
+			"options": [
+				{
+					"param": "price",
+					"displayName": "Price Levels",
+					"type": "multiOptions",
+					"description": "Only businesses in these price levels",
+					"options": [
+						{
+							"name": "$",
+							"value": "1"
+						},
+						{
+							"name": "$$",
+							"value": "2"
+						},
+						{
+							"name": "$$$",
+							"value": "3"
+						},
+						{
+							"name": "$$$$",
+							"value": "4"
+						}
+					]
+				},
+				{
+					"param": "open_now",
+					"displayName": "Open Now Only",
+					"type": "boolean",
+					"default": false,
+					"description": "Whether to return only businesses that are open now"
+				},
+				{
+					"param": "start",
+					"displayName": "Skip Results",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"description": "How many results to skip, e.g. 30 to continue after the first 30"
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Yelp is opened from. Automatic uses the US, which Yelp needs."
+				}
+			],
+			"sort": [
+				{
+					"param": "sort",
+					"displayName": "Sort By",
+					"type": "options",
+					"default": "recommended",
+					"description": "The order of the businesses",
+					"options": [
+						{
+							"name": "Recommended",
+							"value": "recommended"
+						},
+						{
+							"name": "Highest Rated",
+							"value": "rating"
+						},
+						{
+							"name": "Most Reviewed",
+							"value": "review_count"
+						},
+						{
+							"name": "Distance",
+							"value": "distance"
+						}
+					]
+				}
+			],
+			"listKey": "businesses",
+			"outputFields": [
+				"businessId",
+				"isAd",
+				"image",
+				"reviewSnippet",
+				"name",
+				"rating",
+				"reviewCount",
+				"priceRange",
+				"alias",
+				"url",
+				"categories",
+				"address",
+				"city",
+				"neighborhoods",
+				"hoursCurrentWeek"
+			],
+			"idField": "businessId",
+			"simplify": [
+				"businessId",
+				"name",
+				"rating",
+				"reviewCount",
+				"priceRange",
+				"categories",
+				"address",
+				"city",
+				"isAd",
+				"url"
+			],
+			"test": {
+				"params": {
+					"find_desc": "coffee",
+					"find_loc": "San Francisco, CA",
+					"max_results": 3
+				},
+				"minItems": 3,
+				"maxFields": 10
+			}
+		},
+		{
+			"name": "Get Business",
+			"value": "getBusiness",
+			"action": "Get a yelp business",
+			"description": "Get one business's phone, address, website, opening hours, photos and popular dishes",
+			"endpoint": "/local/yelp",
+			"fixed": {
+				"mode": "detail"
+			},
+			"fields": [
+				{
+					"param": "url",
+					"displayName": "Business URL",
+					"type": "string",
+					"required": true,
+					"placeholder": "https://www.yelp.com/biz/gary-danko-san-francisco",
+					"description": "The business's Yelp page URL, or the part after /biz/ (e.g. gary-danko-san-francisco)"
+				}
+			],
+			"options": [
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Yelp is opened from. Automatic uses the US, which Yelp needs."
+				}
+			],
+			"itemKey": "business",
+			"outputFields": [
+				"businessId",
+				"name",
+				"rating",
+				"reviewCount",
+				"alias",
+				"url",
+				"priceRange",
+				"phone",
+				"address",
+				"street",
+				"city",
+				"state",
+				"zipCode",
+				"neighborhoods",
+				"country",
+				"timezone",
+				"categories",
+				"website",
+				"menuUrl",
+				"isOpenNow",
+				"hours",
+				"isPermanentlyClosed",
+				"attributes",
+				"specialties",
+				"summary",
+				"reviewHighlights",
+				"primaryPhoto",
+				"photos",
+				"popularDishes",
+				"monthlySearchCount",
+				"isYelpAdvertiser",
+				"yelpGuaranteed"
+			],
+			"idField": "businessId",
+			"simplify": [
+				"businessId",
+				"name",
+				"rating",
+				"reviewCount",
+				"priceRange",
+				"categories",
+				"phone",
+				"address",
+				"website",
+				"hours"
+			],
+			"test": {
+				"params": {
+					"url": "https://www.yelp.com/biz/gary-danko-san-francisco"
+				},
+				"minItems": 1,
+				"maxFields": 10
+			}
+		},
+		{
+			"name": "Get Reviews",
+			"value": "getReviews",
+			"action": "Get yelp business reviews",
+			"description": "Get the reviews of a business with star rating, text, author and owner response",
+			"endpoint": "/local/yelp-reviews",
+			"fields": [
+				{
+					"param": "business",
+					"displayName": "Business",
+					"type": "string",
+					"required": true,
+					"placeholder": "https://www.yelp.com/biz/gary-danko-san-francisco",
+					"description": "The business's Yelp page URL, the part after /biz/ (e.g. gary-danko-san-francisco) or its business ID from Search Businesses. An ID is answered fastest."
+				},
+				{
+					"param": "max_reviews",
+					"displayName": "Max Reviews",
+					"type": "number",
+					"default": 20,
+					"min": 1,
+					"max": 500,
+					"description": "How many reviews to return. Every 10 reviews are billed as one call."
+				}
+			],
+			"options": [
+				{
+					"param": "page",
+					"displayName": "Start Page",
+					"type": "number",
+					"default": 1,
+					"min": 1,
+					"max": 1000,
+					"description": "Which review page to start from. Yelp shows 10 reviews per page."
+				},
+				{
+					"param": "language",
+					"displayName": "Review Language",
+					"type": "string",
+					"placeholder": "fr",
+					"description": "Two-letter code of the language the reviews are written in (e.g. en or fr). Empty uses the language most of the business's reviews are in."
+				},
+				{
+					"param": "rating",
+					"displayName": "Star Ratings",
+					"type": "multiOptions",
+					"description": "Only reviews with these star ratings",
+					"options": [
+						{
+							"name": "1 Star",
+							"value": "1"
+						},
+						{
+							"name": "2 Stars",
+							"value": "2"
+						},
+						{
+							"name": "3 Stars",
+							"value": "3"
+						},
+						{
+							"name": "4 Stars",
+							"value": "4"
+						},
+						{
+							"name": "5 Stars",
+							"value": "5"
+						}
+					]
+				},
+				{
+					"param": "query",
+					"displayName": "Reviews Mentioning",
+					"type": "string",
+					"placeholder": "parking",
+					"description": "Only reviews that mention this word or phrase, as Yelp's own review search"
+				},
+				{
+					"param": "since",
+					"displayName": "Written Since",
+					"type": "string",
+					"placeholder": "2026-01-01",
+					"description": "Only reviews written on or after this date (YYYY-MM-DD). Sorted by Newest First, reading stops at the first older review."
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Yelp is opened from. Yelp shows the same reviews to every country, so keep Automatic."
+				}
+			],
+			"sort": [
+				{
+					"param": "sort",
+					"displayName": "Sort By",
+					"type": "options",
+					"default": "relevance",
+					"description": "The order of the reviews, as in Yelp's own Sort By menu",
+					"options": [
+						{
+							"name": "Yelp Sort (Relevance)",
+							"value": "relevance"
+						},
+						{
+							"name": "Newest First",
+							"value": "newest"
+						},
+						{
+							"name": "Oldest First",
+							"value": "oldest"
+						},
+						{
+							"name": "Highest Rated",
+							"value": "highest"
+						},
+						{
+							"name": "Lowest Rated",
+							"value": "lowest"
+						},
+						{
+							"name": "Elites First",
+							"value": "elites"
+						}
+					]
+				}
+			],
+			"listKey": "reviews",
+			"outputFields": [
+				"id",
+				"url",
+				"rating",
+				"text",
+				"language",
+				"publishedDate",
+				"date",
+				"user",
+				"photos",
+				"photosCount",
+				"videos",
+				"ownerResponse",
+				"reactions",
+				"helpfulVotes",
+				"checkIns",
+				"isFirstReviewer",
+				"isReviewOfTheDay",
+				"authorExpertise",
+				"isUpdated",
+				"previousReviews"
+			],
+			"idField": "id",
+			"simplify": [
+				"id",
+				"rating",
+				"text",
+				"date",
+				"language",
+				"user.name",
+				"user.location",
+				"ownerResponse",
+				"helpfulVotes",
+				"url"
+			],
+			"test": {
+				"params": {
+					"business": "gary-danko-san-francisco",
+					"max_reviews": 3
+				},
+				"minItems": 3,
+				"maxFields": 10
+			}
+		}
+	]
+}

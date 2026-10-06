@@ -1,0 +1,256 @@
+{
+	"resource": "G2",
+	"value": "g2",
+	"operations": [
+		{
+			"name": "Get Reviews",
+			"value": "getReviews",
+			"action": "Get G2 product reviews",
+			"description": "Read user reviews of a software product: ratings, likes, dislikes and reviewer details",
+			"endpoint": "/reviews/g2",
+			"fixed": {
+				"mode": "reviews"
+			},
+			"fields": [
+				{
+					"param": "product",
+					"displayName": "Product",
+					"type": "string",
+					"required": true,
+					"placeholder": "slack",
+					"description": "The product: the part of its G2 URL after /products/ (e.g. slack or hubspot-sales-hub), or the full g2.com product URL"
+				},
+				{
+					"param": "max_results",
+					"displayName": "Max Results",
+					"type": "number",
+					"default": 10,
+					"min": 1,
+					"max": 100,
+					"description": "How many reviews to collect (1-100). G2 lists 10 reviews per page and each page is one billed call."
+				}
+			],
+			"options": [
+				{
+					"param": "page",
+					"displayName": "Start Page",
+					"type": "number",
+					"default": 1,
+					"min": 1,
+					"max": 10,
+					"description": "Which review page to start from (10 reviews per page). G2 shows at most 10 pages per sort order or filter."
+				},
+				{
+					"param": "stars",
+					"displayName": "Star Rating",
+					"type": "options",
+					"default": "",
+					"description": "Only reviews with this star rating",
+					"options": [
+						{
+							"name": "Any",
+							"value": ""
+						},
+						{
+							"name": "1 Star",
+							"value": "1"
+						},
+						{
+							"name": "2 Stars",
+							"value": "2"
+						},
+						{
+							"name": "3 Stars",
+							"value": "3"
+						},
+						{
+							"name": "4 Stars",
+							"value": "4"
+						},
+						{
+							"name": "5 Stars",
+							"value": "5"
+						}
+					]
+				},
+				{
+					"param": "search",
+					"displayName": "Keyword",
+					"type": "string",
+					"placeholder": "integrations",
+					"description": "Only reviews whose answers mention this keyword"
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country G2 is opened from. Automatic picks one that works well for G2."
+				}
+			],
+			"sort": [
+				{
+					"param": "sort",
+					"displayName": "Sort By",
+					"type": "options",
+					"default": "g2_default",
+					"description": "The order of the reviews",
+					"options": [
+						{
+							"name": "G2 Default",
+							"value": "g2_default"
+						},
+						{
+							"name": "Highest Rated",
+							"value": "highest_rated"
+						},
+						{
+							"name": "Lowest Rated",
+							"value": "lowest_rated"
+						},
+						{
+							"name": "Most Helpful",
+							"value": "most_helpful"
+						},
+						{
+							"name": "Most Recent",
+							"value": "most_recent"
+						}
+					]
+				}
+			],
+			"listKey": "reviews",
+			"outputFields": [
+				"id",
+				"url",
+				"title",
+				"rating",
+				"date",
+				"updatedDate",
+				"reviewer",
+				"likeBest",
+				"dislike",
+				"problemsSolved",
+				"recommendations",
+				"answers",
+				"text",
+				"videoReview",
+				"currentUser",
+				"validatedReviewer",
+				"validationMethod",
+				"incentivized",
+				"source",
+				"aiTranslated",
+				"translatedFrom",
+				"g2Icon",
+				"badges",
+				"vendorResponse"
+			],
+			"idField": "id",
+			"simplify": [
+				"id",
+				"title",
+				"rating",
+				"date",
+				"likeBest",
+				"dislike",
+				"problemsSolved",
+				"reviewer.title",
+				"reviewer.companySize",
+				"url"
+			],
+			"test": {
+				"params": {
+					"product": "slack",
+					"max_results": 3
+				},
+				"minItems": 3,
+				"maxFields": 10
+			},
+			"disabled": "G2 reviews time out after 75 s on every try (2026-10-06)"
+		},
+		{
+			"name": "Search Products",
+			"value": "searchProducts",
+			"action": "Search G2 products",
+			"description": "Find software products in G2's catalog by keyword",
+			"endpoint": "/reviews/g2",
+			"fixed": {
+				"mode": "search"
+			},
+			"fields": [
+				{
+					"param": "query",
+					"displayName": "Search Query",
+					"type": "string",
+					"required": true,
+					"placeholder": "crm",
+					"description": "What to search for: a product name, vendor or software category"
+				},
+				{
+					"param": "max_results",
+					"displayName": "Max Results",
+					"type": "number",
+					"default": 20,
+					"min": 1,
+					"max": 100,
+					"description": "How many products to return (1-100). G2 answers whole pages of 20, so up to 19 more can come back; each page is one billed call."
+				}
+			],
+			"options": [
+				{
+					"param": "page",
+					"displayName": "Start Page",
+					"type": "number",
+					"default": 1,
+					"min": 1,
+					"max": 20,
+					"description": "Which results page to start from (20 products per page, at most 20 pages)"
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country G2 is opened from. Automatic picks one that works well for G2."
+				}
+			],
+			"listKey": "results",
+			"outputFields": [
+				"name",
+				"slug",
+				"productId",
+				"type",
+				"position",
+				"vendor",
+				"rating",
+				"reviewCount",
+				"description",
+				"categories",
+				"image",
+				"url"
+			],
+			"idField": "url",
+			"simplify": [
+				"name",
+				"slug",
+				"vendor.name",
+				"rating",
+				"reviewCount",
+				"description",
+				"categories",
+				"url",
+				"image",
+				"productId"
+			],
+			"test": {
+				"params": {
+					"query": "crm",
+					"max_results": 5
+				},
+				"minItems": 5,
+				"maxFields": 10
+			}
+		}
+	]
+}

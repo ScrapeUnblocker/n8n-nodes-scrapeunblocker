@@ -1,0 +1,726 @@
+{
+	"resource": "Amazon",
+	"value": "amazon",
+	"operations": [
+		{
+			"name": "Get Product",
+			"value": "getProduct",
+			"action": "Get amazon product",
+			"description": "Get the price, availability, rating and details of one product on any Amazon marketplace",
+			"endpoint": "/marketplace/amazon-product",
+			"fields": [
+				{
+					"param": "url",
+					"displayName": "Product URL",
+					"type": "string",
+					"placeholder": "https://www.amazon.de/dp/B0BSHF7WHW",
+					"description": "Link to the Amazon product page. The marketplace is read from it. Either this or an ASIN (under Options) is needed."
+				}
+			],
+			"options": [
+				{
+					"param": "asin",
+					"displayName": "ASIN",
+					"type": "string",
+					"placeholder": "B0BSHF7WHW",
+					"description": "The 10-character Amazon product ID (for books, the ISBN-10), used with Marketplace instead of a Product URL. Either this or a Product URL is needed."
+				},
+				{
+					"param": "marketplace",
+					"displayName": "Marketplace",
+					"type": "options",
+					"default": "amazon.com",
+					"description": "The regional Amazon site the ASIN belongs to. Only used with an ASIN. Prices and currency differ per marketplace.",
+					"options": [
+						{
+							"name": "Australia (amazon.com.au)",
+							"value": "amazon.com.au"
+						},
+						{
+							"name": "Belgium (amazon.com.be)",
+							"value": "amazon.com.be"
+						},
+						{
+							"name": "Brazil (amazon.com.br)",
+							"value": "amazon.com.br"
+						},
+						{
+							"name": "Canada (amazon.ca)",
+							"value": "amazon.ca"
+						},
+						{
+							"name": "France (amazon.fr)",
+							"value": "amazon.fr"
+						},
+						{
+							"name": "Germany (amazon.de)",
+							"value": "amazon.de"
+						},
+						{
+							"name": "India (amazon.in)",
+							"value": "amazon.in"
+						},
+						{
+							"name": "Italy (amazon.it)",
+							"value": "amazon.it"
+						},
+						{
+							"name": "Japan (amazon.co.jp)",
+							"value": "amazon.co.jp"
+						},
+						{
+							"name": "Mexico (amazon.com.mx)",
+							"value": "amazon.com.mx"
+						},
+						{
+							"name": "Netherlands (amazon.nl)",
+							"value": "amazon.nl"
+						},
+						{
+							"name": "Poland (amazon.pl)",
+							"value": "amazon.pl"
+						},
+						{
+							"name": "Saudi Arabia (amazon.sa)",
+							"value": "amazon.sa"
+						},
+						{
+							"name": "Singapore (amazon.sg)",
+							"value": "amazon.sg"
+						},
+						{
+							"name": "Spain (amazon.es)",
+							"value": "amazon.es"
+						},
+						{
+							"name": "Sweden (amazon.se)",
+							"value": "amazon.se"
+						},
+						{
+							"name": "Turkey (amazon.com.tr)",
+							"value": "amazon.com.tr"
+						},
+						{
+							"name": "United Arab Emirates (amazon.ae)",
+							"value": "amazon.ae"
+						},
+						{
+							"name": "United Kingdom (amazon.co.uk)",
+							"value": "amazon.co.uk"
+						},
+						{
+							"name": "United States (amazon.com)",
+							"value": "amazon.com"
+						}
+					]
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Amazon is opened from. Automatic uses the marketplace's home country, so the price comes in its currency."
+				}
+			],
+			"outputFields": [
+				"asin",
+				"marketplace",
+				"url",
+				"title",
+				"brand",
+				"price",
+				"currency",
+				"priceRaw",
+				"listPrice",
+				"listPriceRaw",
+				"savingsPercent",
+				"availability",
+				"inStock",
+				"rating",
+				"reviewCount",
+				"seller",
+				"features",
+				"categories",
+				"image",
+				"images",
+				"proxyCountry",
+				"exitCountry",
+				"exitProvider"
+			],
+			"idField": "asin",
+			"simplify": [
+				"asin",
+				"title",
+				"brand",
+				"price",
+				"currency",
+				"inStock",
+				"rating",
+				"reviewCount",
+				"url",
+				"image"
+			],
+			"test": {
+				"params": {
+					"url": "https://www.amazon.com/dp/B0CHWRXH8B"
+				},
+				"minItems": 1,
+				"maxFields": 10
+			}
+		},
+		{
+			"name": "Search Products",
+			"value": "searchProducts",
+			"action": "Search amazon products",
+			"description": "Find products that match a keyword on any Amazon marketplace",
+			"endpoint": "/marketplace/amazon-search",
+			"fields": [
+				{
+					"param": "keyword",
+					"displayName": "Search Query",
+					"type": "string",
+					"required": true,
+					"placeholder": "wireless headphones",
+					"description": "What to search for: a keyword, product name, or brand and model"
+				},
+				{
+					"param": "marketplace",
+					"displayName": "Marketplace",
+					"type": "options",
+					"default": "amazon.com",
+					"description": "Which regional Amazon site to search. Prices, currency and availability differ per marketplace.",
+					"options": [
+						{
+							"name": "Australia (amazon.com.au)",
+							"value": "amazon.com.au"
+						},
+						{
+							"name": "Belgium (amazon.com.be)",
+							"value": "amazon.com.be"
+						},
+						{
+							"name": "Brazil (amazon.com.br)",
+							"value": "amazon.com.br"
+						},
+						{
+							"name": "Canada (amazon.ca)",
+							"value": "amazon.ca"
+						},
+						{
+							"name": "France (amazon.fr)",
+							"value": "amazon.fr"
+						},
+						{
+							"name": "Germany (amazon.de)",
+							"value": "amazon.de"
+						},
+						{
+							"name": "India (amazon.in)",
+							"value": "amazon.in"
+						},
+						{
+							"name": "Italy (amazon.it)",
+							"value": "amazon.it"
+						},
+						{
+							"name": "Japan (amazon.co.jp)",
+							"value": "amazon.co.jp"
+						},
+						{
+							"name": "Mexico (amazon.com.mx)",
+							"value": "amazon.com.mx"
+						},
+						{
+							"name": "Netherlands (amazon.nl)",
+							"value": "amazon.nl"
+						},
+						{
+							"name": "Poland (amazon.pl)",
+							"value": "amazon.pl"
+						},
+						{
+							"name": "Saudi Arabia (amazon.sa)",
+							"value": "amazon.sa"
+						},
+						{
+							"name": "Singapore (amazon.sg)",
+							"value": "amazon.sg"
+						},
+						{
+							"name": "Spain (amazon.es)",
+							"value": "amazon.es"
+						},
+						{
+							"name": "Sweden (amazon.se)",
+							"value": "amazon.se"
+						},
+						{
+							"name": "Turkey (amazon.com.tr)",
+							"value": "amazon.com.tr"
+						},
+						{
+							"name": "United Arab Emirates (amazon.ae)",
+							"value": "amazon.ae"
+						},
+						{
+							"name": "United Kingdom (amazon.co.uk)",
+							"value": "amazon.co.uk"
+						},
+						{
+							"name": "United States (amazon.com)",
+							"value": "amazon.com"
+						}
+					]
+				},
+				{
+					"param": "page",
+					"displayName": "Page",
+					"type": "number",
+					"default": 1,
+					"min": 1,
+					"description": "Which results page to return. Each page is one billed call."
+				}
+			],
+			"options": [
+				{
+					"param": "min_price",
+					"displayName": "Min Price",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Lowest price to include, in the marketplace's currency. 0 means no minimum."
+				},
+				{
+					"param": "max_price",
+					"displayName": "Max Price",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Highest price to include, in the marketplace's currency. 0 means no limit."
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Amazon is opened from. Automatic uses the marketplace's home country, so prices come in its currency."
+				}
+			],
+			"sort": [
+				{
+					"param": "sort",
+					"displayName": "Sort By",
+					"type": "options",
+					"default": "featured",
+					"description": "The order of the products",
+					"options": [
+						{
+							"name": "Average Customer Review",
+							"value": "avg_review"
+						},
+						{
+							"name": "Featured",
+							"value": "featured"
+						},
+						{
+							"name": "Newest Arrivals",
+							"value": "newest"
+						},
+						{
+							"name": "Price: Highest First",
+							"value": "price_desc"
+						},
+						{
+							"name": "Price: Lowest First",
+							"value": "price_asc"
+						}
+					]
+				}
+			],
+			"listKey": "results",
+			"outputFields": [
+				"position",
+				"asin",
+				"title",
+				"url",
+				"image",
+				"price",
+				"currency",
+				"priceRaw",
+				"listPrice",
+				"rating",
+				"reviewCount",
+				"sponsored",
+				"prime"
+			],
+			"idField": "asin",
+			"simplify": [
+				"asin",
+				"title",
+				"price",
+				"currency",
+				"listPrice",
+				"rating",
+				"reviewCount",
+				"sponsored",
+				"url",
+				"image"
+			],
+			"test": {
+				"params": {
+					"keyword": "wireless earbuds"
+				},
+				"minItems": 10,
+				"maxFields": 10
+			}
+		},
+		{
+			"name": "Get Reviews",
+			"value": "getReviews",
+			"action": "Get amazon product reviews",
+			"description": "Get the star breakdown, the shoppers' summary and the top reviews of an Amazon product",
+			"endpoint": "/marketplace/amazon-reviews",
+			"fields": [
+				{
+					"param": "url",
+					"displayName": "Product URL",
+					"type": "string",
+					"placeholder": "https://www.amazon.de/dp/B0D1XD1ZV3",
+					"description": "Link to the Amazon product page. The marketplace is read from it. Either this or an ASIN (under Options) is needed. Amazon shows visitors only its top reviews (about 5 to 13); on amazon.com it often hides them, and then only the rating, star breakdown and summary come back."
+				}
+			],
+			"options": [
+				{
+					"param": "asin",
+					"displayName": "ASIN",
+					"type": "string",
+					"placeholder": "B07PXGQC1Q",
+					"description": "The 10-character Amazon product ID (for books, the ISBN-10), used with Marketplace instead of a Product URL. Either this or a Product URL is needed."
+				},
+				{
+					"param": "marketplace",
+					"displayName": "Marketplace",
+					"type": "options",
+					"default": "amazon.com",
+					"description": "The regional Amazon site the ASIN belongs to. The reviews are read from that store. Only used with an ASIN.",
+					"options": [
+						{
+							"name": "Australia (amazon.com.au)",
+							"value": "amazon.com.au"
+						},
+						{
+							"name": "Belgium (amazon.com.be)",
+							"value": "amazon.com.be"
+						},
+						{
+							"name": "Brazil (amazon.com.br)",
+							"value": "amazon.com.br"
+						},
+						{
+							"name": "Canada (amazon.ca)",
+							"value": "amazon.ca"
+						},
+						{
+							"name": "France (amazon.fr)",
+							"value": "amazon.fr"
+						},
+						{
+							"name": "Germany (amazon.de)",
+							"value": "amazon.de"
+						},
+						{
+							"name": "India (amazon.in)",
+							"value": "amazon.in"
+						},
+						{
+							"name": "Italy (amazon.it)",
+							"value": "amazon.it"
+						},
+						{
+							"name": "Japan (amazon.co.jp)",
+							"value": "amazon.co.jp"
+						},
+						{
+							"name": "Mexico (amazon.com.mx)",
+							"value": "amazon.com.mx"
+						},
+						{
+							"name": "Netherlands (amazon.nl)",
+							"value": "amazon.nl"
+						},
+						{
+							"name": "Poland (amazon.pl)",
+							"value": "amazon.pl"
+						},
+						{
+							"name": "Saudi Arabia (amazon.sa)",
+							"value": "amazon.sa"
+						},
+						{
+							"name": "Singapore (amazon.sg)",
+							"value": "amazon.sg"
+						},
+						{
+							"name": "Spain (amazon.es)",
+							"value": "amazon.es"
+						},
+						{
+							"name": "Sweden (amazon.se)",
+							"value": "amazon.se"
+						},
+						{
+							"name": "Turkey (amazon.com.tr)",
+							"value": "amazon.com.tr"
+						},
+						{
+							"name": "United Arab Emirates (amazon.ae)",
+							"value": "amazon.ae"
+						},
+						{
+							"name": "United Kingdom (amazon.co.uk)",
+							"value": "amazon.co.uk"
+						},
+						{
+							"name": "United States (amazon.com)",
+							"value": "amazon.com"
+						}
+					]
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Amazon is opened from. Automatic uses the marketplace's home country. The reviews are the same from any country."
+				}
+			],
+			"outputFields": [
+				"asin",
+				"marketplace",
+				"url",
+				"title",
+				"rating",
+				"reviewCount",
+				"histogram",
+				"customersSay",
+				"reviewsGated",
+				"reviewsReturned",
+				"reviews",
+				"proxyCountry",
+				"exitCountry",
+				"exitProvider"
+			],
+			"idField": "asin",
+			"simplify": [
+				"asin",
+				"title",
+				"rating",
+				"reviewCount",
+				"histogram",
+				"customersSay.summary",
+				"reviewsGated",
+				"reviewsReturned",
+				"reviews",
+				"url"
+			],
+			"test": {
+				"params": {
+					"url": "https://www.amazon.de/dp/B0D1XD1ZV3"
+				},
+				"minItems": 1,
+				"maxFields": 10
+			}
+		},
+		{
+			"name": "Get Best Sellers",
+			"value": "getBestSellers",
+			"action": "Get amazon best sellers",
+			"description": "Get the ranked top products of an Amazon category, such as best sellers or new releases",
+			"endpoint": "/marketplace/amazon-bestsellers",
+			"fields": [
+				{
+					"param": "category",
+					"displayName": "Category",
+					"type": "string",
+					"placeholder": "electronics",
+					"description": "The department to rank, as written in Amazon's Best Sellers links (electronics, books, toys-and-games), that name plus the category number (electronics/172541 is Headphones), or a pasted Amazon Best Sellers link. Without a category no products are returned."
+				},
+				{
+					"param": "marketplace",
+					"displayName": "Marketplace",
+					"type": "options",
+					"default": "amazon.com",
+					"description": "Which regional Amazon site to read the list from. Not used when Category is a link.",
+					"options": [
+						{
+							"name": "Australia (amazon.com.au)",
+							"value": "amazon.com.au"
+						},
+						{
+							"name": "Belgium (amazon.com.be)",
+							"value": "amazon.com.be"
+						},
+						{
+							"name": "Brazil (amazon.com.br)",
+							"value": "amazon.com.br"
+						},
+						{
+							"name": "Canada (amazon.ca)",
+							"value": "amazon.ca"
+						},
+						{
+							"name": "France (amazon.fr)",
+							"value": "amazon.fr"
+						},
+						{
+							"name": "Germany (amazon.de)",
+							"value": "amazon.de"
+						},
+						{
+							"name": "India (amazon.in)",
+							"value": "amazon.in"
+						},
+						{
+							"name": "Italy (amazon.it)",
+							"value": "amazon.it"
+						},
+						{
+							"name": "Japan (amazon.co.jp)",
+							"value": "amazon.co.jp"
+						},
+						{
+							"name": "Mexico (amazon.com.mx)",
+							"value": "amazon.com.mx"
+						},
+						{
+							"name": "Netherlands (amazon.nl)",
+							"value": "amazon.nl"
+						},
+						{
+							"name": "Poland (amazon.pl)",
+							"value": "amazon.pl"
+						},
+						{
+							"name": "Saudi Arabia (amazon.sa)",
+							"value": "amazon.sa"
+						},
+						{
+							"name": "Singapore (amazon.sg)",
+							"value": "amazon.sg"
+						},
+						{
+							"name": "Spain (amazon.es)",
+							"value": "amazon.es"
+						},
+						{
+							"name": "Sweden (amazon.se)",
+							"value": "amazon.se"
+						},
+						{
+							"name": "Turkey (amazon.com.tr)",
+							"value": "amazon.com.tr"
+						},
+						{
+							"name": "United Arab Emirates (amazon.ae)",
+							"value": "amazon.ae"
+						},
+						{
+							"name": "United Kingdom (amazon.co.uk)",
+							"value": "amazon.co.uk"
+						},
+						{
+							"name": "United States (amazon.com)",
+							"value": "amazon.com"
+						}
+					]
+				},
+				{
+					"param": "max_results",
+					"displayName": "Max Results",
+					"type": "number",
+					"default": 30,
+					"min": 1,
+					"max": 100,
+					"description": "How many ranked products to return (up to 100). A list page holds 50 and each page is one billed call. Asking for products past rank 30 of a page takes longer (10 to 25 seconds)."
+				}
+			],
+			"options": [
+				{
+					"param": "list_type",
+					"displayName": "List",
+					"type": "options",
+					"default": "bestsellers",
+					"description": "Which ranked list to get. Not used when Category is a link.",
+					"options": [
+						{
+							"name": "Best Sellers",
+							"value": "bestsellers"
+						},
+						{
+							"name": "Gift Ideas",
+							"value": "gift_ideas"
+						},
+						{
+							"name": "Most Wished For",
+							"value": "most_wished_for"
+						},
+						{
+							"name": "Movers & Shakers",
+							"value": "movers_and_shakers"
+						},
+						{
+							"name": "New Releases",
+							"value": "new_releases"
+						}
+					]
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Amazon is opened from. Automatic uses the marketplace's home country, so prices come in its currency."
+				}
+			],
+			"listKey": "items",
+			"outputFields": [
+				"rank",
+				"asin",
+				"title",
+				"url",
+				"image",
+				"price",
+				"currency",
+				"priceRaw",
+				"offersCount",
+				"rating",
+				"reviewsCount",
+				"salesRank",
+				"previousSalesRank",
+				"salesRankChangePct"
+			],
+			"idField": "asin",
+			"simplify": [
+				"rank",
+				"asin",
+				"title",
+				"price",
+				"currency",
+				"rating",
+				"reviewsCount",
+				"url",
+				"image"
+			],
+			"test": {
+				"params": {
+					"category": "electronics",
+					"max_results": 3
+				},
+				"minItems": 3,
+				"maxFields": 10
+			}
+		}
+	]
+}
