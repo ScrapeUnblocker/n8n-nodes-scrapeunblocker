@@ -1,0 +1,388 @@
+{
+	"resource": "TikTok",
+	"value": "tiktok",
+	"operations": [
+		{
+			"name": "Get Profile",
+			"value": "getProfile",
+			"action": "Get tiktok profile",
+			"description": "Retrieve a creator's public profile with exact follower counts and their newest videos",
+			"endpoint": "/social/tiktok-profile",
+			"fields": [
+				{
+					"param": "username",
+					"displayName": "Username",
+					"type": "string",
+					"required": true,
+					"placeholder": "nasa",
+					"description": "The creator's TikTok handle, with or without @, or the profile URL"
+				},
+				{
+					"param": "max_videos",
+					"displayName": "Max Videos",
+					"type": "number",
+					"default": 10,
+					"min": 0,
+					"max": 200,
+					"description": "How many of the creator's newest videos to include in the profile's videos list (0-200). 0 returns the profile only. Up to 10 arrive in a few seconds, more take 10-30 seconds longer."
+				}
+			],
+			"options": [
+				{
+					"param": "video_details",
+					"displayName": "Full Video Details",
+					"type": "boolean",
+					"default": true,
+					"description": "Whether to open each listed video for its exact plays, likes, comments, shares and saves, hashtags, music and media links. Off returns only the ID, caption, cover and play count of each video, faster."
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country TikTok is opened from. TikTok's public pages are the same everywhere, so set it only for content that is limited to some countries."
+				}
+			],
+			"outputFields": [
+				"username",
+				"userId",
+				"secUid",
+				"nickname",
+				"bio",
+				"bioLink",
+				"verified",
+				"privateAccount",
+				"isOrganization",
+				"language",
+				"region",
+				"createdAt",
+				"createdTimestamp",
+				"avatar",
+				"stats",
+				"commerce",
+				"settings",
+				"tabs",
+				"liveRoomId",
+				"profileUrl",
+				"videos",
+				"videosCollected",
+				"videosSource",
+				"hasMore"
+			],
+			"idField": "username",
+			"simplify": [
+				"username",
+				"nickname",
+				"verified",
+				"bio",
+				"stats.followers",
+				"stats.following",
+				"stats.likes",
+				"stats.videos",
+				"profileUrl",
+				"videos"
+			],
+			"test": {
+				"params": {
+					"username": "nasa",
+					"max_videos": 2
+				},
+				"minItems": 1,
+				"maxFields": 10
+			}
+		},
+		{
+			"name": "Get Video",
+			"value": "getVideo",
+			"action": "Get tiktok video",
+			"description": "Retrieve one video or photo post with exact engagement, music and media links",
+			"endpoint": "/social/tiktok-video",
+			"fields": [
+				{
+					"param": "url",
+					"displayName": "Video URL",
+					"type": "string",
+					"required": true,
+					"placeholder": "https://www.tiktok.com/@nasa/video/7665075736742530317",
+					"description": "A TikTok video or photo post URL, a short link (vm.tiktok.com) or the bare video ID"
+				}
+			],
+			"options": [
+				{
+					"param": "include_transcript",
+					"displayName": "Include Transcript",
+					"type": "boolean",
+					"default": false,
+					"description": "Whether to also return the video's captions (TikTok's own, mostly auto-generated) as plain text in transcript. Empty when the video has no captions."
+				},
+				{
+					"param": "transcript_language",
+					"displayName": "Transcript Language",
+					"type": "string",
+					"placeholder": "eng-US",
+					"description": "Which caption language to prefer when the video has several, as TikTok names them (e.g. eng-US, spa-ES or just eng). Empty takes the first one."
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country TikTok is opened from. TikTok's public pages are the same everywhere, so set it only for posts that are limited to some countries."
+				}
+			],
+			"outputFields": [
+				"id",
+				"url",
+				"type",
+				"description",
+				"title",
+				"hashtags",
+				"mentions",
+				"language",
+				"createdAt",
+				"createdTimestamp",
+				"stats",
+				"author",
+				"video",
+				"images",
+				"imageCount",
+				"music",
+				"flags",
+				"labels",
+				"suggestedWords",
+				"effects",
+				"stickerTexts",
+				"locationCreated",
+				"aigcDescription",
+				"detailed",
+				"transcript",
+				"transcriptLanguage"
+			],
+			"idField": "id",
+			"simplify": [
+				"id",
+				"description",
+				"author.username",
+				"createdAt",
+				"stats.plays",
+				"stats.likes",
+				"stats.comments",
+				"stats.shares",
+				"url",
+				"transcript"
+			],
+			"test": {
+				"params": {
+					"url": "https://www.tiktok.com/@nasa/video/7665075736742530317"
+				},
+				"minItems": 1,
+				"maxFields": 10
+			}
+		},
+		{
+			"name": "Search Videos",
+			"value": "searchVideos",
+			"action": "Search tiktok videos",
+			"description": "Find videos for a keyword in TikTok's own ranking order",
+			"endpoint": "/social/tiktok-search",
+			"fields": [
+				{
+					"param": "query",
+					"displayName": "Search Query",
+					"type": "string",
+					"required": true,
+					"placeholder": "space telescope",
+					"description": "What to search for on TikTok"
+				},
+				{
+					"param": "max_results",
+					"displayName": "Max Results",
+					"type": "number",
+					"default": 20,
+					"min": 1,
+					"max": 200,
+					"description": "How many videos to return (1-200). About 12 arrive per scroll, so more videos take longer."
+				}
+			],
+			"options": [
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country TikTok is opened from. TikTok ranks search results per country, so pick the country whose results you want."
+				}
+			],
+			"listKey": "results",
+			"outputFields": [
+				"id",
+				"url",
+				"type",
+				"description",
+				"title",
+				"hashtags",
+				"mentions",
+				"language",
+				"createdAt",
+				"createdTimestamp",
+				"stats",
+				"author",
+				"video",
+				"images",
+				"imageCount",
+				"music",
+				"flags",
+				"labels",
+				"suggestedWords",
+				"effects",
+				"stickerTexts",
+				"locationCreated",
+				"aigcDescription",
+				"detailed"
+			],
+			"idField": "id",
+			"simplify": [
+				"id",
+				"description",
+				"author.username",
+				"createdAt",
+				"stats.plays",
+				"stats.likes",
+				"stats.comments",
+				"stats.shares",
+				"hashtags",
+				"url"
+			],
+			"test": {
+				"params": {
+					"query": "nasa",
+					"max_results": 2
+				},
+				"minItems": 1,
+				"maxFields": 10
+			}
+		},
+		{
+			"name": "Get Hashtag",
+			"value": "getHashtag",
+			"action": "Get tiktok hashtag",
+			"description": "Retrieve a hashtag's total views and video count with its top videos",
+			"endpoint": "/social/tiktok-hashtag",
+			"fields": [
+				{
+					"param": "hashtag",
+					"displayName": "Hashtag",
+					"type": "string",
+					"required": true,
+					"placeholder": "nasa",
+					"description": "The hashtag name, with or without #, or the hashtag page URL"
+				},
+				{
+					"param": "max_videos",
+					"displayName": "Max Videos",
+					"type": "number",
+					"default": 10,
+					"min": 0,
+					"max": 200,
+					"description": "How many of the hashtag's top videos to include in its videos list (0-200). 0 returns the totals only. Up to 10 arrive in a few seconds, more take 10-30 seconds longer."
+				}
+			],
+			"options": [
+				{
+					"param": "video_details",
+					"displayName": "Full Video Details",
+					"type": "boolean",
+					"default": true,
+					"description": "Whether to open each listed video for its exact engagement, hashtags, author follower counts, music and media links. Off returns only the ID, caption, cover, author handle and play count of each video, faster."
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country TikTok is opened from. TikTok's public pages are the same everywhere, so set it only for content that is limited to some countries."
+				}
+			],
+			"test": {
+				"params": {
+					"hashtag": "nasa",
+					"max_videos": 2
+				},
+				"minItems": 1,
+				"maxFields": 10
+			}
+		},
+		{
+			"name": "Get Comments",
+			"value": "getComments",
+			"action": "Get tiktok video comments",
+			"description": "Retrieve the comments of a video or photo post",
+			"endpoint": "/social/tiktok-comments",
+			"fields": [
+				{
+					"param": "url",
+					"displayName": "Video URL",
+					"type": "string",
+					"required": true,
+					"placeholder": "https://www.tiktok.com/@nasa/video/7665075736742530317",
+					"description": "A TikTok video or photo post URL, a short link (vm.tiktok.com) or the bare video ID"
+				},
+				{
+					"param": "max_comments",
+					"displayName": "Max Comments",
+					"type": "number",
+					"default": 50,
+					"min": 1,
+					"max": 500,
+					"description": "How many top-level comments to return (1-500). Replies TikTok loads with a comment are in its replies list. About 20 arrive per scroll, so more comments take longer."
+				}
+			],
+			"options": [
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country TikTok is opened from. TikTok's public pages are the same everywhere, so set it only for posts that are limited to some countries."
+				}
+			],
+			"listKey": "comments",
+			"outputFields": [
+				"id",
+				"text",
+				"createdAt",
+				"createdTimestamp",
+				"likes",
+				"replyCount",
+				"language",
+				"author",
+				"isCreator",
+				"likedByCreator",
+				"replyToCommentId",
+				"replies",
+				"videoId"
+			],
+			"idField": "id",
+			"simplify": [
+				"id",
+				"text",
+				"author.username",
+				"author.nickname",
+				"likes",
+				"replyCount",
+				"createdAt",
+				"isCreator",
+				"likedByCreator",
+				"videoId"
+			],
+			"test": {
+				"params": {
+					"url": "https://www.tiktok.com/@nasa/video/7665075736742530317",
+					"max_comments": 3
+				},
+				"minItems": 2,
+				"maxFields": 10
+			}
+		}
+	]
+}

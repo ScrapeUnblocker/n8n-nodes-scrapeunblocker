@@ -1,0 +1,287 @@
+{
+	"resource": "Product Hunt",
+	"value": "productHunt",
+	"operations": [
+		{
+			"name": "Get Leaderboard",
+			"value": "getLeaderboard",
+			"action": "Get product hunt leaderboard",
+			"description": "A day's launches ranked by votes, with comments and topics",
+			"endpoint": "/products/producthunt",
+			"fixed": {
+				"mode": "leaderboard"
+			},
+			"fields": [
+				{
+					"param": "max_results",
+					"displayName": "Max Results",
+					"type": "number",
+					"default": 30,
+					"min": 1,
+					"max": 200,
+					"description": "How many launches to return (1-200)"
+				}
+			],
+			"options": [
+				{
+					"param": "date",
+					"displayName": "Date",
+					"type": "string",
+					"placeholder": "2026-10-01",
+					"description": "The day of the leaderboard as YYYY-MM-DD. Leave empty for today: today's board is live and not ranked yet, past days are final and ranked."
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Product Hunt is opened from. Best left on Automatic: Product Hunt is the same everywhere and a fixed country only makes blocks more likely."
+				}
+			],
+			"listKey": "products",
+			"outputFields": [
+				"id",
+				"type",
+				"name",
+				"tagline",
+				"slug",
+				"productId",
+				"productSlug",
+				"url",
+				"votesCount",
+				"launchDayScore",
+				"commentsCount",
+				"dailyRank",
+				"weeklyRank",
+				"monthlyRank",
+				"topics",
+				"thumbnail",
+				"featuredAt",
+				"createdAt",
+				"productState"
+			],
+			"idField": "id",
+			"simplify": [
+				"id",
+				"name",
+				"tagline",
+				"dailyRank",
+				"votesCount",
+				"commentsCount",
+				"topics",
+				"url",
+				"productSlug",
+				"featuredAt"
+			],
+			"test": {
+				"params": {
+					"max_results": 5
+				},
+				"options": {
+					"date": "2026-10-01"
+				},
+				"minItems": 5,
+				"maxFields": 10
+			}
+		},
+		{
+			"name": "Search Products",
+			"value": "searchProducts",
+			"action": "Search product hunt products",
+			"description": "Find products that match a keyword, with their review rating",
+			"endpoint": "/products/producthunt",
+			"fixed": {
+				"mode": "search"
+			},
+			"fields": [
+				{
+					"param": "query",
+					"displayName": "Search Query",
+					"type": "string",
+					"required": true,
+					"placeholder": "ai chatbot",
+					"description": "What to search for: a product name or what it does"
+				},
+				{
+					"param": "max_results",
+					"displayName": "Max Results",
+					"type": "number",
+					"default": 30,
+					"min": 1,
+					"max": 200,
+					"description": "How many products to return (1-200)"
+				}
+			],
+			"options": [
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Product Hunt is opened from. Best left on Automatic: Product Hunt is the same everywhere and a fixed country only makes blocks more likely."
+				}
+			],
+			"listKey": "products",
+			"outputFields": [
+				"id",
+				"type",
+				"name",
+				"tagline",
+				"slug",
+				"productSlug",
+				"url",
+				"reviewsRating",
+				"reviewsCount",
+				"thumbnail",
+				"isNoLongerOnline"
+			],
+			"idField": "id",
+			"simplify": [
+				"id",
+				"name",
+				"tagline",
+				"reviewsRating",
+				"reviewsCount",
+				"url",
+				"slug",
+				"thumbnail",
+				"isNoLongerOnline"
+			],
+			"test": {
+				"params": {
+					"query": "note taking",
+					"max_results": 5
+				},
+				"minItems": 3,
+				"maxFields": 10
+			}
+		},
+		{
+			"name": "Get Topic Products",
+			"value": "getTopicProducts",
+			"action": "Get product hunt topic products",
+			"description": "The products listed under one topic",
+			"endpoint": "/products/producthunt",
+			"fixed": {
+				"mode": "topic"
+			},
+			"fields": [
+				{
+					"param": "topic",
+					"displayName": "Topic",
+					"type": "string",
+					"required": true,
+					"placeholder": "artificial-intelligence",
+					"description": "The topic as in its Product Hunt URL: producthunt.com/topics/artificial-intelligence is artificial-intelligence"
+				},
+				{
+					"param": "max_results",
+					"displayName": "Max Results",
+					"type": "number",
+					"default": 30,
+					"min": 1,
+					"max": 200,
+					"description": "How many products to return (1-200)"
+				}
+			],
+			"options": [
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Product Hunt is opened from. Best left on Automatic: Product Hunt is the same everywhere and a fixed country only makes blocks more likely."
+				}
+			],
+			"listKey": "products",
+			"test": {
+				"params": {
+					"topic": "artificial-intelligence",
+					"max_results": 5
+				},
+				"minItems": 3,
+				"maxFields": 10
+			}
+		},
+		{
+			"name": "Get Product",
+			"value": "getProduct",
+			"action": "Get product hunt product",
+			"description": "One product's description, website, socials, review rating, followers and categories",
+			"endpoint": "/products/producthunt",
+			"fixed": {
+				"mode": "detail"
+			},
+			"fields": [
+				{
+					"param": "slug",
+					"displayName": "Product",
+					"type": "string",
+					"required": true,
+					"placeholder": "notion",
+					"description": "The product as in its Product Hunt URL: producthunt.com/products/notion is notion"
+				}
+			],
+			"options": [
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Product Hunt is opened from. Best left on Automatic: Product Hunt is the same everywhere and a fixed country only makes blocks more likely."
+				}
+			],
+			"itemKey": "product",
+			"outputFields": [
+				"id",
+				"type",
+				"name",
+				"tagline",
+				"slug",
+				"url",
+				"websiteUrl",
+				"displayUrl",
+				"description",
+				"logo",
+				"reviewsRating",
+				"reviewsCount",
+				"followersCount",
+				"postsCount",
+				"categoriesCount",
+				"addonsCount",
+				"isNoLongerOnline",
+				"isTopProduct",
+				"wasInYCombinator",
+				"social",
+				"categories",
+				"latestLaunch",
+				"image",
+				"screenshots",
+				"aggregateRating",
+				"applicationCategory",
+				"operatingSystem"
+			],
+			"idField": "id",
+			"simplify": [
+				"name",
+				"tagline",
+				"description",
+				"websiteUrl",
+				"url",
+				"reviewsRating",
+				"reviewsCount",
+				"followersCount",
+				"categories",
+				"isNoLongerOnline"
+			],
+			"test": {
+				"params": {
+					"slug": "notion"
+				},
+				"minItems": 1,
+				"maxItems": 1,
+				"maxFields": 10
+			}
+		}
+	]
+}

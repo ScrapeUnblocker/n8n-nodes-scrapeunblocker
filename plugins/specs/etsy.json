@@ -1,0 +1,114 @@
+{
+	"resource": "Etsy",
+	"value": "etsy",
+	"operations": [
+		{
+			"name": "Search Listings",
+			"value": "searchListings",
+			"action": "Search etsy listings",
+			"description": "Find handmade and vintage items that match a keyword on Etsy",
+			"endpoint": "/marketplace/etsy-search",
+			"fields": [
+				{
+					"param": "query",
+					"displayName": "Search Query",
+					"type": "string",
+					"required": true,
+					"placeholder": "handmade jewelry",
+					"description": "What to search for: a keyword or product name"
+				},
+				{
+					"param": "max_results",
+					"displayName": "Max Results",
+					"type": "number",
+					"default": 48,
+					"min": 1,
+					"max": 500,
+					"description": "How many listings to collect across pages (up to 500)"
+				}
+			],
+			"options": [
+				{
+					"param": "page",
+					"displayName": "Start Page",
+					"type": "number",
+					"default": 1,
+					"min": 1,
+					"description": "Which results page to start from"
+				},
+				{
+					"param": "min_price",
+					"displayName": "Min Price",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Lowest price to include, as a whole number in the listings' currency (USD unless you browse from another country). 0 means no minimum."
+				},
+				{
+					"param": "max_price",
+					"displayName": "Max Price",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Highest price to include, as a whole number in the listings' currency (USD unless you browse from another country). 0 means no limit."
+				},
+				{
+					"param": "include_sponsored",
+					"displayName": "Include Sponsored Listings",
+					"type": "boolean",
+					"default": false,
+					"description": "Whether to also return Etsy's paid ad listings (marked sponsored). Etsy places them regardless of the sort order."
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Etsy is opened from. Etsy may show prices in that country's currency. Automatic uses the US (USD prices)."
+				}
+			],
+			"sort": [
+				{
+					"param": "sort",
+					"displayName": "Sort By",
+					"type": "options",
+					"default": "relevancy",
+					"description": "The order of the listings",
+					"options": [
+						{
+							"name": "Newest",
+							"value": "newest"
+						},
+						{
+							"name": "Price: Highest First",
+							"value": "price_desc"
+						},
+						{
+							"name": "Price: Lowest First",
+							"value": "price_asc"
+						},
+						{
+							"name": "Relevance",
+							"value": "relevancy"
+						},
+						{
+							"name": "Top Reviews",
+							"value": "top_reviews"
+						}
+					]
+				}
+			],
+			"listKey": "products",
+			"test": {
+				"params": {
+					"query": "ceramic mug",
+					"max_results": 3
+				},
+				"minItems": 3,
+				"maxFields": 10
+			}
+		}
+	]
+}

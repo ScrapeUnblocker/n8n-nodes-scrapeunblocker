@@ -1,0 +1,144 @@
+{
+	"resource": "Vinted",
+	"value": "vinted",
+	"operations": [
+		{
+			"name": "Search Listings",
+			"value": "searchListings",
+			"action": "Search vinted listings",
+			"description": "Find second-hand items that match a keyword on a Vinted marketplace",
+			"endpoint": "/marketplace/vinted-search",
+			"fields": [
+				{
+					"param": "query",
+					"displayName": "Search Query",
+					"type": "string",
+					"required": true,
+					"placeholder": "nike air max",
+					"description": "What to search for: a brand, an item or a style"
+				},
+				{
+					"param": "domain",
+					"name": "marketplace",
+					"displayName": "Marketplace",
+					"type": "options",
+					"default": "co.uk",
+					"description": "Which Vinted marketplace to search. Prices and currency follow the marketplace.",
+					"options": [
+						{
+							"name": "France (vinted.fr)",
+							"value": "fr"
+						},
+						{
+							"name": "Germany (vinted.de)",
+							"value": "de"
+						},
+						{
+							"name": "Italy (vinted.it)",
+							"value": "it"
+						},
+						{
+							"name": "Netherlands (vinted.nl)",
+							"value": "nl"
+						},
+						{
+							"name": "Poland (vinted.pl)",
+							"value": "pl"
+						},
+						{
+							"name": "Spain (vinted.es)",
+							"value": "es"
+						},
+						{
+							"name": "United Kingdom (vinted.co.uk)",
+							"value": "co.uk"
+						},
+						{
+							"name": "United States (vinted.com)",
+							"value": "com"
+						}
+					]
+				},
+				{
+					"param": "max_results",
+					"displayName": "Max Results",
+					"type": "number",
+					"default": 96,
+					"min": 1,
+					"max": 500,
+					"description": "How many listings to return, collected across pages (about 96 per page)"
+				}
+			],
+			"options": [
+				{
+					"param": "price_from",
+					"displayName": "Min Price",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Lowest price to include, in the marketplace's currency. 0 means no minimum."
+				},
+				{
+					"param": "price_to",
+					"displayName": "Max Price",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Highest price to include, in the marketplace's currency. 0 means no limit."
+				},
+				{
+					"param": "page",
+					"displayName": "Start Page",
+					"type": "number",
+					"default": 1,
+					"min": 1,
+					"description": "Which results page to start from (1 is the first page)"
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Vinted is opened from. Automatic picks a country in the EU."
+				}
+			],
+			"sort": [
+				{
+					"param": "order",
+					"displayName": "Sort By",
+					"type": "options",
+					"default": "relevance",
+					"description": "The order of the listings",
+					"options": [
+						{
+							"name": "Relevance",
+							"value": "relevance"
+						},
+						{
+							"name": "Newest First",
+							"value": "newest_first"
+						},
+						{
+							"name": "Price: Lowest First",
+							"value": "price_low_to_high"
+						},
+						{
+							"name": "Price: Highest First",
+							"value": "price_high_to_low"
+						}
+					]
+				}
+			],
+			"listKey": "items",
+			"test": {
+				"params": {
+					"query": "nike",
+					"max_results": 5
+				},
+				"minItems": 3
+			}
+		}
+	]
+}

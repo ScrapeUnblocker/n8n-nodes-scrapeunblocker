@@ -33,3 +33,7 @@ Thumbs.db
 
 # npm pack tarballs
 *.tgz
+
+# E2E output: real API answers (may hold reviewers' names) and run results
+plugins/samples/
+plugins/e2e-results.json

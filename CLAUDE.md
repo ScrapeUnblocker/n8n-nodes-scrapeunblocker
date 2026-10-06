@@ -23,18 +23,20 @@ There is **no test suite** in this repo. `npm run lint` is the primary correctne
 
 Two classes, registered both in `index.ts` and (for the published package) in the `n8n` block of `package.json`, which points at the **compiled `dist/` paths**:
 
-- **`nodes/ScrapeUnblocker/ScrapeUnblocker.node.ts`** — the node. Its `description: INodeTypeDescription` declares the UI (the `properties` array drives the form fields users see). `execute()` reads each input item's parameters, builds a query string, and calls `POST https://api.scrapeunblocker.com/getPageSource` via `this.helpers.httpRequestWithAuthentication` (which injects the credential automatically — never read the API key manually). Output is one item per input item.
-- **`credentials/ScrapeUnblockerApi.credentials.ts`** — the `scrapeUnblockerApi` credential. Auth is the API key sent as the `x-scrapeunblocker-key` header. `test` defines the "test credential" probe n8n runs in the UI.
+- **`nodes/ScrapeUnblocker/ScrapeUnblocker.node.ts`** - the node. **Resource + Operation**: `webPage` (hand-written: *Get Page Source* -> `POST /getPageSource`, *Get Image* -> `POST /getImage` as binary) is the default, so nodes saved before resources existed keep working; every other resource is one site served by an API plugin endpoint.
+- **Plugin resources are generated.** `plugins/specs/<resource>.json` (one per site) -> `node scripts/generate-plugins.mjs` -> `nodes/ScrapeUnblocker/PluginsDescription.ts` (parameters) and `PluginOperations.ts` (endpoint + parameter mapping). Never edit those two by hand. The generator validates every spec against `plugins/openapi.json` (the API's public OpenAPI), and also refreshes the README operations table and the codex aliases. Spec format and rules: `plugins/README.md`.
+- **`nodes/ScrapeUnblocker/GenericFunctions.ts`** - plugin calls: query building from fields/Options/Sort, the request, error messages, splitting the answer into items (`listKey`/`listKeys`/`itemKey`) and the Simplify / AI tool Output shaping.
+- **`credentials/ScrapeUnblockerApi.credentials.ts`** - the `scrapeUnblockerApi` credential. Auth is the API key sent as the `x-scrapeunblocker-key` header. `test` defines the "test credential" probe n8n runs in the UI.
 
-The two are linked by the credential `name` string `scrapeUnblockerApi` — the node references it in its `credentials` array and in the `httpRequestWithAuthentication` call. Keep these three string literals in sync if renaming.
+The two are linked by the credential `name` string `scrapeUnblockerApi` - the node references it in its `credentials` array and in every `httpRequestWithAuthentication` call. Keep these string literals in sync if renaming.
 
 ### Conventions that matter here
 
-- **Parameter `name` = API query key.** Node parameter names (`url`, `proxy_country`, `method`, `value`, `parsed_data`) are sent verbatim as query-string keys to the API, so they use snake_case rather than the camelCase you'd normally expect in TS. Don't "fix" the casing.
-- **Conditional fields** use `displayOptions.show` (e.g. `value` only appears when `method` is one of the selector strategies). Optional params are omitted from the query unless set, so the API receives a minimal request.
-- **Error handling** must respect `this.continueOnFail()`: on failure, push `{ json: { error } }` for that item instead of throwing; otherwise wrap in `NodeApiError`. Preserve this pattern when adding logic.
-- `usableAsTool: true` exposes the node to n8n AI Agents — keep parameter `description` fields accurate, as agents read them.
-- Icons are SVGs referenced as `file:scrapeunblocker.svg`; the file lives next to each class and is copied into `dist/` at build.
+- **Parameter `name` = API query key.** Node parameter names are sent verbatim as query-string keys (`url`, `proxy_country`, `keyword`...), so they use snake_case. Don't "fix" the casing; a spec sets `name` only when two endpoints use the same key with different types.
+- **Adding a plugin:** new/changed spec -> `node scripts/generate-plugins.mjs` -> `npm run lint && npm run build` -> `SCRAPEUNBLOCKER_API_KEY=... node scripts/e2e-plugins.mjs <resource>` (docker n8n, real billed API calls). Refresh `plugins/openapi.json` from the API first when the endpoint is new. A plugin that is broken API-side stays in its spec with `"disabled": "<reason>"`.
+- **Error handling** must respect `this.continueOnFail()`: on failure, push `{ json: { error } }` for that item instead of throwing; otherwise wrap in `NodeApiError`.
+- `usableAsTool: true` exposes the node to n8n AI Agents - keep parameter `description` fields accurate, as agents read them. The AI tool shows *Output* (Simplified / Raw / Selected Fields) where the node shows *Simplify* (`'@tool'` display condition).
+- The n8n linter (`@n8n/node-cli`) is the authority on casing: it forces sentence case on actions (brands as one lowercase word) and Title Case on display names.
 
 ## Releasing
 

@@ -1,0 +1,108 @@
+{
+	"resource": "Oopbuy",
+	"value": "oopbuy",
+	"operations": [
+		{
+			"name": "Search Products",
+			"value": "searchProducts",
+			"action": "Search oopbuy products",
+			"description": "Find products from 1688, Taobao or Oopbuy's own store that match a keyword, with USD prices",
+			"endpoint": "/goods/oopbuy-search",
+			"fields": [
+				{
+					"param": "keyword",
+					"displayName": "Search Query",
+					"type": "string",
+					"required": true,
+					"placeholder": "hoodie",
+					"description": "What to search for. Oopbuy refuses brand names (such as nike), and those searches return no products."
+				},
+				{
+					"param": "page",
+					"displayName": "Page",
+					"type": "number",
+					"default": 1,
+					"min": 1,
+					"description": "Which results page to return"
+				}
+			],
+			"options": [
+				{
+					"param": "page_size",
+					"displayName": "Products Per Page",
+					"type": "number",
+					"default": 20,
+					"min": 1,
+					"max": 60,
+					"description": "How many products one page holds (up to 60)"
+				},
+				{
+					"param": "channel",
+					"displayName": "Source Marketplace",
+					"type": "options",
+					"default": "1688",
+					"description": "Which marketplace Oopbuy searches",
+					"options": [
+						{
+							"name": "1688",
+							"value": "1688"
+						},
+						{
+							"name": "Oopbuy Official Store",
+							"value": "official"
+						},
+						{
+							"name": "Taobao",
+							"value": "taobao"
+						}
+					]
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Oopbuy is opened from"
+				}
+			],
+			"sort": [
+				{
+					"param": "sort",
+					"displayName": "Sort By",
+					"type": "options",
+					"default": "default",
+					"description": "The order of the products",
+					"options": [
+						{
+							"name": "Best Selling",
+							"value": "best_selling"
+						},
+						{
+							"name": "Default",
+							"value": "default"
+						},
+						{
+							"name": "Price: Highest First",
+							"value": "price_desc"
+						},
+						{
+							"name": "Price: Lowest First",
+							"value": "price_asc"
+						}
+					]
+				}
+			],
+			"listKey": "results",
+			"test": {
+				"params": {
+					"keyword": "hoodie"
+				},
+				"options": {
+					"page_size": 5
+				},
+				"minItems": 5,
+				"maxFields": 10
+			}
+		}
+	]
+}

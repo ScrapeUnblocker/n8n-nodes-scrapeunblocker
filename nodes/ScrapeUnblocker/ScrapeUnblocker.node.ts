@@ -10,7 +10,12 @@ import {
 	IN8nHttpFullResponse,
 	INodePropertyOptions,
 	JsonObject,
+	INodeProperties,
 } from 'n8n-workflow';
+
+import { API_URL, callPlugin, pluginQuery, resultItems, shapeItems } from './GenericFunctions';
+import { PLUGIN_OPERATIONS } from './PluginOperations';
+import { pluginProperties, resourceProperty } from './PluginsDescription';
 
 const TARGET_GONE = new Set([404, 410]);
 
@@ -27,6 +32,28 @@ function targetGoneStatus(status: number, originStatus: unknown): number | null 
 	return TARGET_GONE.has(status) ? status : null;
 }
 
+// URL and country serve both Web Page operations; the rest belongs to Get Page Source only.
+const SHARED_WEB_PAGE_PARAMETERS = ['url', 'proxy_country'];
+
+/** The Web Page parameters keep the API's query keys as names, as before resources existed. */
+function webPageParameter(property: INodeProperties): INodeProperties {
+	const operation = SHARED_WEB_PAGE_PARAMETERS.includes(property.name)
+		? ['getImage', 'getPageSource']
+		: ['getPageSource'];
+	const show = {
+		resource: ['webPage'],
+		operation,
+		...(property.displayOptions?.show ?? {}),
+	};
+	return { ...property, displayOptions: { show } };
+}
+
+function imageFileName(url: string): string {
+	const last = url.split('?')[0].split('/').pop() ?? '';
+	const base = last.replace(/\.[a-z0-9]+$/i, '') || 'image';
+	return `${base}.png`;
+}
+
 export class ScrapeUnblocker implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'ScrapeUnblocker',
@@ -37,8 +64,10 @@ export class ScrapeUnblocker implements INodeType {
 		},
 		group: ['transform'],
 		version: 1,
-		subtitle: '={{$parameter["url"]}}',
-		description: 'Unblock and scrape any website using ScrapeUnblocker API',
+		subtitle:
+			'={{$parameter["resource"] === "webPage" ? $parameter["url"] : $parameter["operation"] + ": " + $parameter["resource"]}}',
+		description:
+			'Unblock and scrape any website, or get structured data from Amazon, eBay, Google, TikTok and many more sites, with the ScrapeUnblocker API',
 		defaults: {
 			name: 'ScrapeUnblocker',
 		},
@@ -55,109 +84,144 @@ export class ScrapeUnblocker implements INodeType {
 			},
 		],
 		properties: [
+			resourceProperty,
 			{
-				displayName: 'URL',
-				name: 'url',
-				type: 'string',
-				default: '',
-				placeholder: 'https://example.com',
-				required: true,
-				description: 'The URL of the webpage you want to fetch',
-			},
-			{
-				displayName: 'Proxy Country',
-				name: 'proxy_country',
+				displayName: 'Operation',
+				name: 'operation',
 				type: 'options',
-				default: '',
-				description: 'The country of the proxy to use. If not specified, a random proxy from a European country will be used.',
+				noDataExpression: true,
+				displayOptions: { show: { resource: ['webPage'] } },
 				options: [
-					{ name: 'Random (European)', value: '' },
-					{ name: 'Austria (AT)', value: 'AT' },
-					{ name: 'Belgium (BE)', value: 'BE' },
-					{ name: 'Brazil (BR)', value: 'BR' },
-					{ name: 'Bulgaria (BG)', value: 'BG' },
-					{ name: 'Canada (CA)', value: 'CA' },
-					{ name: 'China (CN)', value: 'CN' },
-					{ name: 'Croatia (HR)', value: 'HR' },
-					{ name: 'Denmark (DK)', value: 'DK' },
-					{ name: 'Estonia (EE)', value: 'EE' },
-					{ name: 'France (FR)', value: 'FR' },
-					{ name: 'Germany (DE)', value: 'DE' },
-					{ name: 'Greece (GR)', value: 'GR' },
-					{ name: 'Hong Kong (HK)', value: 'HK' },
-					{ name: 'Ireland (IE)', value: 'IE' },
-					{ name: 'Israel (IL)', value: 'IL' },
-					{ name: 'Italy (IT)', value: 'IT' },
-					{ name: 'Japan (JP)', value: 'JP' },
-					{ name: 'Latvia (LV)', value: 'LV' },
-					{ name: 'Lithuania (LT)', value: 'LT' },
-					{ name: 'Luxembourg (LU)', value: 'LU' },
-					{ name: 'Moldova (MD)', value: 'MD' },
-					{ name: 'Netherlands (NL)', value: 'NL' },
-					{ name: 'Norway (NO)', value: 'NO' },
-					{ name: 'Poland (PL)', value: 'PL' },
-					{ name: 'Romania (RO)', value: 'RO' },
-					{ name: 'Serbia (RS)', value: 'RS' },
-					{ name: 'Singapore (SG)', value: 'SG' },
-					{ name: 'South Korea (KR)', value: 'KR' },
-					{ name: 'Spain (ES)', value: 'ES' },
-					{ name: 'Sweden (SE)', value: 'SE' },
-					{ name: 'Switzerland (CH)', value: 'CH' },
-					{ name: 'Taiwan (TW)', value: 'TW' },
-					{ name: 'Thailand (TH)', value: 'TH' },
-					{ name: 'Turkey (TR)', value: 'TR' },
-					{ name: 'United Kingdom (GB)', value: 'GB' },
-					{ name: 'United States (US)', value: 'US' },
-				] as INodePropertyOptions[],
-			},
-			{
-				displayName: 'Wait for Element Method',
-				name: 'method',
-				type: 'options',
-				default: '',
-				description: 'Selector strategy to wait for a specific element before capturing HTML. Must be used together with "Wait for Element Value".',
-				options: [
-					{ name: 'None', value: '' },
-					{ name: 'CSS', value: 'css' },
-					{ name: 'XPath', value: 'xPath' },
-					{ name: 'Class Name', value: 'className' },
-					{ name: 'Tag Name', value: 'tagName' },
-				] as INodePropertyOptions[],
-			},
-			{
-				displayName: 'Wait for Element Value',
-				name: 'value',
-				type: 'string',
-				default: '',
-				description: 'The selector string to wait for, interpreted according to the selected method. Returns once the element appears (20 second timeout).',
-				displayOptions: {
-					show: {
-						method: ['css', 'xPath', 'className', 'tagName'],
+					{
+						name: 'Get Image',
+						value: 'getImage',
+						description: 'Download one image from a protected site as a PNG file',
+						action: 'Get image',
 					},
-				},
+					{
+						name: 'Get Page Source',
+						value: 'getPageSource',
+						description: "Fetch any page's HTML (or structured JSON) past anti-bot protection",
+						action: 'Get page source',
+					},
+				],
+				default: 'getPageSource',
 			},
-			{
-				displayName: 'Parsed Data',
-				name: 'parsed_data',
-				type: 'boolean',
-				default: false,
-				description: 'Whether to return structured JSON extracted from the page for supported domains instead of raw HTML',
-			},
-			{
-				displayName: 'Browser Steps',
-				name: 'steps',
-				type: 'json',
-				default: '',
-				placeholder: '[{"action":"wait_for","selector":".main-content"},{"action":"click","selector":"#load-more"}]',
-				description: 'A JSON array of browser actions to run in a real browser after the page loads, before the HTML is captured. Supported actions: wait_for, wait_for_text, wait, click, type, select, press_key, scroll. Leave empty to skip. A failing step returns an HTTP 422 error describing which step failed.',
-			},
-			{
-				displayName: 'List Elements',
-				name: 'list_elements',
-				type: 'boolean',
-				default: false,
-				description: 'Whether to return structured JSON listing the elements found on the page (with a total count and per-element details) instead of raw HTML',
-			},
+			...(
+				[
+					{
+						displayName: 'URL',
+						name: 'url',
+						type: 'string',
+						default: '',
+						placeholder: 'e.g. https://example.com',
+						required: true,
+						description: 'The URL of the webpage (or, for Get Image, the image) to fetch',
+					},
+					{
+						displayName: 'Browse From Country',
+						name: 'proxy_country',
+						type: 'options',
+						default: '',
+						description:
+							'The country the site is opened from. Random (European) picks a European country.',
+						options: [
+							{ name: 'Random (European)', value: '' },
+							{ name: 'Austria (AT)', value: 'AT' },
+							{ name: 'Belgium (BE)', value: 'BE' },
+							{ name: 'Brazil (BR)', value: 'BR' },
+							{ name: 'Bulgaria (BG)', value: 'BG' },
+							{ name: 'Canada (CA)', value: 'CA' },
+							{ name: 'China (CN)', value: 'CN' },
+							{ name: 'Croatia (HR)', value: 'HR' },
+							{ name: 'Denmark (DK)', value: 'DK' },
+							{ name: 'Estonia (EE)', value: 'EE' },
+							{ name: 'France (FR)', value: 'FR' },
+							{ name: 'Germany (DE)', value: 'DE' },
+							{ name: 'Greece (GR)', value: 'GR' },
+							{ name: 'Hong Kong (HK)', value: 'HK' },
+							{ name: 'Ireland (IE)', value: 'IE' },
+							{ name: 'Israel (IL)', value: 'IL' },
+							{ name: 'Italy (IT)', value: 'IT' },
+							{ name: 'Japan (JP)', value: 'JP' },
+							{ name: 'Latvia (LV)', value: 'LV' },
+							{ name: 'Lithuania (LT)', value: 'LT' },
+							{ name: 'Luxembourg (LU)', value: 'LU' },
+							{ name: 'Moldova (MD)', value: 'MD' },
+							{ name: 'Netherlands (NL)', value: 'NL' },
+							{ name: 'Norway (NO)', value: 'NO' },
+							{ name: 'Poland (PL)', value: 'PL' },
+							{ name: 'Romania (RO)', value: 'RO' },
+							{ name: 'Serbia (RS)', value: 'RS' },
+							{ name: 'Singapore (SG)', value: 'SG' },
+							{ name: 'South Korea (KR)', value: 'KR' },
+							{ name: 'Spain (ES)', value: 'ES' },
+							{ name: 'Sweden (SE)', value: 'SE' },
+							{ name: 'Switzerland (CH)', value: 'CH' },
+							{ name: 'Taiwan (TW)', value: 'TW' },
+							{ name: 'Thailand (TH)', value: 'TH' },
+							{ name: 'Turkey (TR)', value: 'TR' },
+							{ name: 'United Kingdom (GB)', value: 'GB' },
+							{ name: 'United States (US)', value: 'US' },
+						] as INodePropertyOptions[],
+					},
+					{
+						displayName: 'Wait for Element Method',
+						name: 'method',
+						type: 'options',
+						default: '',
+						description:
+							'Selector strategy to wait for a specific element before capturing HTML. Must be used together with "Wait for Element Value".',
+						options: [
+							{ name: 'None', value: '' },
+							{ name: 'CSS', value: 'css' },
+							{ name: 'XPath', value: 'xPath' },
+							{ name: 'Class Name', value: 'className' },
+							{ name: 'Tag Name', value: 'tagName' },
+						] as INodePropertyOptions[],
+					},
+					{
+						displayName: 'Wait for Element Value',
+						name: 'value',
+						type: 'string',
+						default: '',
+						description:
+							'The selector string to wait for, interpreted according to the selected method. Returns once the element appears (20 second timeout).',
+						displayOptions: {
+							show: {
+								method: ['css', 'xPath', 'className', 'tagName'],
+							},
+						},
+					},
+					{
+						displayName: 'Parsed Data',
+						name: 'parsed_data',
+						type: 'boolean',
+						default: false,
+						description:
+							'Whether to return structured JSON extracted from the page for supported domains instead of raw HTML',
+					},
+					{
+						displayName: 'Browser Steps',
+						name: 'steps',
+						type: 'json',
+						default: '',
+						placeholder:
+							'[{"action":"wait_for","selector":".main-content"},{"action":"click","selector":"#load-more"}]',
+						description:
+							'A JSON array of browser actions to run in a real browser after the page loads, before the HTML is captured. Supported actions: wait_for, wait_for_text, wait, click, type, select, press_key, scroll. Leave empty to skip. A failing step returns an HTTP 422 error describing which step failed.',
+					},
+					{
+						displayName: 'List Elements',
+						name: 'list_elements',
+						type: 'boolean',
+						default: false,
+						description:
+							'Whether to return structured JSON listing the elements found on the page (with a total count and per-element details) instead of raw HTML',
+					},
+				] as INodeProperties[]
+			).map(webPageParameter),
+			...pluginProperties,
 		],
 	};
 
@@ -167,6 +231,29 @@ export class ScrapeUnblocker implements INodeType {
 
 		for (let i = 0; i < items.length; i++) {
 			try {
+				const resource = this.getNodeParameter('resource', i) as string;
+				if (resource !== 'webPage') {
+					const operation = this.getNodeParameter('operation', i) as string;
+					const plugin = PLUGIN_OPERATIONS[`${resource}:${operation}`];
+					if (!plugin) {
+						throw new NodeOperationError(
+							this.getNode(),
+							`The operation '${operation}' is not supported for resource '${resource}'`,
+							{ itemIndex: i },
+						);
+					}
+					const body = await callPlugin.call(this, plugin, pluginQuery.call(this, plugin, i), i);
+					for (const item of shapeItems.call(this, resultItems(plugin, body), plugin.shape, i)) {
+						returnData.push({ json: item, pairedItem: i });
+					}
+					continue;
+				}
+
+				if (this.getNodeParameter('operation', i) === 'getImage') {
+					returnData.push(await getImage.call(this, i));
+					continue;
+				}
+
 				const url = this.getNodeParameter('url', i) as string;
 				const proxyCountry = this.getNodeParameter('proxy_country', i) as string;
 				const method = this.getNodeParameter('method', i) as string;
@@ -223,7 +310,7 @@ export class ScrapeUnblocker implements INodeType {
 
 				const options: IHttpRequestOptions = {
 					method: 'POST',
-					url: 'https://api.scrapeunblocker.com/getPageSource',
+					url: `${API_URL}/getPageSource`,
 					qs: query,
 					json: true,
 					returnFullResponse: true,
@@ -262,7 +349,10 @@ export class ScrapeUnblocker implements INodeType {
 						typeof response.body === 'string' ? response.body : JSON.stringify(response.body);
 					throw new NodeApiError(
 						this.getNode(),
-						{ message: body, httpCode: String(response.statusCode) } as JsonObject,
+						{
+							message: body,
+							httpCode: String(response.statusCode),
+						} as JsonObject,
 						{ itemIndex: i, httpCode: String(response.statusCode) },
 					);
 				}
@@ -278,4 +368,43 @@ export class ScrapeUnblocker implements INodeType {
 		}
 		return [returnData];
 	}
+}
+
+/** Downloads one image through `/getImage` and returns it as binary data (PNG). */
+async function getImage(this: IExecuteFunctions, itemIndex: number): Promise<INodeExecutionData> {
+	const url = this.getNodeParameter('url', itemIndex) as string;
+	const proxyCountry = this.getNodeParameter('proxy_country', itemIndex, '') as string;
+	const qs: Record<string, string> = { url };
+	if (proxyCountry) {
+		qs.proxy_country = proxyCountry;
+	}
+	const response = (await this.helpers.httpRequestWithAuthentication.call(
+		this,
+		'scrapeUnblockerApi',
+		{
+			method: 'POST',
+			url: `${API_URL}/getImage`,
+			qs,
+			encoding: 'arraybuffer',
+			returnFullResponse: true,
+			ignoreHttpStatusErrors: true,
+		},
+	)) as IN8nHttpFullResponse;
+	const body = Buffer.from(response.body as ArrayBuffer);
+	if (response.statusCode >= 400) {
+		throw new NodeApiError(
+			this.getNode(),
+			{
+				message: body.toString('utf8').slice(0, 500),
+				httpCode: String(response.statusCode),
+			} as JsonObject,
+			{ itemIndex, httpCode: String(response.statusCode) },
+		);
+	}
+	const binary = await this.helpers.prepareBinaryData(body, imageFileName(url), 'image/png');
+	return {
+		json: { url, fileName: binary.fileName, mimeType: binary.mimeType, fileSize: binary.fileSize },
+		binary: { data: binary },
+		pairedItem: itemIndex,
+	};
 }

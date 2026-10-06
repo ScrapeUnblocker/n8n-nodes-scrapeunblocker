@@ -1,0 +1,416 @@
+{
+	"resource": "YouTube",
+	"value": "youtube",
+	"operations": [
+		{
+			"name": "Get Channel Videos",
+			"value": "getChannelVideos",
+			"action": "Get youtube channel videos",
+			"description": "Retrieve the newest videos, shorts or live streams of a channel",
+			"endpoint": "/content/youtube-channel",
+			"fields": [
+				{
+					"param": "channel",
+					"displayName": "Channel",
+					"type": "string",
+					"required": true,
+					"placeholder": "@NASA",
+					"description": "The channel's handle (@NASA), channel ID (UC...) or channel URL"
+				},
+				{
+					"param": "limit",
+					"name": "max_videos",
+					"displayName": "Max Videos",
+					"type": "number",
+					"default": 30,
+					"min": 1,
+					"max": 200,
+					"description": "How many of the channel's newest videos to return (1-200). Only the Videos tab follows it; Shorts and Live return one page."
+				}
+			],
+			"options": [
+				{
+					"param": "tab",
+					"displayName": "Tab",
+					"type": "options",
+					"default": "videos",
+					"description": "Which tab of the channel to read",
+					"options": [
+						{
+							"name": "Videos",
+							"value": "videos"
+						},
+						{
+							"name": "Shorts",
+							"value": "shorts"
+						},
+						{
+							"name": "Live",
+							"value": "streams"
+						}
+					]
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country YouTube is opened from. Automatic picks a suitable one."
+				}
+			],
+			"listKey": "videos",
+			"outputFields": [
+				"videoId",
+				"title",
+				"url",
+				"thumbnail",
+				"views",
+				"published",
+				"viewCount",
+				"likeCount",
+				"commentCount",
+				"publishedAt",
+				"duration",
+				"durationSeconds",
+				"description"
+			],
+			"idField": "videoId",
+			"simplify": [
+				"videoId",
+				"title",
+				"viewCount",
+				"views",
+				"likeCount",
+				"publishedAt",
+				"durationSeconds",
+				"description",
+				"url",
+				"thumbnail"
+			],
+			"test": {
+				"params": {
+					"channel": "@NASA",
+					"max_videos": 3
+				},
+				"minItems": 2,
+				"maxFields": 10
+			}
+		},
+		{
+			"name": "Get Comments",
+			"value": "getComments",
+			"action": "Get youtube video comments",
+			"description": "Retrieve the comments of a video with likes, replies and pinned or hearted flags",
+			"endpoint": "/content/youtube-comments",
+			"fields": [
+				{
+					"param": "video",
+					"displayName": "Video",
+					"type": "string",
+					"required": true,
+					"placeholder": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+					"description": "The video's URL (watch, youtu.be or Shorts link) or its 11-character ID"
+				},
+				{
+					"param": "max_results",
+					"displayName": "Max Comments",
+					"type": "number",
+					"default": 20,
+					"min": 1,
+					"max": 2000,
+					"description": "How many comments to collect (1-2000). They come about 20 per page."
+				}
+			],
+			"options": [
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country YouTube is opened from. Automatic uses the US."
+				}
+			],
+			"sort": [
+				{
+					"param": "sort",
+					"displayName": "Sort By",
+					"type": "options",
+					"default": "top",
+					"description": "The order of the comments",
+					"options": [
+						{
+							"name": "Top Comments",
+							"value": "top"
+						},
+						{
+							"name": "Newest First",
+							"value": "newest"
+						}
+					]
+				}
+			],
+			"listKey": "comments",
+			"outputFields": [
+				"commentId",
+				"author",
+				"authorChannelId",
+				"authorThumbnail",
+				"text",
+				"likeCount",
+				"likeCountText",
+				"publishedTimeText",
+				"replyCount",
+				"isPinned",
+				"pinnedText",
+				"isHearted",
+				"isAuthorVerified",
+				"isUploader",
+				"replyLevel"
+			],
+			"idField": "commentId",
+			"simplify": [
+				"commentId",
+				"author",
+				"text",
+				"likeCount",
+				"replyCount",
+				"publishedTimeText",
+				"isPinned",
+				"isHearted",
+				"isUploader",
+				"authorChannelId"
+			],
+			"test": {
+				"params": {
+					"video": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+					"max_results": 3
+				},
+				"minItems": 2,
+				"maxFields": 10
+			}
+		},
+		{
+			"name": "Search",
+			"value": "search",
+			"action": "Search youtube",
+			"description": "Find videos, channels or playlists that match a keyword",
+			"endpoint": "/content/youtube-search",
+			"fields": [
+				{
+					"param": "query",
+					"displayName": "Search Query",
+					"type": "string",
+					"required": true,
+					"placeholder": "space telescope",
+					"description": "What to search for on YouTube"
+				},
+				{
+					"param": "max_results",
+					"displayName": "Max Results",
+					"type": "number",
+					"default": 20,
+					"min": 1,
+					"max": 500,
+					"description": "How many results to collect (1-500). They come about 20 per page."
+				}
+			],
+			"options": [
+				{
+					"param": "type",
+					"displayName": "Result Type",
+					"type": "options",
+					"default": "video",
+					"description": "Which kind of results to return",
+					"options": [
+						{
+							"name": "All",
+							"value": "all"
+						},
+						{
+							"name": "Channels",
+							"value": "channel"
+						},
+						{
+							"name": "Movies",
+							"value": "movie"
+						},
+						{
+							"name": "Playlists",
+							"value": "playlist"
+						},
+						{
+							"name": "Videos",
+							"value": "video"
+						}
+					]
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country YouTube is opened from. Automatic uses the US."
+				}
+			],
+			"sort": [
+				{
+					"param": "sort",
+					"displayName": "Sort By",
+					"type": "options",
+					"default": "relevance",
+					"description": "The order of the results",
+					"options": [
+						{
+							"name": "Rating",
+							"value": "rating"
+						},
+						{
+							"name": "Relevance",
+							"value": "relevance"
+						},
+						{
+							"name": "Upload Date",
+							"value": "date"
+						},
+						{
+							"name": "View Count",
+							"value": "views"
+						}
+					]
+				}
+			],
+			"listKey": "results",
+			"outputFields": [
+				"type",
+				"videoId",
+				"title",
+				"url",
+				"channel",
+				"publishedText",
+				"viewCountText",
+				"viewCount",
+				"shortViewCountText",
+				"lengthText",
+				"lengthSeconds",
+				"thumbnails",
+				"descriptionSnippet",
+				"badges",
+				"verified",
+				"isLive",
+				"channelId",
+				"handle",
+				"subscriberText"
+			],
+			"idField": "videoId",
+			"simplify": [
+				"type",
+				"videoId",
+				"title",
+				"channel.name",
+				"viewCount",
+				"publishedText",
+				"lengthSeconds",
+				"descriptionSnippet",
+				"isLive",
+				"url"
+			],
+			"test": {
+				"params": {
+					"query": "space telescope",
+					"max_results": 3
+				},
+				"minItems": 2,
+				"maxFields": 10
+			}
+		},
+		{
+			"name": "Get Transcript",
+			"value": "getTranscript",
+			"action": "Get youtube video transcript",
+			"description": "Retrieve a video's captions as timestamped segments and plain text",
+			"endpoint": "/content/youtube-transcript",
+			"fields": [
+				{
+					"param": "video",
+					"displayName": "Video",
+					"type": "string",
+					"required": true,
+					"placeholder": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+					"description": "The video's URL (watch, youtu.be or Shorts link) or its 11-character ID"
+				}
+			],
+			"options": [
+				{
+					"param": "lang",
+					"displayName": "Language",
+					"type": "string",
+					"placeholder": "en",
+					"description": "The caption language code to prefer (en also matches en-US). Empty takes the video's default captions."
+				},
+				{
+					"param": "format",
+					"displayName": "Format",
+					"type": "options",
+					"default": "segments",
+					"description": "Whether to return timestamped segments together with the joined text, or the text only",
+					"options": [
+						{
+							"name": "Segments and Text",
+							"value": "segments"
+						},
+						{
+							"name": "Text Only",
+							"value": "text"
+						}
+					]
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country YouTube is opened from. Automatic uses the US."
+				}
+			],
+			"outputFields": [
+				"videoId",
+				"title",
+				"author",
+				"channelId",
+				"lengthSeconds",
+				"viewCount",
+				"language",
+				"languageName",
+				"isAutoGenerated",
+				"isTranslatable",
+				"availableLanguages",
+				"segmentCount",
+				"segments",
+				"text"
+			],
+			"idField": "videoId",
+			"simplify": [
+				"videoId",
+				"title",
+				"author",
+				"lengthSeconds",
+				"language",
+				"isAutoGenerated",
+				"availableLanguages",
+				"text",
+				"segments"
+			],
+			"test": {
+				"params": {
+					"video": "csIry_3pbDU"
+				},
+				"options": {
+					"format": "text"
+				},
+				"minItems": 1,
+				"maxFields": 10
+			},
+			"disabled": "The caption text cannot be retrieved from YouTube (502 on every try, 2026-10-06)"
+		}
+	]
+}

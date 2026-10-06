@@ -1,0 +1,251 @@
+{
+	"resource": "Tripadvisor",
+	"value": "tripadvisor",
+	"operations": [
+		{
+			"name": "Get List",
+			"value": "getList",
+			"action": "Get a tripadvisor list of places",
+			"description": "Get the restaurants, hotels or things to do of a city from its Tripadvisor list page",
+			"endpoint": "/travel/tripadvisor",
+			"fields": [
+				{
+					"param": "url",
+					"displayName": "List URL",
+					"type": "string",
+					"required": true,
+					"placeholder": "https://www.tripadvisor.com/Restaurants-g60763-New_York_City_New_York.html",
+					"description": "A Tripadvisor list page of restaurants, hotels or things to do in a city or area"
+				},
+				{
+					"param": "max_results",
+					"displayName": "Max Results",
+					"type": "number",
+					"default": 30,
+					"min": 1,
+					"max": 1020,
+					"description": "How many places to collect. A list page holds about 30 places, and large numbers take a while."
+				}
+			],
+			"options": [
+				{
+					"param": "page",
+					"displayName": "Start Page",
+					"type": "number",
+					"default": 1,
+					"min": 1,
+					"max": 34,
+					"description": "Which page of the list to start from"
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Tripadvisor is opened from. Automatic picks a suitable one."
+				}
+			],
+			"listKey": "places",
+			"outputFields": [
+				"name",
+				"type",
+				"url",
+				"image",
+				"rating",
+				"reviewCount",
+				"priceRange",
+				"cuisine",
+				"phone",
+				"address",
+				"postalCode",
+				"country",
+				"coordinates"
+			],
+			"idField": "url",
+			"simplify": [
+				"name",
+				"type",
+				"rating",
+				"reviewCount",
+				"priceRange",
+				"cuisine",
+				"address",
+				"phone",
+				"url",
+				"image"
+			],
+			"test": {
+				"params": {
+					"url": "https://www.tripadvisor.com/Restaurants-g187147-Paris_Ile_de_France.html",
+					"max_results": 5
+				},
+				"minItems": 3,
+				"maxFields": 10
+			}
+		},
+		{
+			"name": "Get Reviews",
+			"value": "getReviews",
+			"action": "Get tripadvisor reviews",
+			"description": "Get the reviews of a hotel, restaurant or attraction, newest first",
+			"endpoint": "/travel/tripadvisor-reviews",
+			"fields": [
+				{
+					"param": "url",
+					"displayName": "Place URL",
+					"type": "string",
+					"placeholder": "https://www.tripadvisor.com/Hotel_Review-g60763-d93589-Reviews-The_Michelangelo_New_York-New_York_City_New_York.html",
+					"description": "The review page of a hotel, restaurant or attraction on any Tripadvisor site. Enter this or a Location ID in Options."
+				},
+				{
+					"param": "max_reviews",
+					"displayName": "Max Reviews",
+					"type": "number",
+					"default": 20,
+					"min": 1,
+					"max": 200,
+					"description": "How many reviews to collect. A page holds 10 reviews (15 for restaurants), and each page read is one billed call."
+				}
+			],
+			"options": [
+				{
+					"param": "location_id",
+					"displayName": "Location ID",
+					"type": "string",
+					"placeholder": "93589",
+					"description": "Tripadvisor's ID of the place: the digits after -d in its URL. Enter this or a Place URL."
+				},
+				{
+					"param": "page",
+					"displayName": "Start Page",
+					"type": "number",
+					"default": 1,
+					"min": 1,
+					"max": 500,
+					"description": "Which review page to start from (10 reviews per page, 15 for restaurants)"
+				},
+				{
+					"param": "language",
+					"displayName": "Review Language",
+					"type": "options",
+					"default": "",
+					"description": "Which language's reviews to read. Automatic uses the language of the Tripadvisor site in the URL. Reviews written in other languages come machine-translated.",
+					"options": [
+						{
+							"name": "Automatic",
+							"value": ""
+						},
+						{
+							"name": "Danish",
+							"value": "da"
+						},
+						{
+							"name": "Dutch",
+							"value": "nl"
+						},
+						{
+							"name": "English",
+							"value": "en"
+						},
+						{
+							"name": "French",
+							"value": "fr"
+						},
+						{
+							"name": "German",
+							"value": "de"
+						},
+						{
+							"name": "Italian",
+							"value": "it"
+						},
+						{
+							"name": "Japanese",
+							"value": "ja"
+						},
+						{
+							"name": "Korean",
+							"value": "ko"
+						},
+						{
+							"name": "Portuguese",
+							"value": "pt"
+						},
+						{
+							"name": "Russian",
+							"value": "ru"
+						},
+						{
+							"name": "Spanish",
+							"value": "es"
+						},
+						{
+							"name": "Swedish",
+							"value": "sv"
+						},
+						{
+							"name": "Turkish",
+							"value": "tr"
+						}
+					]
+				},
+				{
+					"param": "since",
+					"displayName": "Published Since",
+					"type": "string",
+					"placeholder": "2026-01-01",
+					"description": "Only reviews published on or after this date (YYYY-MM-DD). Reading stops once older reviews start, which also saves pages."
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Tripadvisor is opened from. Keep Automatic: a fixed country makes the call much slower."
+				}
+			],
+			"listKey": "reviews",
+			"outputFields": [
+				"id",
+				"url",
+				"title",
+				"text",
+				"rating",
+				"publishedDate",
+				"travelDate",
+				"tripType",
+				"language",
+				"originalLanguage",
+				"isMachineTranslated",
+				"helpfulVotes",
+				"isOwnerFavorite",
+				"user",
+				"subratings",
+				"photos",
+				"ownerResponse"
+			],
+			"idField": "id",
+			"simplify": [
+				"id",
+				"rating",
+				"title",
+				"text",
+				"publishedDate",
+				"travelDate",
+				"tripType",
+				"user.name",
+				"user.location",
+				"url"
+			],
+			"test": {
+				"params": {
+					"url": "https://www.tripadvisor.com/Hotel_Review-g60763-d93589-Reviews-The_Michelangelo_New_York-New_York_City_New_York.html",
+					"max_reviews": 3
+				},
+				"minItems": 3,
+				"maxFields": 10
+			},
+			"disabled": "The API finds no review list on any review page (502, 2026-10-06)"
+		}
+	]
+}

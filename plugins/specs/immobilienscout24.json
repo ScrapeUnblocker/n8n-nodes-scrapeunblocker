@@ -1,0 +1,188 @@
+{
+	"resource": "ImmobilienScout24",
+	"value": "immobilienscout24",
+	"operations": [
+		{
+			"name": "Search Properties",
+			"value": "searchProperties",
+			"action": "Search immobilienscout24 properties",
+			"description": "Find apartments and houses for rent or for sale in a German city or region",
+			"endpoint": "/realestate/immobilienscout24",
+			"fields": [
+				{
+					"param": "location",
+					"displayName": "Location",
+					"type": "string",
+					"required": true,
+					"placeholder": "Berlin",
+					"description": "A German city (e.g. Berlin, Muenchen or Köln), a state (e.g. Bayern), or an area as written in ImmobilienScout24 web addresses, e.g. berlin/berlin/mitte"
+				},
+				{
+					"param": "max_results",
+					"displayName": "Max Results",
+					"type": "number",
+					"default": 20,
+					"min": 1,
+					"max": 500,
+					"description": "How many listings to return, collected across pages (20 per page)"
+				}
+			],
+			"options": [
+				{
+					"param": "channel",
+					"displayName": "Rent or Buy",
+					"type": "options",
+					"default": "rent",
+					"description": "Whether to search listings for rent or for sale",
+					"options": [
+						{
+							"name": "Buy",
+							"value": "buy"
+						},
+						{
+							"name": "Rent",
+							"value": "rent"
+						}
+					]
+				},
+				{
+					"param": "property_type",
+					"displayName": "Property Type",
+					"type": "options",
+					"default": "apartment",
+					"description": "Apartments or houses",
+					"options": [
+						{
+							"name": "Apartment",
+							"value": "apartment"
+						},
+						{
+							"name": "House",
+							"value": "house"
+						}
+					]
+				},
+				{
+					"param": "min_price",
+					"displayName": "Min Price (EUR)",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Lowest price in euros: the monthly rent without utilities when renting, the purchase price when buying. 0 means no minimum."
+				},
+				{
+					"param": "max_price",
+					"displayName": "Max Price (EUR)",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Highest price in euros: the monthly rent without utilities when renting, the purchase price when buying. 0 means no limit."
+				},
+				{
+					"param": "min_rooms",
+					"displayName": "Min Rooms",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Fewest rooms; half rooms are allowed, e.g. 2.5. 0 means any."
+				},
+				{
+					"param": "max_rooms",
+					"displayName": "Max Rooms",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Most rooms; half rooms are allowed, e.g. 3.5. 0 means no limit."
+				},
+				{
+					"param": "min_area",
+					"displayName": "Min Living Area (m²)",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Smallest living area in square metres. 0 means no minimum."
+				},
+				{
+					"param": "max_area",
+					"displayName": "Max Living Area (m²)",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Largest living area in square metres. 0 means no limit."
+				},
+				{
+					"param": "page",
+					"displayName": "Start Page",
+					"type": "number",
+					"default": 1,
+					"min": 1,
+					"description": "Which results page to start from (1 is the first page)"
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country ImmobilienScout24 is opened from. Automatic picks a suitable one."
+				}
+			],
+			"listKey": "listings",
+			"outputFields": [
+				"id",
+				"url",
+				"title",
+				"propertyType",
+				"price",
+				"currency",
+				"priceType",
+				"priceOnRequest",
+				"warmRent",
+				"livingArea",
+				"rooms",
+				"plotArea",
+				"address",
+				"street",
+				"postcode",
+				"city",
+				"district",
+				"coordinates",
+				"image",
+				"images",
+				"realtor",
+				"privateOffer",
+				"constructionYear",
+				"energyEfficiencyClass",
+				"tags",
+				"isNew",
+				"publishedAt"
+			],
+			"idField": "id",
+			"simplify": [
+				"id",
+				"title",
+				"price",
+				"priceType",
+				"warmRent",
+				"rooms",
+				"livingArea",
+				"address",
+				"realtor",
+				"url"
+			],
+			"test": {
+				"params": {
+					"location": "Berlin",
+					"max_results": 5
+				},
+				"minItems": 3,
+				"maxFields": 10
+			}
+		}
+	]
+}

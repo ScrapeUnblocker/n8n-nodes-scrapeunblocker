@@ -1,0 +1,49 @@
+{
+	"resource": "Threads",
+	"value": "threads",
+	"operations": [
+		{
+			"name": "Get Profile",
+			"value": "getProfile",
+			"action": "Get threads profile",
+			"description": "Retrieve a public profile with bio, follower count and recent posts",
+			"endpoint": "/social/threads-profile",
+			"fields": [
+				{
+					"param": "username",
+					"displayName": "Username",
+					"type": "string",
+					"required": true,
+					"placeholder": "zuck",
+					"description": "The Threads handle, with or without @, or the profile URL"
+				},
+				{
+					"param": "max_posts",
+					"displayName": "Max Posts",
+					"type": "number",
+					"default": 25,
+					"min": 1,
+					"max": 100,
+					"description": "How many recent posts to include in the profile's posts list (1-100). The profile page carries roughly the newest 10-25."
+				}
+			],
+			"options": [
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Threads is opened from. Automatic picks one that suits Threads."
+				}
+			],
+			"test": {
+				"params": {
+					"username": "zuck",
+					"max_posts": 3
+				},
+				"minItems": 1,
+				"maxFields": 10
+			}
+		}
+	]
+}

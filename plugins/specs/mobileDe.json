@@ -1,0 +1,253 @@
+{
+	"resource": "mobile.de",
+	"value": "mobileDe",
+	"operations": [
+		{
+			"name": "Search Listings",
+			"value": "searchListings",
+			"action": "Search car listings",
+			"description": "Find cars for sale in Germany by make and filters",
+			"endpoint": "/vehicles/mobile-de",
+			"fields": [
+				{
+					"param": "make",
+					"name": "mobileDeMake",
+					"displayName": "Make",
+					"type": "options",
+					"default": "bmw",
+					"description": "The car make to search. For a make that is not in this list, set Make ID in Options, which is used instead; one of the two is needed.",
+					"options": [
+						{
+							"name": "Audi",
+							"value": "audi"
+						},
+						{
+							"name": "BMW",
+							"value": "bmw"
+						},
+						{
+							"name": "Citroen",
+							"value": "citroen"
+						},
+						{
+							"name": "Dacia",
+							"value": "dacia"
+						},
+						{
+							"name": "Fiat",
+							"value": "fiat"
+						},
+						{
+							"name": "Ford",
+							"value": "ford"
+						},
+						{
+							"name": "Honda",
+							"value": "honda"
+						},
+						{
+							"name": "Hyundai",
+							"value": "hyundai"
+						},
+						{
+							"name": "Kia",
+							"value": "kia"
+						},
+						{
+							"name": "Mazda",
+							"value": "mazda"
+						},
+						{
+							"name": "Mercedes-Benz",
+							"value": "mercedes-benz"
+						},
+						{
+							"name": "MINI",
+							"value": "mini"
+						},
+						{
+							"name": "Nissan",
+							"value": "nissan"
+						},
+						{
+							"name": "Opel",
+							"value": "opel"
+						},
+						{
+							"name": "Peugeot",
+							"value": "peugeot"
+						},
+						{
+							"name": "Porsche",
+							"value": "porsche"
+						},
+						{
+							"name": "Renault",
+							"value": "renault"
+						},
+						{
+							"name": "SEAT",
+							"value": "seat"
+						},
+						{
+							"name": "Skoda",
+							"value": "skoda"
+						},
+						{
+							"name": "Suzuki",
+							"value": "suzuki"
+						},
+						{
+							"name": "Toyota",
+							"value": "toyota"
+						},
+						{
+							"name": "Volkswagen",
+							"value": "volkswagen"
+						},
+						{
+							"name": "Volvo",
+							"value": "volvo"
+						}
+					]
+				},
+				{
+					"param": "max_results",
+					"displayName": "Max Results",
+					"type": "number",
+					"default": 20,
+					"min": 1,
+					"max": 500,
+					"description": "How many listings to return, collected across pages (about 20 per page)"
+				}
+			],
+			"options": [
+				{
+					"param": "make_id",
+					"displayName": "Make ID",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "The number mobile.de uses for a make (e.g. 3500 is BMW), used instead of Make for makes that are not in its list. One of the two is needed. 0 uses Make."
+				},
+				{
+					"param": "fuel",
+					"displayName": "Fuel",
+					"type": "options",
+					"default": "",
+					"description": "Only cars with this fuel type",
+					"options": [
+						{
+							"name": "Any",
+							"value": ""
+						},
+						{
+							"name": "Diesel",
+							"value": "diesel"
+						},
+						{
+							"name": "Electric",
+							"value": "electric"
+						},
+						{
+							"name": "Hybrid",
+							"value": "hybrid"
+						},
+						{
+							"name": "Petrol",
+							"value": "petrol"
+						}
+					]
+				},
+				{
+					"param": "price_min",
+					"displayName": "Min Price (EUR)",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Lowest price to include, in euros. 0 means no minimum."
+				},
+				{
+					"param": "price_max",
+					"displayName": "Max Price (EUR)",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Highest price to include, in euros. 0 means no limit."
+				},
+				{
+					"param": "year_min",
+					"displayName": "First Registration From (Year)",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Earliest year of first registration, e.g. 2018. 0 means no limit."
+				},
+				{
+					"param": "mileage_max",
+					"displayName": "Max Mileage (Km)",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Highest mileage to include, in kilometres. 0 means no limit."
+				},
+				{
+					"param": "page",
+					"displayName": "Start Page",
+					"type": "number",
+					"default": 1,
+					"min": 1,
+					"max": 20,
+					"description": "Which results page to start from (1 is the first page)"
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country mobile.de is opened from. Automatic picks a suitable one."
+				}
+			],
+			"listKey": "listings",
+			"outputFields": [
+				"id",
+				"url",
+				"title",
+				"makeModel",
+				"price",
+				"priceFormatted",
+				"currency",
+				"firstRegistration",
+				"mileage",
+				"power",
+				"fuel"
+			],
+			"idField": "id",
+			"simplify": [
+				"id",
+				"title",
+				"makeModel",
+				"price",
+				"currency",
+				"firstRegistration",
+				"mileage",
+				"power.kw",
+				"fuel",
+				"url"
+			],
+			"test": {
+				"params": {
+					"mobileDeMake": "bmw",
+					"max_results": 5
+				},
+				"minItems": 3,
+				"maxFields": 10
+			}
+		}
+	]
+}

@@ -1,0 +1,429 @@
+{
+	"resource": "Skyscanner",
+	"value": "skyscanner",
+	"operations": [
+		{
+			"name": "Search Flights",
+			"value": "searchFlights",
+			"action": "Search skyscanner flights",
+			"description": "Find live flight itineraries and prices across airlines for a route and date",
+			"endpoint": "/flights/skyscanner-quotes",
+			"fields": [
+				{
+					"param": "origin",
+					"displayName": "Origin",
+					"type": "string",
+					"required": true,
+					"placeholder": "London",
+					"description": "Where to fly from: a city or airport name, or its airport code (e.g. LHR)"
+				},
+				{
+					"param": "dest",
+					"displayName": "Destination",
+					"type": "string",
+					"required": true,
+					"placeholder": "New York",
+					"description": "Where to fly to: a city or airport name, or its airport code (e.g. JFK)"
+				},
+				{
+					"param": "depart_date",
+					"displayName": "Departure Date",
+					"type": "string",
+					"required": true,
+					"placeholder": "2026-11-20",
+					"description": "Outbound date as YYYY-MM-DD"
+				}
+			],
+			"options": [
+				{
+					"param": "return_date",
+					"displayName": "Return Date",
+					"type": "string",
+					"placeholder": "2026-11-27",
+					"description": "Return date as YYYY-MM-DD for a round trip. Leave empty for a one-way search."
+				},
+				{
+					"param": "adults",
+					"displayName": "Adults",
+					"type": "number",
+					"default": 1,
+					"min": 1,
+					"max": 9,
+					"description": "Number of adult passengers"
+				},
+				{
+					"param": "cabin",
+					"displayName": "Cabin Class",
+					"type": "options",
+					"default": "economy",
+					"description": "The cabin class to price",
+					"options": [
+						{
+							"name": "Economy",
+							"value": "economy"
+						},
+						{
+							"name": "Premium Economy",
+							"value": "premium_economy"
+						},
+						{
+							"name": "Business",
+							"value": "business"
+						},
+						{
+							"name": "First",
+							"value": "first"
+						}
+					]
+				},
+				{
+					"param": "currency",
+					"displayName": "Currency",
+					"type": "string",
+					"default": "GBP",
+					"placeholder": "EUR",
+					"description": "Three-letter code of the currency the prices are in (e.g. EUR or USD)"
+				},
+				{
+					"param": "market",
+					"displayName": "Market",
+					"type": "string",
+					"default": "UK",
+					"placeholder": "US",
+					"description": "The country you book from, as Skyscanner's two-letter code (UK for the United Kingdom, US, DE...). It changes prices, booking sites and booking links."
+				},
+				{
+					"param": "locale",
+					"displayName": "Language",
+					"type": "string",
+					"default": "en-GB",
+					"placeholder": "en-US",
+					"description": "Language of the results, such as en-US or de-DE"
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Skyscanner is opened from. Automatic picks a suitable one."
+				}
+			],
+			"listKey": "itineraries.results",
+			"outputFields": [
+				"id",
+				"token",
+				"price",
+				"legs",
+				"isSelfTransfer",
+				"isProtectedSelfTransfer",
+				"farePolicy",
+				"fareAttributes",
+				"isMashUp",
+				"hasFlexibleOptions",
+				"score",
+				"pricingOptions",
+				"eco",
+				"tags"
+			],
+			"idField": "id",
+			"simplify": [
+				"id",
+				"price.raw",
+				"price.formatted",
+				"legs",
+				"farePolicy",
+				"isSelfTransfer",
+				"score",
+				"tags"
+			],
+			"test": {
+				"params": {
+					"origin": "LHR",
+					"dest": "JFK",
+					"depart_date": "2026-11-20"
+				},
+				"minItems": 10,
+				"maxFields": 10
+			}
+		},
+		{
+			"name": "Search Hotels",
+			"value": "searchHotels",
+			"action": "Search skyscanner hotels",
+			"description": "Find live hotel prices across booking sites for a destination and stay dates",
+			"endpoint": "/hotels/skyscanner-quotes",
+			"fields": [
+				{
+					"param": "destination",
+					"displayName": "Destination",
+					"type": "string",
+					"required": true,
+					"placeholder": "Paris",
+					"description": "The city or place to find hotels in"
+				},
+				{
+					"param": "checkin",
+					"displayName": "Check-In Date",
+					"type": "string",
+					"required": true,
+					"placeholder": "2026-11-20",
+					"description": "Check-in date as YYYY-MM-DD"
+				},
+				{
+					"param": "checkout",
+					"displayName": "Check-Out Date",
+					"type": "string",
+					"required": true,
+					"placeholder": "2026-11-22",
+					"description": "Check-out date as YYYY-MM-DD"
+				},
+				{
+					"param": "max_results",
+					"displayName": "Max Results",
+					"type": "number",
+					"default": 30,
+					"min": 1,
+					"max": 300,
+					"description": "About how many hotels to collect. Skyscanner returns them in pages of about 35, so a whole page comes back even for a smaller number."
+				}
+			],
+			"options": [
+				{
+					"param": "adults",
+					"displayName": "Adults",
+					"type": "number",
+					"default": 2,
+					"min": 1,
+					"max": 16,
+					"description": "Number of adult guests"
+				},
+				{
+					"param": "rooms",
+					"displayName": "Rooms",
+					"type": "number",
+					"default": 1,
+					"min": 1,
+					"max": 8,
+					"description": "Number of rooms"
+				},
+				{
+					"param": "currency",
+					"displayName": "Currency",
+					"type": "string",
+					"default": "GBP",
+					"placeholder": "EUR",
+					"description": "Three-letter code of the currency the prices are in (e.g. EUR or USD)"
+				},
+				{
+					"param": "market",
+					"displayName": "Market",
+					"type": "string",
+					"default": "UK",
+					"placeholder": "US",
+					"description": "The country you book from, as Skyscanner's two-letter code (UK for the United Kingdom, US, DE...). It changes prices and booking sites."
+				},
+				{
+					"param": "locale",
+					"displayName": "Language",
+					"type": "string",
+					"default": "en-GB",
+					"placeholder": "en-US",
+					"description": "Language of the results, such as en-US or de-DE"
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Skyscanner is opened from. Automatic picks a suitable one."
+				}
+			],
+			"listKey": "hotels",
+			"outputFields": [
+				"id",
+				"name",
+				"stars",
+				"distance",
+				"pivot",
+				"upsorted",
+				"detailsPageUrl",
+				"images",
+				"reviewSummary",
+				"inbound",
+				"cheapestPrice",
+				"partnerOffers",
+				"debugInfo",
+				"location",
+				"llmSummary",
+				"hotelContextToken",
+				"aiLabel",
+				"accommodationSpecs",
+				"highlightAmenities",
+				"priceBand",
+				"accommodationTypeInfo",
+				"partnerPriceStatus"
+			],
+			"idField": "id",
+			"simplify": [
+				"id",
+				"name",
+				"stars.level",
+				"cheapestPrice.pricePerNight.displayPrice",
+				"cheapestPrice.priceTotal.displayPrice",
+				"reviewSummary.score",
+				"reviewSummary.reviewCount",
+				"location.address",
+				"distance.distanceDescription",
+				"detailsPageUrl"
+			],
+			"test": {
+				"params": {
+					"destination": "Paris",
+					"checkin": "2026-11-20",
+					"checkout": "2026-11-22",
+					"max_results": 5
+				},
+				"minItems": 10,
+				"maxFields": 10
+			}
+		},
+		{
+			"name": "Search Car Hire",
+			"value": "searchCarHire",
+			"action": "Search skyscanner car hire",
+			"description": "Find live car rental offers from many suppliers for a pickup place and dates",
+			"endpoint": "/carhire/skyscanner-quotes",
+			"fields": [
+				{
+					"param": "pickup",
+					"displayName": "Pickup Location",
+					"type": "string",
+					"required": true,
+					"placeholder": "Madrid",
+					"description": "The city, airport or station to pick the car up at, by name"
+				},
+				{
+					"param": "pickup_datetime",
+					"displayName": "Pickup Date and Time",
+					"type": "string",
+					"required": true,
+					"placeholder": "2026-11-20T10:00",
+					"description": "When you pick the car up, as YYYY-MM-DDTHH:MM (24-hour clock)"
+				},
+				{
+					"param": "dropoff_datetime",
+					"displayName": "Dropoff Date and Time",
+					"type": "string",
+					"required": true,
+					"placeholder": "2026-11-23T10:00",
+					"description": "When you return the car, as YYYY-MM-DDTHH:MM (24-hour clock)"
+				},
+				{
+					"param": "driver_age",
+					"displayName": "Driver Age",
+					"type": "number",
+					"required": true,
+					"default": 30,
+					"description": "Age of the main driver. It changes availability and prices."
+				},
+				{
+					"param": "currency",
+					"displayName": "Currency",
+					"type": "string",
+					"required": true,
+					"default": "GBP",
+					"placeholder": "EUR",
+					"description": "Three-letter code of the currency the prices are in (e.g. EUR or USD)"
+				},
+				{
+					"param": "market",
+					"displayName": "Market",
+					"type": "string",
+					"required": true,
+					"default": "UK",
+					"placeholder": "ES",
+					"description": "The country you book from, as Skyscanner's two-letter code (UK for the United Kingdom, US, ES...). It changes prices and suppliers."
+				},
+				{
+					"param": "locale",
+					"displayName": "Language",
+					"type": "string",
+					"required": true,
+					"default": "en-GB",
+					"placeholder": "es-ES",
+					"description": "Language of the results, such as en-US or es-ES"
+				}
+			],
+			"options": [
+				{
+					"param": "dropoff",
+					"displayName": "Dropoff Location",
+					"type": "string",
+					"placeholder": "Barcelona",
+					"description": "Where to return the car, by name. Leave empty to return it where you picked it up."
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Skyscanner is opened from. Automatic picks a suitable one."
+				}
+			],
+			"listKey": "quotes",
+			"outputFields": [
+				"fuel_pol",
+				"fair_fuel",
+				"sipp",
+				"pu_rn_id",
+				"guid",
+				"booking_panel_option_guid",
+				"pickup_type",
+				"adds",
+				"pu",
+				"score",
+				"new_score",
+				"vndr_id",
+				"vndr",
+				"do",
+				"bags",
+				"price",
+				"prv_id",
+				"car_name",
+				"car_image_file_name",
+				"original_car_name",
+				"group",
+				"dplnk",
+				"do_rn_id",
+				"pickup_method",
+				"fuel_type",
+				"office_id",
+				"seat",
+				"pay_type",
+				"4wd"
+			],
+			"idField": "guid",
+			"simplify": [
+				"guid",
+				"car_name",
+				"price",
+				"vndr",
+				"new_score",
+				"seat",
+				"bags",
+				"fuel_pol",
+				"pickup_type",
+				"dplnk"
+			],
+			"test": {
+				"params": {
+					"pickup": "Madrid",
+					"pickup_datetime": "2026-11-20T10:00",
+					"dropoff_datetime": "2026-11-23T10:00"
+				},
+				"minItems": 10,
+				"maxFields": 10
+			}
+		}
+	]
+}

@@ -1,0 +1,438 @@
+{
+	"resource": "LinkedIn",
+	"value": "linkedin",
+	"operations": [
+		{
+			"name": "Get Company",
+			"value": "getCompany",
+			"action": "Get linkedin company",
+			"description": "Retrieve a public company page with industry, size, headquarters, followers and recent posts",
+			"endpoint": "/companies/linkedin",
+			"fields": [
+				{
+					"param": "company",
+					"displayName": "Company",
+					"type": "string",
+					"required": true,
+					"placeholder": "microsoft",
+					"description": "The part of the company page URL after /company/ (e.g. microsoft) or the full company page URL"
+				}
+			],
+			"options": [
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country LinkedIn is opened from. Automatic picks a suitable one."
+				}
+			],
+			"itemKey": "company",
+			"outputFields": [
+				"name",
+				"url",
+				"slug",
+				"companyId",
+				"tagline",
+				"description",
+				"industry",
+				"companySize",
+				"employeeCount",
+				"headquarters",
+				"address",
+				"type",
+				"founded",
+				"specialties",
+				"website",
+				"phone",
+				"followers",
+				"logo",
+				"coverImage",
+				"locations",
+				"similarPages",
+				"affiliatedPages",
+				"recentPosts"
+			],
+			"idField": "companyId",
+			"simplify": [
+				"name",
+				"companyId",
+				"tagline",
+				"industry",
+				"companySize",
+				"employeeCount",
+				"followers",
+				"headquarters",
+				"website",
+				"url"
+			],
+			"test": {
+				"params": {
+					"company": "microsoft"
+				},
+				"minItems": 1,
+				"maxFields": 10
+			}
+		},
+		{
+			"name": "Search Jobs",
+			"value": "searchJobs",
+			"action": "Search linkedin jobs",
+			"description": "Find job postings that match a keyword, with location, date, workplace and salary filters",
+			"endpoint": "/jobs/linkedin",
+			"fixed": {
+				"mode": "search"
+			},
+			"fields": [
+				{
+					"param": "keyword",
+					"displayName": "Search Query",
+					"type": "string",
+					"required": true,
+					"placeholder": "python developer",
+					"description": "What to search for: a job title, skill or company"
+				},
+				{
+					"param": "max_results",
+					"displayName": "Max Results",
+					"type": "number",
+					"default": 25,
+					"min": 1,
+					"max": 1000,
+					"description": "How many job postings to collect across pages (1-1000)"
+				}
+			],
+			"options": [
+				{
+					"param": "location",
+					"displayName": "Location",
+					"type": "string",
+					"placeholder": "Berlin, Germany",
+					"description": "Where the jobs are, e.g. a country or a city. Empty searches everywhere."
+				},
+				{
+					"param": "geo_id",
+					"displayName": "Location ID",
+					"type": "string",
+					"placeholder": "103644278",
+					"description": "LinkedIn's numeric ID of a region (the geoId in a LinkedIn jobs URL), for a more precise area than Location. Overrides Location."
+				},
+				{
+					"param": "distance",
+					"displayName": "Distance (Miles)",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"max": 100,
+					"skipZero": true,
+					"description": "How far around the location to search, in miles. 0 uses LinkedIn's default."
+				},
+				{
+					"param": "time_posted",
+					"displayName": "Date Posted",
+					"type": "options",
+					"default": "",
+					"description": "Only jobs posted within this time",
+					"options": [
+						{
+							"name": "Any Time",
+							"value": ""
+						},
+						{
+							"name": "Past 24 Hours",
+							"value": "24h"
+						},
+						{
+							"name": "Past Week",
+							"value": "week"
+						},
+						{
+							"name": "Past Month",
+							"value": "month"
+						}
+					]
+				},
+				{
+					"param": "workplace",
+					"displayName": "Workplace Type",
+					"type": "multiOptions",
+					"description": "Only on-site, remote or hybrid jobs",
+					"options": [
+						{
+							"name": "Hybrid",
+							"value": "hybrid"
+						},
+						{
+							"name": "On-Site",
+							"value": "onsite"
+						},
+						{
+							"name": "Remote",
+							"value": "remote"
+						}
+					]
+				},
+				{
+					"param": "job_type",
+					"displayName": "Job Type",
+					"type": "multiOptions",
+					"description": "Only jobs of these employment types",
+					"options": [
+						{
+							"name": "Contract",
+							"value": "contract"
+						},
+						{
+							"name": "Full-Time",
+							"value": "full_time"
+						},
+						{
+							"name": "Internship",
+							"value": "internship"
+						},
+						{
+							"name": "Other",
+							"value": "other"
+						},
+						{
+							"name": "Part-Time",
+							"value": "part_time"
+						},
+						{
+							"name": "Temporary",
+							"value": "temporary"
+						},
+						{
+							"name": "Volunteer",
+							"value": "volunteer"
+						}
+					]
+				},
+				{
+					"param": "experience",
+					"displayName": "Experience Level",
+					"type": "multiOptions",
+					"description": "Only jobs for these experience levels",
+					"options": [
+						{
+							"name": "Associate",
+							"value": "associate"
+						},
+						{
+							"name": "Director",
+							"value": "director"
+						},
+						{
+							"name": "Entry Level",
+							"value": "entry"
+						},
+						{
+							"name": "Executive",
+							"value": "executive"
+						},
+						{
+							"name": "Internship",
+							"value": "internship"
+						},
+						{
+							"name": "Mid-Senior Level",
+							"value": "mid_senior"
+						}
+					]
+				},
+				{
+					"param": "salary",
+					"displayName": "Minimum Salary",
+					"type": "options",
+					"default": "",
+					"description": "Only jobs with at least this yearly salary band, in US dollars",
+					"options": [
+						{
+							"name": "Any",
+							"value": ""
+						},
+						{
+							"name": "$40,000+",
+							"value": "40k"
+						},
+						{
+							"name": "$60,000+",
+							"value": "60k"
+						},
+						{
+							"name": "$80,000+",
+							"value": "80k"
+						},
+						{
+							"name": "$100,000+",
+							"value": "100k"
+						},
+						{
+							"name": "$120,000+",
+							"value": "120k"
+						},
+						{
+							"name": "$140,000+",
+							"value": "140k"
+						},
+						{
+							"name": "$160,000+",
+							"value": "160k"
+						},
+						{
+							"name": "$180,000+",
+							"value": "180k"
+						},
+						{
+							"name": "$200,000+",
+							"value": "200k"
+						}
+					]
+				},
+				{
+					"param": "enrich",
+					"displayName": "Include Full Description",
+					"type": "boolean",
+					"default": false,
+					"description": "Whether to also open each job for its full description, seniority, employment type, industries, applicant count and salary. Slower, and only for the first 25 jobs."
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country LinkedIn is opened from. Automatic picks a suitable one."
+				}
+			],
+			"sort": [
+				{
+					"param": "sort",
+					"displayName": "Sort By",
+					"type": "options",
+					"default": "relevant",
+					"description": "The order of the job postings",
+					"options": [
+						{
+							"name": "Most Recent",
+							"value": "recent"
+						},
+						{
+							"name": "Most Relevant",
+							"value": "relevant"
+						}
+					]
+				}
+			],
+			"listKey": "jobs",
+			"outputFields": [
+				"jobId",
+				"title",
+				"company",
+				"companyUrl",
+				"location",
+				"postedDate",
+				"postedText",
+				"jobUrl",
+				"companyLogo",
+				"benefits",
+				"description",
+				"descriptionHtml",
+				"seniorityLevel",
+				"employmentType",
+				"industries",
+				"applicants",
+				"salary"
+			],
+			"idField": "jobId",
+			"simplify": [
+				"jobId",
+				"title",
+				"company",
+				"location",
+				"postedDate",
+				"salary",
+				"employmentType",
+				"seniorityLevel",
+				"description",
+				"jobUrl"
+			],
+			"test": {
+				"params": {
+					"keyword": "python developer",
+					"max_results": 3
+				},
+				"options": {
+					"location": "Berlin, Germany"
+				},
+				"minItems": 2,
+				"maxFields": 10
+			}
+		},
+		{
+			"name": "Get Job",
+			"value": "getJob",
+			"action": "Get linkedin job",
+			"description": "Retrieve one job posting with its full description, seniority, salary and applicant count",
+			"endpoint": "/jobs/linkedin",
+			"fixed": {
+				"mode": "detail"
+			},
+			"fields": [
+				{
+					"param": "job_id",
+					"displayName": "Job ID",
+					"type": "string",
+					"required": true,
+					"placeholder": "4473069637",
+					"description": "The numeric LinkedIn job ID (e.g. from Search Jobs) or the job URL (linkedin.com/jobs/view/...)"
+				}
+			],
+			"options": [
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country LinkedIn is opened from. Automatic picks a suitable one."
+				}
+			],
+			"itemKey": "job",
+			"outputFields": [
+				"jobId",
+				"title",
+				"company",
+				"companyUrl",
+				"location",
+				"postedText",
+				"applicants",
+				"seniorityLevel",
+				"employmentType",
+				"industries",
+				"salary",
+				"description",
+				"descriptionHtml",
+				"jobUrl"
+			],
+			"idField": "jobId",
+			"simplify": [
+				"jobId",
+				"title",
+				"company",
+				"location",
+				"salary",
+				"employmentType",
+				"seniorityLevel",
+				"applicants",
+				"description",
+				"jobUrl"
+			],
+			"test": {
+				"params": {
+					"job_id": "4473069637"
+				},
+				"minItems": 1,
+				"maxFields": 10
+			}
+		}
+	]
+}

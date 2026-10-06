@@ -1,0 +1,195 @@
+{
+	"resource": "Trustpilot",
+	"value": "trustpilot",
+	"operations": [
+		{
+			"name": "Get Reviews",
+			"value": "getReviews",
+			"action": "Get trustpilot company reviews",
+			"description": "Read the reviews customers left for a company, with its replies",
+			"endpoint": "/reviews/trustpilot",
+			"fields": [
+				{
+					"param": "company",
+					"displayName": "Company Domain",
+					"type": "string",
+					"required": true,
+					"placeholder": "nike.com",
+					"description": "The reviewed company's website domain. A full site URL or a Trustpilot review page URL also works."
+				},
+				{
+					"param": "pages",
+					"displayName": "Pages",
+					"type": "number",
+					"default": 1,
+					"min": 1,
+					"max": 20,
+					"description": "How many pages of reviews to collect (1-20, 20 reviews each), from Start Page onward. Stops early at the last page."
+				}
+			],
+			"options": [
+				{
+					"param": "page",
+					"displayName": "Start Page",
+					"type": "number",
+					"default": 1,
+					"min": 1,
+					"description": "Which page of reviews to start collecting from"
+				},
+				{
+					"param": "stars",
+					"displayName": "Star Rating",
+					"type": "options",
+					"default": "",
+					"description": "Only reviews with this star rating",
+					"options": [
+						{
+							"name": "Any",
+							"value": ""
+						},
+						{
+							"name": "1 Star",
+							"value": "1"
+						},
+						{
+							"name": "2 Stars",
+							"value": "2"
+						},
+						{
+							"name": "3 Stars",
+							"value": "3"
+						},
+						{
+							"name": "4 Stars",
+							"value": "4"
+						},
+						{
+							"name": "5 Stars",
+							"value": "5"
+						}
+					]
+				},
+				{
+					"param": "date",
+					"displayName": "Posted Within",
+					"type": "options",
+					"default": "",
+					"description": "Only reviews from this recent period",
+					"options": [
+						{
+							"name": "All Time",
+							"value": ""
+						},
+						{
+							"name": "Last 30 Days",
+							"value": "last30days"
+						},
+						{
+							"name": "Last 3 Months",
+							"value": "last3months"
+						},
+						{
+							"name": "Last 6 Months",
+							"value": "last6months"
+						},
+						{
+							"name": "Last 12 Months",
+							"value": "last12months"
+						}
+					]
+				},
+				{
+					"param": "language",
+					"displayName": "Language",
+					"type": "string",
+					"default": "all",
+					"placeholder": "en",
+					"description": "Only reviews in this language, as a two-letter code (e.g. en, de). \"all\" returns every language."
+				},
+				{
+					"param": "search",
+					"displayName": "Keyword",
+					"type": "string",
+					"placeholder": "delivery",
+					"description": "Only reviews that mention this keyword"
+				},
+				{
+					"param": "verified",
+					"displayName": "Verified Only",
+					"type": "boolean",
+					"default": false,
+					"description": "Whether to return only reviews with Trustpilot's verified badge"
+				},
+				{
+					"param": "replies",
+					"displayName": "With Company Reply Only",
+					"type": "boolean",
+					"default": false,
+					"description": "Whether to return only reviews the company has replied to"
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Trustpilot is opened from. Automatic picks one that suits the company."
+				}
+			],
+			"sort": [
+				{
+					"param": "sort",
+					"displayName": "Sort By",
+					"type": "options",
+					"default": "recency",
+					"description": "The order of the reviews",
+					"options": [
+						{
+							"name": "Most Recent",
+							"value": "recency"
+						},
+						{
+							"name": "Most Relevant",
+							"value": "relevancy"
+						}
+					]
+				}
+			],
+			"listKey": "reviews",
+			"outputFields": [
+				"id",
+				"title",
+				"text",
+				"rating",
+				"author",
+				"date",
+				"experiencedDate",
+				"verified",
+				"verificationLevel",
+				"likes",
+				"language",
+				"reply"
+			],
+			"idField": "id",
+			"simplify": [
+				"id",
+				"rating",
+				"title",
+				"text",
+				"author.name",
+				"author.country",
+				"date",
+				"verified",
+				"language",
+				"reply.text"
+			],
+			"test": {
+				"params": {
+					"company": "amazon.com",
+					"pages": 1
+				},
+				"minItems": 10,
+				"maxFields": 10
+			}
+		}
+	]
+}

@@ -1,0 +1,378 @@
+{
+	"resource": "Booking.com",
+	"value": "booking",
+	"operations": [
+		{
+			"name": "Search Hotels",
+			"value": "searchHotels",
+			"action": "Search booking hotels",
+			"description": "Find places to stay in a city with price, review score and address",
+			"endpoint": "/travel/booking",
+			"fields": [
+				{
+					"param": "location",
+					"displayName": "Location",
+					"type": "string",
+					"required": true,
+					"placeholder": "Paris",
+					"description": "The city or place to search"
+				},
+				{
+					"param": "max_results",
+					"displayName": "Max Results",
+					"type": "number",
+					"default": 25,
+					"min": 1,
+					"max": 500,
+					"description": "How many places to collect, across as many result pages as needed"
+				}
+			],
+			"options": [
+				{
+					"param": "checkin",
+					"displayName": "Check-In Date",
+					"type": "string",
+					"placeholder": "2026-11-20",
+					"description": "Check-in date as YYYY-MM-DD. Prices only appear when check-in and check-out dates are given."
+				},
+				{
+					"param": "checkout",
+					"displayName": "Check-Out Date",
+					"type": "string",
+					"placeholder": "2026-11-22",
+					"description": "Check-out date as YYYY-MM-DD"
+				},
+				{
+					"param": "adults",
+					"displayName": "Adults",
+					"type": "number",
+					"default": 2,
+					"min": 1,
+					"description": "Number of adult guests"
+				},
+				{
+					"param": "children",
+					"displayName": "Children",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"description": "Number of children"
+				},
+				{
+					"param": "rooms",
+					"displayName": "Rooms",
+					"type": "number",
+					"default": 1,
+					"min": 1,
+					"description": "Number of rooms"
+				},
+				{
+					"param": "currency",
+					"displayName": "Currency",
+					"type": "options",
+					"default": "USD",
+					"description": "The currency the prices are in",
+					"options": [
+						{
+							"name": "Australian Dollar (AUD)",
+							"value": "AUD"
+						},
+						{
+							"name": "Brazilian Real (BRL)",
+							"value": "BRL"
+						},
+						{
+							"name": "British Pound (GBP)",
+							"value": "GBP"
+						},
+						{
+							"name": "Canadian Dollar (CAD)",
+							"value": "CAD"
+						},
+						{
+							"name": "Chinese Yuan (CNY)",
+							"value": "CNY"
+						},
+						{
+							"name": "Danish Krone (DKK)",
+							"value": "DKK"
+						},
+						{
+							"name": "Euro (EUR)",
+							"value": "EUR"
+						},
+						{
+							"name": "Indian Rupee (INR)",
+							"value": "INR"
+						},
+						{
+							"name": "Japanese Yen (JPY)",
+							"value": "JPY"
+						},
+						{
+							"name": "Mexican Peso (MXN)",
+							"value": "MXN"
+						},
+						{
+							"name": "Norwegian Krone (NOK)",
+							"value": "NOK"
+						},
+						{
+							"name": "Polish Zloty (PLN)",
+							"value": "PLN"
+						},
+						{
+							"name": "Russian Ruble (RUB)",
+							"value": "RUB"
+						},
+						{
+							"name": "Singapore Dollar (SGD)",
+							"value": "SGD"
+						},
+						{
+							"name": "South African Rand (ZAR)",
+							"value": "ZAR"
+						},
+						{
+							"name": "Swedish Krona (SEK)",
+							"value": "SEK"
+						},
+						{
+							"name": "Swiss Franc (CHF)",
+							"value": "CHF"
+						},
+						{
+							"name": "Turkish Lira (TRY)",
+							"value": "TRY"
+						},
+						{
+							"name": "UAE Dirham (AED)",
+							"value": "AED"
+						},
+						{
+							"name": "US Dollar (USD)",
+							"value": "USD"
+						}
+					]
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Booking.com is opened from. Automatic picks a suitable one."
+				}
+			],
+			"listKey": "properties",
+			"outputFields": [
+				"id",
+				"name",
+				"price",
+				"priceText",
+				"currency",
+				"reviewScore",
+				"reviewCount",
+				"address",
+				"city",
+				"country",
+				"latitude",
+				"longitude",
+				"image",
+				"url"
+			],
+			"idField": "id",
+			"simplify": [
+				"id",
+				"name",
+				"price",
+				"currency",
+				"reviewScore",
+				"reviewCount",
+				"address",
+				"city",
+				"url",
+				"image"
+			],
+			"test": {
+				"params": {
+					"location": "Paris",
+					"max_results": 3
+				},
+				"options": {
+					"checkin": "2026-11-20",
+					"checkout": "2026-11-22"
+				},
+				"minItems": 3,
+				"maxFields": 10
+			}
+		},
+		{
+			"name": "Get Reviews",
+			"value": "getReviews",
+			"action": "Get booking hotel reviews",
+			"description": "Get the newest guest reviews of a hotel, with its likes, dislikes and score",
+			"endpoint": "/travel/booking-reviews",
+			"fields": [
+				{
+					"param": "hotel",
+					"displayName": "Hotel",
+					"type": "string",
+					"required": true,
+					"placeholder": "https://www.booking.com/hotel/fr/le-meurice.html",
+					"description": "The hotel's Booking.com page URL, or the two parts of it after /hotel/ (e.g. fr/le-meurice)"
+				},
+				{
+					"param": "max_results",
+					"displayName": "Max Results",
+					"type": "number",
+					"default": 15,
+					"min": 1,
+					"max": 270,
+					"description": "How many reviews to return across languages. Booking.com shows the newest 15 reviews of each language."
+				}
+			],
+			"options": [
+				{
+					"param": "languages",
+					"displayName": "Review Languages",
+					"type": "multiOptions",
+					"default": [
+						"en"
+					],
+					"description": "Read the reviews written in these languages. Each language read is one billed call, and reading stops once Max Results is reached.",
+					"options": [
+						{
+							"name": "Chinese",
+							"value": "zh"
+						},
+						{
+							"name": "Czech",
+							"value": "cs"
+						},
+						{
+							"name": "Danish",
+							"value": "da"
+						},
+						{
+							"name": "Dutch",
+							"value": "nl"
+						},
+						{
+							"name": "English",
+							"value": "en"
+						},
+						{
+							"name": "Finnish",
+							"value": "fi"
+						},
+						{
+							"name": "French",
+							"value": "fr"
+						},
+						{
+							"name": "German",
+							"value": "de"
+						},
+						{
+							"name": "Italian",
+							"value": "it"
+						},
+						{
+							"name": "Japanese",
+							"value": "ja"
+						},
+						{
+							"name": "Korean",
+							"value": "ko"
+						},
+						{
+							"name": "Norwegian",
+							"value": "no"
+						},
+						{
+							"name": "Polish",
+							"value": "pl"
+						},
+						{
+							"name": "Portuguese",
+							"value": "pt"
+						},
+						{
+							"name": "Russian",
+							"value": "ru"
+						},
+						{
+							"name": "Spanish",
+							"value": "es"
+						},
+						{
+							"name": "Swedish",
+							"value": "sv"
+						},
+						{
+							"name": "Turkish",
+							"value": "tr"
+						}
+					]
+				},
+				{
+					"param": "since",
+					"displayName": "Written Since",
+					"type": "string",
+					"placeholder": "2026-01-01",
+					"description": "Only reviews written on or after this date (YYYY-MM-DD)"
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Booking.com is opened from. Automatic is recommended."
+				}
+			],
+			"listKey": "reviews",
+			"outputFields": [
+				"id",
+				"language",
+				"reviewDate",
+				"reviewDateText",
+				"rating",
+				"ratingText",
+				"ratingBand",
+				"title",
+				"positiveText",
+				"negativeText",
+				"reviewer",
+				"tripType",
+				"travelerType",
+				"nights",
+				"stayMonth",
+				"stayText",
+				"helpfulVotes",
+				"submittedFromMobile",
+				"tags"
+			],
+			"idField": "id",
+			"simplify": [
+				"id",
+				"reviewDate",
+				"rating",
+				"title",
+				"positiveText",
+				"negativeText",
+				"reviewer.name",
+				"reviewer.country",
+				"travelerType",
+				"nights"
+			],
+			"test": {
+				"params": {
+					"hotel": "https://www.booking.com/hotel/fr/le-meurice.html",
+					"max_results": 3
+				},
+				"minItems": 3,
+				"maxFields": 10
+			}
+		}
+	]
+}

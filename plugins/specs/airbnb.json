@@ -1,0 +1,471 @@
+{
+	"resource": "Airbnb",
+	"value": "airbnb",
+	"operations": [
+		{
+			"name": "Search Stays",
+			"value": "searchStays",
+			"action": "Search airbnb stays",
+			"description": "Find stays in a city with price, rating, reviews count and badges",
+			"endpoint": "/travel/airbnb",
+			"fields": [
+				{
+					"param": "location",
+					"displayName": "Location",
+					"type": "string",
+					"required": true,
+					"placeholder": "Austin, TX",
+					"description": "The city to search, e.g. Paris, France"
+				},
+				{
+					"param": "max_results",
+					"displayName": "Max Results",
+					"type": "number",
+					"default": 48,
+					"min": 1,
+					"max": 720,
+					"description": "How many stays to collect, across as many result pages as needed"
+				}
+			],
+			"options": [
+				{
+					"param": "checkin",
+					"displayName": "Check-In Date",
+					"type": "string",
+					"placeholder": "2026-11-20",
+					"description": "Check-in date as YYYY-MM-DD. Use it together with Check-Out Date."
+				},
+				{
+					"param": "checkout",
+					"displayName": "Check-Out Date",
+					"type": "string",
+					"placeholder": "2026-11-22",
+					"description": "Check-out date as YYYY-MM-DD. Use it together with Check-In Date."
+				},
+				{
+					"param": "adults",
+					"displayName": "Adults",
+					"type": "number",
+					"default": 1,
+					"min": 1,
+					"description": "Number of adult guests"
+				},
+				{
+					"param": "room_type",
+					"displayName": "Room Type",
+					"type": "options",
+					"default": "",
+					"description": "Only stays of this type",
+					"options": [
+						{
+							"name": "Any",
+							"value": ""
+						},
+						{
+							"name": "Entire Home",
+							"value": "entire_home"
+						},
+						{
+							"name": "Private Room",
+							"value": "private_room"
+						},
+						{
+							"name": "Hotel Room",
+							"value": "hotel_room"
+						},
+						{
+							"name": "Shared Room",
+							"value": "shared_room"
+						}
+					]
+				},
+				{
+					"param": "min_price",
+					"displayName": "Min Price",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Lowest nightly price to include. 0 means no minimum."
+				},
+				{
+					"param": "max_price",
+					"displayName": "Max Price",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Highest nightly price to include. 0 means no limit."
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Airbnb is opened from. Automatic uses the US, so prices are in US dollars."
+				}
+			],
+			"listKey": "listings",
+			"outputFields": [
+				"id",
+				"name",
+				"roomType",
+				"subtitle",
+				"price",
+				"priceText",
+				"priceQualifier",
+				"priceLabel",
+				"rating",
+				"reviewCount",
+				"badges",
+				"latitude",
+				"longitude",
+				"image",
+				"url",
+				"originalPriceText"
+			],
+			"idField": "id",
+			"simplify": [
+				"id",
+				"name",
+				"roomType",
+				"price",
+				"priceLabel",
+				"rating",
+				"reviewCount",
+				"badges",
+				"url",
+				"image"
+			],
+			"test": {
+				"params": {
+					"location": "Lisbon",
+					"max_results": 5
+				},
+				"minItems": 3,
+				"maxFields": 10
+			}
+		},
+		{
+			"name": "Get Listing",
+			"value": "getListing",
+			"action": "Get an airbnb listing",
+			"description": "Get the full details of one stay: host, rooms, amenities, rules and, for given dates, its price",
+			"endpoint": "/travel/airbnb-room",
+			"fields": [
+				{
+					"param": "room",
+					"displayName": "Listing",
+					"type": "string",
+					"required": true,
+					"placeholder": "https://www.airbnb.com/rooms/7743405",
+					"description": "The listing's URL on any Airbnb site, or its ID (the number after /rooms/)"
+				}
+			],
+			"options": [
+				{
+					"param": "check_in",
+					"displayName": "Check-In Date",
+					"type": "string",
+					"placeholder": "2026-11-20",
+					"description": "Check-in date as YYYY-MM-DD. With Check-Out Date, the answer also holds the price, the availability and the cancellation policy."
+				},
+				{
+					"param": "check_out",
+					"displayName": "Check-Out Date",
+					"type": "string",
+					"placeholder": "2026-11-22",
+					"description": "Check-out date as YYYY-MM-DD. Use it together with Check-In Date."
+				},
+				{
+					"param": "adults",
+					"displayName": "Adults",
+					"type": "number",
+					"default": 1,
+					"min": 1,
+					"max": 16,
+					"description": "Number of adult guests. It changes the price."
+				},
+				{
+					"param": "children",
+					"displayName": "Children",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"max": 15,
+					"description": "Number of children aged 2-12"
+				},
+				{
+					"param": "infants",
+					"displayName": "Infants",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"max": 5,
+					"description": "Number of infants under 2"
+				},
+				{
+					"param": "pets",
+					"displayName": "Pets",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"max": 5,
+					"description": "Number of pets"
+				},
+				{
+					"param": "currency",
+					"displayName": "Currency",
+					"type": "string",
+					"default": "USD",
+					"placeholder": "EUR",
+					"description": "Three-letter code of the currency the price is in (e.g. EUR or GBP)"
+				},
+				{
+					"param": "locale",
+					"displayName": "Language",
+					"type": "string",
+					"default": "en",
+					"placeholder": "de",
+					"description": "Language of Airbnb's texts, such as de, fr, es or pt-BR. Text written by the host comes translated when Airbnb has a translation."
+				},
+				{
+					"param": "include_reviews",
+					"displayName": "Include Reviews",
+					"type": "boolean",
+					"default": false,
+					"description": "Whether to also return guest reviews"
+				},
+				{
+					"param": "max_reviews",
+					"displayName": "Max Reviews",
+					"type": "number",
+					"default": 20,
+					"min": 1,
+					"max": 100,
+					"description": "How many reviews to return when Include Reviews is on"
+				},
+				{
+					"param": "reviews_sort",
+					"displayName": "Sort Reviews By",
+					"type": "options",
+					"default": "most_relevant",
+					"description": "The order of the reviews returned when Include Reviews is on",
+					"options": [
+						{
+							"name": "Most Relevant",
+							"value": "most_relevant"
+						},
+						{
+							"name": "Most Recent",
+							"value": "most_recent"
+						},
+						{
+							"name": "Highest Rated",
+							"value": "highest_rated"
+						},
+						{
+							"name": "Lowest Rated",
+							"value": "lowest_rated"
+						}
+					]
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Airbnb is opened from. Automatic uses the US."
+				}
+			],
+			"outputFields": [
+				"id",
+				"url",
+				"title",
+				"propertyName",
+				"subtitle",
+				"description",
+				"descriptionLanguage",
+				"roomType",
+				"propertyType",
+				"listingType",
+				"isLuxe",
+				"location",
+				"host",
+				"rating",
+				"reviewsCount",
+				"ratingDistribution",
+				"reviewTags",
+				"isGuestFavorite",
+				"isNewListing",
+				"qualityPercentile",
+				"guests",
+				"bedrooms",
+				"beds",
+				"bathrooms",
+				"sleepingArrangements",
+				"amenities",
+				"photos",
+				"highlights",
+				"houseRules",
+				"additionalRules",
+				"checkIn",
+				"checkOut",
+				"safetyAndProperty",
+				"cancellationPolicy",
+				"available",
+				"unavailableReason",
+				"canInstantBook",
+				"price",
+				"reviews",
+				"reviewsCollected",
+				"source",
+				"warnings",
+				"query"
+			],
+			"idField": "id",
+			"simplify": [
+				"id",
+				"title",
+				"url",
+				"propertyType",
+				"location.city",
+				"rating.overall",
+				"reviewsCount",
+				"guests",
+				"bedrooms",
+				"price"
+			],
+			"test": {
+				"params": {
+					"room": "7743405"
+				},
+				"minItems": 1,
+				"maxFields": 10
+			}
+		},
+		{
+			"name": "Get Reviews",
+			"value": "getReviews",
+			"action": "Get airbnb listing reviews",
+			"description": "Get all guest reviews of one stay with rating, text, translation and host response",
+			"endpoint": "/travel/airbnb-reviews",
+			"fields": [
+				{
+					"param": "room",
+					"displayName": "Listing",
+					"type": "string",
+					"required": true,
+					"placeholder": "https://www.airbnb.com/rooms/7743405",
+					"description": "The listing's URL on any Airbnb site, or its ID (the number after /rooms/)"
+				},
+				{
+					"param": "max_reviews",
+					"displayName": "Max Reviews",
+					"type": "number",
+					"default": 50,
+					"min": 1,
+					"max": 500,
+					"description": "How many reviews to return. Every 50 reviews read are billed as one call."
+				}
+			],
+			"options": [
+				{
+					"param": "page",
+					"displayName": "Page",
+					"type": "number",
+					"default": 1,
+					"min": 1,
+					"max": 1000,
+					"description": "Which page of reviews to return, in pages of Max Reviews reviews"
+				},
+				{
+					"param": "since",
+					"displayName": "Written Since",
+					"type": "string",
+					"placeholder": "2026-01-01",
+					"description": "Only reviews written on or after this date (YYYY-MM-DD). Sorted by Most Recent, it also stops reading once older reviews start."
+				},
+				{
+					"param": "locale",
+					"displayName": "Translate To",
+					"type": "string",
+					"default": "en",
+					"placeholder": "de",
+					"description": "Language to translate reviews and host responses into, such as de, fr or pt-BR. The original text and its language are always returned too."
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Airbnb is opened from. Automatic picks a suitable one."
+				}
+			],
+			"sort": [
+				{
+					"param": "sort",
+					"displayName": "Sort By",
+					"type": "options",
+					"default": "most_relevant",
+					"description": "The order of the reviews",
+					"options": [
+						{
+							"name": "Most Relevant",
+							"value": "most_relevant"
+						},
+						{
+							"name": "Most Recent",
+							"value": "most_recent"
+						},
+						{
+							"name": "Highest Rated",
+							"value": "highest_rated"
+						},
+						{
+							"name": "Lowest Rated",
+							"value": "lowest_rated"
+						}
+					]
+				}
+			],
+			"listKey": "reviews",
+			"outputFields": [
+				"id",
+				"rating",
+				"text",
+				"language",
+				"translatedText",
+				"date",
+				"localizedDate",
+				"stayDetail",
+				"stayDetailType",
+				"roomTypeTitle",
+				"photos",
+				"reviewer",
+				"response"
+			],
+			"idField": "id",
+			"simplify": [
+				"id",
+				"rating",
+				"text",
+				"translatedText",
+				"language",
+				"date",
+				"stayDetail",
+				"reviewer.name",
+				"reviewer.location",
+				"response"
+			],
+			"test": {
+				"params": {
+					"room": "7743405",
+					"max_reviews": 3
+				},
+				"minItems": 3,
+				"maxFields": 10
+			}
+		}
+	]
+}

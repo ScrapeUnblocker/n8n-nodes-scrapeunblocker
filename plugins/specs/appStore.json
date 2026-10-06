@@ -1,0 +1,309 @@
+{
+	"resource": "App Store",
+	"value": "appStore",
+	"operations": [
+		{
+			"name": "Get App",
+			"value": "getApp",
+			"action": "Get an app store app",
+			"description": "Get the full App Store listing of one app: rating, price, versions, privacy labels and more",
+			"endpoint": "/apps/app-store",
+			"fixed": {
+				"mode": "app"
+			},
+			"fields": [
+				{
+					"param": "app_id",
+					"displayName": "App",
+					"type": "string",
+					"required": true,
+					"placeholder": "310633997",
+					"description": "The app's numeric App Store ID (310633997 or id310633997), its apps.apple.com link, or its bundle ID (net.whatsapp.WhatsApp)"
+				}
+			],
+			"options": [
+				{
+					"param": "country",
+					"displayName": "Store Country",
+					"type": "string",
+					"placeholder": "gb",
+					"description": "Two-letter country code of the App Store to read. Prices and ratings differ per country. Empty uses the country in the app link, or the US."
+				},
+				{
+					"param": "lang",
+					"displayName": "Listing Language",
+					"type": "string",
+					"placeholder": "fr-CA",
+					"description": "The language of the listing, for countries whose store has several languages. Empty uses the store's own."
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country the App Store is opened from. Automatic picks one. The store that is read is set by Store Country."
+				}
+			],
+			"itemKey": "app",
+			"outputFields": [
+				"appId",
+				"bundleId",
+				"title",
+				"subtitle",
+				"url",
+				"developer",
+				"developerId",
+				"developerUrl",
+				"developerWebsite",
+				"seller",
+				"price",
+				"currency",
+				"priceText",
+				"free",
+				"offersInAppPurchases",
+				"inAppPurchases",
+				"rating",
+				"ratingsCount",
+				"ratingCurrentVersion",
+				"ratingsCountCurrentVersion",
+				"histogram",
+				"contentRating",
+				"ageRating",
+				"advisories",
+				"genre",
+				"genreId",
+				"genres",
+				"genreIds",
+				"releaseDate",
+				"updated",
+				"version",
+				"releaseNotes",
+				"versionHistory",
+				"size",
+				"minimumOsVersion",
+				"languages",
+				"supportedDevices",
+				"platforms",
+				"features",
+				"gameCenter",
+				"kind",
+				"description",
+				"icon",
+				"screenshots",
+				"ipadScreenshots",
+				"appleTvScreenshots",
+				"videos",
+				"privacy",
+				"privacyPolicyUrl",
+				"supportUrl",
+				"copyright",
+				"chartRank",
+				"similarApps",
+				"moreByDeveloper"
+			],
+			"idField": "appId",
+			"simplify": [
+				"appId",
+				"title",
+				"developer",
+				"genre",
+				"rating",
+				"ratingsCount",
+				"price",
+				"version",
+				"updated",
+				"url"
+			],
+			"test": {
+				"params": {
+					"app_id": "310633997"
+				},
+				"minItems": 1,
+				"maxFields": 10
+			}
+		},
+		{
+			"name": "Search Apps",
+			"value": "searchApps",
+			"action": "Search app store apps",
+			"description": "Find App Store apps that match a keyword",
+			"endpoint": "/apps/app-store",
+			"fixed": {
+				"mode": "search"
+			},
+			"fields": [
+				{
+					"param": "q",
+					"displayName": "Search Query",
+					"type": "string",
+					"required": true,
+					"placeholder": "vpn",
+					"description": "What to search for, as in the App Store search box"
+				},
+				{
+					"param": "max_results",
+					"displayName": "Max Results",
+					"type": "number",
+					"default": 50,
+					"min": 1,
+					"max": 200,
+					"description": "How many apps to return"
+				}
+			],
+			"options": [
+				{
+					"param": "country",
+					"displayName": "Store Country",
+					"type": "string",
+					"placeholder": "gb",
+					"description": "Two-letter country code of the App Store to search. Empty uses the US."
+				},
+				{
+					"param": "lang",
+					"displayName": "Listing Language",
+					"type": "string",
+					"placeholder": "fr-CA",
+					"description": "The language of the results, for countries whose store has several languages. Empty uses the store's own."
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country the App Store is opened from. Automatic picks one. The store that is searched is set by Store Country."
+				}
+			],
+			"listKey": "apps",
+			"outputFields": [
+				"appId",
+				"bundleId",
+				"title",
+				"url",
+				"developer",
+				"developerId",
+				"price",
+				"currency",
+				"priceText",
+				"free",
+				"rating",
+				"ratingsCount",
+				"contentRating",
+				"genre",
+				"genres",
+				"version",
+				"updated",
+				"releaseDate",
+				"size",
+				"minimumOsVersion",
+				"icon",
+				"descriptionSnippet"
+			],
+			"idField": "appId",
+			"simplify": [
+				"appId",
+				"title",
+				"developer",
+				"genre",
+				"rating",
+				"ratingsCount",
+				"price",
+				"version",
+				"updated",
+				"url"
+			],
+			"test": {
+				"params": {
+					"q": "vpn",
+					"max_results": 5
+				},
+				"minItems": 3,
+				"maxFields": 10
+			}
+		},
+		{
+			"name": "Get Reviews",
+			"value": "getReviews",
+			"action": "Get app store reviews",
+			"description": "Get the customer reviews of an app, newest or most helpful first",
+			"endpoint": "/apps/app-store",
+			"fixed": {
+				"mode": "reviews"
+			},
+			"fields": [
+				{
+					"param": "app_id",
+					"displayName": "App",
+					"type": "string",
+					"required": true,
+					"placeholder": "310633997",
+					"description": "The app's numeric App Store ID (310633997 or id310633997), its apps.apple.com link, or its bundle ID (net.whatsapp.WhatsApp)"
+				},
+				{
+					"param": "max_results",
+					"displayName": "Max Reviews",
+					"type": "number",
+					"default": 50,
+					"min": 1,
+					"max": 500,
+					"description": "How many reviews to return. Apple serves 50 reviews per page and at most 10 pages per country. Each page is one billed call."
+				}
+			],
+			"options": [
+				{
+					"param": "country",
+					"displayName": "Store Country",
+					"type": "string",
+					"placeholder": "gb",
+					"description": "Two-letter country code of the App Store whose reviews to get. Reviews differ per country. Empty uses the country in the app link, or the US."
+				},
+				{
+					"param": "page",
+					"displayName": "Start Page",
+					"type": "number",
+					"default": 1,
+					"min": 1,
+					"max": 10,
+					"description": "Which review page (1-10, 50 reviews each) to start from"
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country the App Store is opened from. Automatic picks one. The reviews come from the store set by Store Country."
+				}
+			],
+			"sort": [
+				{
+					"param": "sort",
+					"displayName": "Sort By",
+					"type": "options",
+					"default": "mostrecent",
+					"description": "The order of the reviews",
+					"options": [
+						{
+							"name": "Most Helpful",
+							"value": "mosthelpful"
+						},
+						{
+							"name": "Most Recent",
+							"value": "mostrecent"
+						}
+					]
+				}
+			],
+			"listKey": "reviews",
+			"test": {
+				"params": {
+					"app_id": "389801252",
+					"max_results": 5
+				},
+				"options": {
+					"country": "gb"
+				},
+				"minItems": 3,
+				"maxFields": 10
+			}
+		}
+	]
+}

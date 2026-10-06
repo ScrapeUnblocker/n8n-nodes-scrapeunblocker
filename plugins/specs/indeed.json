@@ -1,0 +1,282 @@
+{
+	"resource": "Indeed",
+	"value": "indeed",
+	"operations": [
+		{
+			"name": "Search Jobs",
+			"value": "searchJobs",
+			"action": "Search indeed jobs",
+			"description": "Find job listings that match a keyword on any of 20 Indeed country sites",
+			"endpoint": "/jobs/indeed",
+			"fields": [
+				{
+					"param": "query",
+					"displayName": "Search Query",
+					"type": "string",
+					"required": true,
+					"placeholder": "software engineer",
+					"description": "What to search for: a job title, skill or company"
+				},
+				{
+					"param": "country",
+					"displayName": "Country Site",
+					"type": "options",
+					"default": "us",
+					"description": "Which country's Indeed site to search",
+					"options": [
+						{
+							"name": "Australia",
+							"value": "au"
+						},
+						{
+							"name": "Austria",
+							"value": "at"
+						},
+						{
+							"name": "Belgium",
+							"value": "be"
+						},
+						{
+							"name": "Canada",
+							"value": "ca"
+						},
+						{
+							"name": "France",
+							"value": "fr"
+						},
+						{
+							"name": "Germany",
+							"value": "de"
+						},
+						{
+							"name": "India",
+							"value": "in"
+						},
+						{
+							"name": "Ireland",
+							"value": "ie"
+						},
+						{
+							"name": "Italy",
+							"value": "it"
+						},
+						{
+							"name": "Mexico",
+							"value": "mx"
+						},
+						{
+							"name": "Netherlands",
+							"value": "nl"
+						},
+						{
+							"name": "New Zealand",
+							"value": "nz"
+						},
+						{
+							"name": "Poland",
+							"value": "pl"
+						},
+						{
+							"name": "Singapore",
+							"value": "sg"
+						},
+						{
+							"name": "South Africa",
+							"value": "za"
+						},
+						{
+							"name": "Spain",
+							"value": "es"
+						},
+						{
+							"name": "Sweden",
+							"value": "se"
+						},
+						{
+							"name": "Switzerland",
+							"value": "ch"
+						},
+						{
+							"name": "United Kingdom",
+							"value": "uk"
+						},
+						{
+							"name": "United States",
+							"value": "us"
+						}
+					]
+				},
+				{
+					"param": "max_results",
+					"displayName": "Max Results",
+					"type": "number",
+					"default": 30,
+					"min": 1,
+					"max": 500,
+					"description": "How many jobs to collect across result pages (1-500)"
+				}
+			],
+			"options": [
+				{
+					"param": "location",
+					"displayName": "Location",
+					"type": "string",
+					"placeholder": "Austin, TX",
+					"description": "City, region or postcode to search in. Leave empty for the whole country."
+				},
+				{
+					"param": "radius",
+					"displayName": "Radius",
+					"type": "number",
+					"default": 25,
+					"min": 0,
+					"description": "Search radius around the location, in miles or kilometres depending on the country site. 0 searches the exact location only."
+				},
+				{
+					"param": "job_type",
+					"displayName": "Job Type",
+					"type": "options",
+					"default": "",
+					"description": "Only jobs of this employment type",
+					"options": [
+						{
+							"name": "Any",
+							"value": ""
+						},
+						{
+							"name": "Contract",
+							"value": "contract"
+						},
+						{
+							"name": "Full-Time",
+							"value": "fulltime"
+						},
+						{
+							"name": "Internship",
+							"value": "internship"
+						},
+						{
+							"name": "Part-Time",
+							"value": "parttime"
+						},
+						{
+							"name": "Temporary",
+							"value": "temporary"
+						}
+					]
+				},
+				{
+					"param": "days",
+					"displayName": "Posted Within",
+					"type": "options",
+					"default": "",
+					"description": "Only jobs posted within this time window",
+					"options": [
+						{
+							"name": "Any Time",
+							"value": ""
+						},
+						{
+							"name": "Last 24 Hours",
+							"value": "1"
+						},
+						{
+							"name": "Last 3 Days",
+							"value": "3"
+						},
+						{
+							"name": "Last 7 Days",
+							"value": "7"
+						},
+						{
+							"name": "Last 14 Days",
+							"value": "14"
+						}
+					]
+				},
+				{
+					"param": "remote",
+					"displayName": "Remote Only",
+					"type": "boolean",
+					"default": false,
+					"description": "Whether to return only remote jobs"
+				},
+				{
+					"param": "start",
+					"displayName": "Results To Skip",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"description": "How many results to skip before collecting, e.g. 30 to continue after the first 30 jobs"
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Indeed is opened from. Automatic uses the country of the selected site."
+				}
+			],
+			"sort": [
+				{
+					"param": "sort",
+					"displayName": "Sort By",
+					"type": "options",
+					"default": "relevance",
+					"description": "The order of the jobs. Date returns the collected jobs newest first, sponsored ones included.",
+					"options": [
+						{
+							"name": "Date (Newest First)",
+							"value": "date"
+						},
+						{
+							"name": "Relevance",
+							"value": "relevance"
+						}
+					]
+				}
+			],
+			"listKey": "jobs",
+			"outputFields": [
+				"jobkey",
+				"title",
+				"company",
+				"location",
+				"remote",
+				"salary",
+				"snippet",
+				"posted",
+				"datePosted",
+				"sponsored",
+				"companyRating",
+				"companyReviewCount",
+				"url",
+				"jobTypes"
+			],
+			"idField": "jobkey",
+			"simplify": [
+				"jobkey",
+				"title",
+				"company",
+				"location",
+				"remote",
+				"salary.text",
+				"salary.min",
+				"salary.max",
+				"datePosted",
+				"url"
+			],
+			"test": {
+				"params": {
+					"query": "nurse",
+					"max_results": 5
+				},
+				"options": {
+					"location": "Austin, TX"
+				},
+				"minItems": 3,
+				"maxFields": 10
+			}
+		}
+	]
+}

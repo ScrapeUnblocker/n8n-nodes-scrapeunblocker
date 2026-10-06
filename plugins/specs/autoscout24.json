@@ -1,0 +1,326 @@
+{
+	"resource": "AutoScout24",
+	"value": "autoscout24",
+	"operations": [
+		{
+			"name": "Search Listings",
+			"value": "searchListings",
+			"action": "Search autoscout24 listings",
+			"description": "Find cars for sale across Europe by make, model and filters",
+			"endpoint": "/vehicles/autoscout24",
+			"fields": [
+				{
+					"param": "make",
+					"displayName": "Make",
+					"type": "string",
+					"placeholder": "volkswagen",
+					"description": "The car make as AutoScout24 writes it in its web addresses, e.g. bmw, volkswagen or mercedes-benz. Leave empty for all makes."
+				},
+				{
+					"param": "model",
+					"displayName": "Model",
+					"type": "string",
+					"placeholder": "golf",
+					"description": "The model as AutoScout24 writes it in its web addresses, e.g. x5 or golf. Needs a make."
+				},
+				{
+					"param": "max_results",
+					"displayName": "Max Results",
+					"type": "number",
+					"default": 40,
+					"min": 1,
+					"max": 400,
+					"description": "How many listings to return, collected across pages (about 20 per page)"
+				}
+			],
+			"options": [
+				{
+					"param": "fuel",
+					"displayName": "Fuel",
+					"type": "options",
+					"default": "",
+					"description": "Only cars with this fuel type",
+					"options": [
+						{
+							"name": "Any",
+							"value": ""
+						},
+						{
+							"name": "CNG",
+							"value": "cng"
+						},
+						{
+							"name": "Diesel",
+							"value": "diesel"
+						},
+						{
+							"name": "Electric",
+							"value": "electric"
+						},
+						{
+							"name": "Gasoline",
+							"value": "gasoline"
+						},
+						{
+							"name": "Hybrid (Electric/Gasoline)",
+							"value": "hybrid"
+						},
+						{
+							"name": "LPG",
+							"value": "lpg"
+						}
+					]
+				},
+				{
+					"param": "transmission",
+					"displayName": "Transmission",
+					"type": "options",
+					"default": "",
+					"description": "Only cars with this gearbox",
+					"options": [
+						{
+							"name": "Any",
+							"value": ""
+						},
+						{
+							"name": "Automatic",
+							"value": "automatic"
+						},
+						{
+							"name": "Manual",
+							"value": "manual"
+						},
+						{
+							"name": "Semi-Automatic",
+							"value": "semi-automatic"
+						}
+					]
+				},
+				{
+					"param": "price_from",
+					"displayName": "Min Price (EUR)",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Lowest price to include, in euros. 0 means no minimum."
+				},
+				{
+					"param": "price_to",
+					"displayName": "Max Price (EUR)",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Highest price to include, in euros. 0 means no limit."
+				},
+				{
+					"param": "year_from",
+					"displayName": "First Registration From (Year)",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Earliest year of first registration, e.g. 2018. 0 means no limit."
+				},
+				{
+					"param": "year_to",
+					"displayName": "First Registration To (Year)",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Latest year of first registration, e.g. 2022. 0 means no limit."
+				},
+				{
+					"param": "mileage_to",
+					"displayName": "Max Mileage (Km)",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Highest mileage to include, in kilometres. 0 means no limit."
+				},
+				{
+					"param": "power_from",
+					"displayName": "Min Power",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Lowest engine power, in the unit set by Power Unit. 0 means no minimum."
+				},
+				{
+					"param": "power_to",
+					"displayName": "Max Power",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Highest engine power, in the unit set by Power Unit. 0 means no limit."
+				},
+				{
+					"param": "power_unit",
+					"displayName": "Power Unit",
+					"type": "options",
+					"default": "kw",
+					"description": "The unit of Min Power and Max Power",
+					"options": [
+						{
+							"name": "Horsepower (HP)",
+							"value": "hp"
+						},
+						{
+							"name": "Kilowatts (kW)",
+							"value": "kw"
+						}
+					]
+				},
+				{
+					"param": "country",
+					"displayName": "Seller Country",
+					"type": "options",
+					"default": "",
+					"description": "Only cars offered by sellers in this country",
+					"options": [
+						{
+							"name": "Any",
+							"value": ""
+						},
+						{
+							"name": "Austria",
+							"value": "AT"
+						},
+						{
+							"name": "Belgium",
+							"value": "BE"
+						},
+						{
+							"name": "France",
+							"value": "FR"
+						},
+						{
+							"name": "Germany",
+							"value": "DE"
+						},
+						{
+							"name": "Italy",
+							"value": "IT"
+						},
+						{
+							"name": "Luxembourg",
+							"value": "LU"
+						},
+						{
+							"name": "Netherlands",
+							"value": "NL"
+						},
+						{
+							"name": "Spain",
+							"value": "ES"
+						}
+					]
+				},
+				{
+					"param": "page",
+					"displayName": "Start Page",
+					"type": "number",
+					"default": 1,
+					"min": 1,
+					"max": 20,
+					"description": "Which results page to start from (1 is the first page)"
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country AutoScout24 is opened from. Automatic picks a suitable one."
+				}
+			],
+			"sort": [
+				{
+					"param": "sort",
+					"displayName": "Sort By",
+					"type": "options",
+					"default": "relevance",
+					"description": "The order of the listings",
+					"options": [
+						{
+							"name": "Relevance",
+							"value": "relevance"
+						},
+						{
+							"name": "First Registration: Newest First",
+							"value": "year_desc"
+						},
+						{
+							"name": "Mileage: Lowest First",
+							"value": "mileage_asc"
+						},
+						{
+							"name": "Newest Listings First",
+							"value": "newest"
+						},
+						{
+							"name": "Power: Highest First",
+							"value": "power_desc"
+						},
+						{
+							"name": "Price: Highest First",
+							"value": "price_desc"
+						},
+						{
+							"name": "Price: Lowest First",
+							"value": "price_asc"
+						}
+					]
+				}
+			],
+			"listKey": "listings",
+			"outputFields": [
+				"id",
+				"url",
+				"title",
+				"make",
+				"model",
+				"modelGroup",
+				"variant",
+				"condition",
+				"isNewListing",
+				"price",
+				"mileageKm",
+				"firstRegistration",
+				"fuel",
+				"transmission",
+				"powerKw",
+				"powerHp",
+				"engineCc",
+				"location",
+				"seller",
+				"images"
+			],
+			"idField": "id",
+			"simplify": [
+				"id",
+				"make",
+				"model",
+				"title",
+				"price.raw",
+				"mileageKm",
+				"firstRegistration",
+				"fuel",
+				"location.country",
+				"url"
+			],
+			"test": {
+				"params": {
+					"make": "bmw",
+					"max_results": 5
+				},
+				"minItems": 3,
+				"maxFields": 10
+			}
+		}
+	]
+}

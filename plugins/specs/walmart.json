@@ -1,0 +1,140 @@
+{
+	"resource": "Walmart",
+	"value": "walmart",
+	"operations": [
+		{
+			"name": "Search Products",
+			"value": "searchProducts",
+			"action": "Search walmart products",
+			"description": "Find products that match a keyword on Walmart.com, with prices, ratings and sellers",
+			"endpoint": "/marketplace/walmart-search",
+			"fields": [
+				{
+					"param": "query",
+					"displayName": "Search Query",
+					"type": "string",
+					"required": true,
+					"placeholder": "coffee maker",
+					"description": "What to search for: a keyword or product name"
+				},
+				{
+					"param": "max_results",
+					"displayName": "Max Results",
+					"type": "number",
+					"default": 40,
+					"min": 1,
+					"max": 1000,
+					"description": "How many products to collect across pages (up to 1000). A page holds about 40."
+				}
+			],
+			"options": [
+				{
+					"param": "page",
+					"displayName": "Start Page",
+					"type": "number",
+					"default": 1,
+					"min": 1,
+					"description": "Which results page to start from"
+				},
+				{
+					"param": "min_price",
+					"displayName": "Min Price",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Lowest price to include, as a whole number in USD. 0 means no minimum."
+				},
+				{
+					"param": "max_price",
+					"displayName": "Max Price",
+					"type": "number",
+					"default": 0,
+					"min": 0,
+					"skipZero": true,
+					"description": "Highest price to include, as a whole number in USD. 0 means no limit."
+				},
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Walmart is opened from. Automatic uses the US."
+				}
+			],
+			"sort": [
+				{
+					"param": "sort",
+					"displayName": "Sort By",
+					"type": "options",
+					"default": "best_match",
+					"description": "The order of the products",
+					"options": [
+						{
+							"name": "Best Match",
+							"value": "best_match"
+						},
+						{
+							"name": "Best Selling",
+							"value": "best_seller"
+						},
+						{
+							"name": "Highest Rated",
+							"value": "rating_high"
+						},
+						{
+							"name": "New Arrivals",
+							"value": "new"
+						},
+						{
+							"name": "Price: Highest First",
+							"value": "price_high"
+						},
+						{
+							"name": "Price: Lowest First",
+							"value": "price_low"
+						}
+					]
+				}
+			],
+			"listKey": "products",
+			"outputFields": [
+				"id",
+				"name",
+				"price",
+				"wasPrice",
+				"currency",
+				"rating",
+				"reviewCount",
+				"brand",
+				"seller",
+				"availability",
+				"description",
+				"image",
+				"url"
+			],
+			"idField": "id",
+			"simplify": [
+				"id",
+				"name",
+				"price",
+				"wasPrice",
+				"rating",
+				"reviewCount",
+				"brand",
+				"seller",
+				"availability",
+				"url"
+			],
+			"test": {
+				"params": {
+					"query": "laptop",
+					"max_results": 3
+				},
+				"minItems": 3,
+				"maxFields": 10
+			},
+			"disabled": "The API answers 500 after 180 s on every try (2026-10-06)"
+		}
+	]
+}

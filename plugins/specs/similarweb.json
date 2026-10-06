@@ -1,0 +1,93 @@
+{
+	"resource": "Similarweb",
+	"value": "similarweb",
+	"operations": [
+		{
+			"name": "Get Traffic Overview",
+			"value": "getTrafficOverview",
+			"action": "Get similarweb traffic overview",
+			"description": "Visits, ranks, engagement, traffic sources, top countries and competitors of a website",
+			"endpoint": "/seo/similarweb",
+			"fields": [
+				{
+					"param": "domain",
+					"displayName": "Domain",
+					"type": "string",
+					"required": true,
+					"placeholder": "github.com",
+					"description": "The website to look up: its domain or any URL of the site. A leading www. is dropped; other subdomains such as docs.python.org are kept."
+				}
+			],
+			"options": [
+				{
+					"param": "proxy_country",
+					"displayName": "Browse From Country",
+					"type": "options",
+					"options": "countries",
+					"description": "The country Similarweb is opened from. Automatic picks one."
+				}
+			],
+			"outputFields": [
+				"domain",
+				"found",
+				"hasTrafficData",
+				"url",
+				"snapshotDate",
+				"description",
+				"category",
+				"icon",
+				"previewDesktop",
+				"previewMobile",
+				"globalRank",
+				"globalRankChange",
+				"country",
+				"countryRank",
+				"countryRankChange",
+				"categoryRank",
+				"categoryRankChange",
+				"totalVisits",
+				"visitsChangePercent",
+				"bounceRate",
+				"pagesPerVisit",
+				"avgVisitDuration",
+				"avgVisitDurationSeconds",
+				"visitsHistory",
+				"rankHistory",
+				"trafficSources",
+				"countriesTotal",
+				"topCountries",
+				"demographics",
+				"competitors",
+				"search",
+				"socialNetworks",
+				"referrals",
+				"outgoingLinks",
+				"displayAds",
+				"technologies",
+				"audienceInterests",
+				"company"
+			],
+			"idField": "domain",
+			"simplify": [
+				"domain",
+				"snapshotDate",
+				"totalVisits",
+				"visitsChangePercent",
+				"globalRank",
+				"countryRank",
+				"country",
+				"category",
+				"bounceRate",
+				"avgVisitDuration"
+			],
+			"test": {
+				"params": {
+					"domain": "github.com"
+				},
+				"minItems": 1,
+				"maxItems": 1,
+				"maxFields": 10
+			}
+		}
+	]
+}

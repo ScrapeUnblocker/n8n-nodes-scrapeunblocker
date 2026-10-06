@@ -1,0 +1,135 @@
+{
+	"resource": "Meta Ad Library",
+	"value": "metaAdLibrary",
+	"operations": [
+		{
+			"name": "Get Ads",
+			"value": "getAds",
+			"action": "Get meta ad library ads",
+			"description": "Retrieve an advertiser's Facebook and Instagram ads with copy, creatives, landing page and run dates",
+			"endpoint": "/ads/meta-ad-library",
+			"fields": [
+				{
+					"param": "advertiser",
+					"displayName": "Advertiser",
+					"type": "string",
+					"required": true,
+					"placeholder": "Nike",
+					"description": "A Facebook Page name, searched as a keyword (results can include other Pages), or a numeric Page ID for exactly that advertiser's ads"
+				},
+				{
+					"param": "max_ads",
+					"displayName": "Max Ads",
+					"type": "number",
+					"default": 50,
+					"min": 1,
+					"max": 500,
+					"description": "How many ads to return at most (1-500)"
+				}
+			],
+			"options": [
+				{
+					"param": "country",
+					"displayName": "Country",
+					"type": "string",
+					"default": "US",
+					"placeholder": "GB",
+					"description": "Two-letter code of the country whose ads to show (e.g. US, GB or DE). The Ad Library differs per country."
+				},
+				{
+					"param": "active_status",
+					"displayName": "Ad Status",
+					"type": "options",
+					"default": "active",
+					"description": "Whether to return ads that are running now, ads that have stopped, or both",
+					"options": [
+						{
+							"name": "Active",
+							"value": "active"
+						},
+						{
+							"name": "All",
+							"value": "all"
+						},
+						{
+							"name": "Inactive",
+							"value": "inactive"
+						}
+					]
+				},
+				{
+					"param": "media_type",
+					"displayName": "Media Type",
+					"type": "options",
+					"default": "all",
+					"description": "Only ads with this kind of creative",
+					"options": [
+						{
+							"name": "All",
+							"value": "all"
+						},
+						{
+							"name": "Image",
+							"value": "image"
+						},
+						{
+							"name": "Meme",
+							"value": "meme"
+						},
+						{
+							"name": "Video",
+							"value": "video"
+						}
+					]
+				}
+			],
+			"listKey": "results",
+			"outputFields": [
+				"ad_archive_id",
+				"collation_id",
+				"page_id",
+				"page_name",
+				"page_profile_uri",
+				"page_like_count",
+				"is_active",
+				"started_running",
+				"ended",
+				"platforms",
+				"display_format",
+				"is_dynamic",
+				"ad_text",
+				"title",
+				"caption",
+				"cta_text",
+				"cta_type",
+				"link_url",
+				"link_description",
+				"creatives",
+				"categories",
+				"currency",
+				"reach_estimate"
+			],
+			"idField": "ad_archive_id",
+			"simplify": [
+				"ad_archive_id",
+				"page_name",
+				"ad_text",
+				"title",
+				"cta_text",
+				"link_url",
+				"display_format",
+				"creatives",
+				"platforms",
+				"started_running"
+			],
+			"test": {
+				"params": {
+					"advertiser": "Nike",
+					"max_ads": 3
+				},
+				"minItems": 2,
+				"maxFields": 10
+			}
+		}
+	]
+}
