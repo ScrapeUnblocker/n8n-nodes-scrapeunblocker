@@ -48,10 +48,32 @@ function webPageParameter(property: INodeProperties): INodeProperties {
 	return { ...property, displayOptions: { show } };
 }
 
-function imageFileName(url: string): string {
+// File extension for the image type /getImage answers with (the image's own type).
+const IMAGE_EXTENSIONS: Record<string, string> = {
+	'image/jpeg': 'jpg',
+	'image/png': 'png',
+	'image/webp': 'webp',
+	'image/avif': 'avif',
+	'image/gif': 'gif',
+	'image/svg+xml': 'svg',
+	'image/x-icon': 'ico',
+	'image/vnd.microsoft.icon': 'ico',
+	'image/bmp': 'bmp',
+	'image/tiff': 'tiff',
+	'image/heic': 'heic',
+	'image/heif': 'heif',
+	'image/jxl': 'jxl',
+};
+
+function imageFileName(url: string, mimeType: string): string {
 	const last = url.split('?')[0].split('/').pop() ?? '';
 	const base = last.replace(/\.[a-z0-9]+$/i, '') || 'image';
-	return `${base}.png`;
+	const ext = IMAGE_EXTENSIONS[mimeType] ?? mimeType.replace(/^image\//, '').replace(/[^a-z0-9]/gi, '');
+	return `${base}.${ext || 'img'}`;
+}
+
+function headerValue(value: unknown): string {
+	return String(Array.isArray(value) ? value[0] : (value ?? ''));
 }
 
 export class ScrapeUnblocker implements INodeType {
@@ -95,7 +117,7 @@ export class ScrapeUnblocker implements INodeType {
 					{
 						name: 'Get Image',
 						value: 'getImage',
-						description: 'Download one image from a protected site as a PNG file',
+						description: 'Download one image from a protected site in its original format',
 						action: 'Get image',
 					},
 					{
@@ -370,7 +392,10 @@ export class ScrapeUnblocker implements INodeType {
 	}
 }
 
-/** Downloads one image through `/getImage` and returns it as binary data (PNG). */
+/**
+ * Downloads one image through `/getImage` and returns it as binary data, in the
+ * image's own format. A missing image (the host's 404/410) is an item, not an error.
+ */
 async function getImage(this: IExecuteFunctions, itemIndex: number): Promise<INodeExecutionData> {
 	const url = this.getNodeParameter('url', itemIndex) as string;
 	const proxyCountry = this.getNodeParameter('proxy_country', itemIndex, '') as string;
@@ -391,6 +416,22 @@ async function getImage(this: IExecuteFunctions, itemIndex: number): Promise<INo
 		},
 	)) as IN8nHttpFullResponse;
 	const body = Buffer.from(response.body as ArrayBuffer);
+	const gone = targetGoneStatus(response.statusCode, response.headers?.['x-origin-status']);
+	if (gone !== null && response.headers?.['x-origin-status'] !== undefined) {
+		return {
+			json: {
+				url,
+				imageNotFound: true,
+				originStatus: gone,
+				billed: true,
+				message:
+					`The image does not exist: its host answered HTTP ${gone}. This is the ` +
+					"site's own answer, not a block or an API failure. The call was billed, " +
+					'and retrying returns the same result.',
+			},
+			pairedItem: itemIndex,
+		};
+	}
 	if (response.statusCode >= 400) {
 		throw new NodeApiError(
 			this.getNode(),
@@ -401,7 +442,10 @@ async function getImage(this: IExecuteFunctions, itemIndex: number): Promise<INo
 			{ itemIndex, httpCode: String(response.statusCode) },
 		);
 	}
-	const binary = await this.helpers.prepareBinaryData(body, imageFileName(url), 'image/png');
+	const mimeType =
+		headerValue(response.headers?.['content-type']).split(';')[0].trim().toLowerCase() ||
+		'application/octet-stream';
+	const binary = await this.helpers.prepareBinaryData(body, imageFileName(url, mimeType), mimeType);
 	return {
 		json: { url, fileName: binary.fileName, mimeType: binary.mimeType, fileSize: binary.fileSize },
 		binary: { data: binary },

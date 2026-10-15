@@ -82,7 +82,7 @@ Enable **List Elements** to receive structured JSON (`{ url, count, elements: [.
 
 #### Get Image (`POST /getImage`)
 
-Downloads one image from a site that blocks direct downloads and returns it as a PNG file in the item's binary data (`data`), with `url`, `fileName`, `mimeType` and `fileSize` in the JSON. Parameters: **URL** of the image and **Browse From Country**.
+Downloads one image from a site that blocks direct downloads and returns it in the item's binary data (`data`) exactly as the image host serves it - the original format (JPEG, PNG, WebP, AVIF, GIF, SVG, ...), nothing re-encoded - with `url`, `fileName`, `mimeType` and `fileSize` in the JSON. The file extension follows the image's type. An image that does not exist (its host answers 404/410) comes back as an item with `imageNotFound: true` and `originStatus`, not as an error. Parameters: **URL** of the image (not the page it is on) and **Browse From Country**.
 
 ### Structured data from popular sites
 

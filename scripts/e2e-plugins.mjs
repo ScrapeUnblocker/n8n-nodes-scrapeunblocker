@@ -72,6 +72,14 @@ const CORE_TESTS = [
 		minItems: 1,
 		expectBinary: true,
 	},
+	{
+		key: 'webPage:getImageJpeg',
+		resource: 'webPage',
+		operation: 'getImage',
+		params: { url: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400' },
+		minItems: 1,
+		expectBinary: true,
+	},
 ];
 
 function loadTests(filters) {
