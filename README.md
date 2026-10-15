@@ -258,3 +258,5 @@ n8n 2.8.3 and above
 - 0.1.17: With Parsed Data, a page with no structured data is output as an item with `noDataExtracted: true` (not billed) instead of failing the node with a validation error
 - 0.1.18: With Parsed Data, a page with no structured data is output as the API's 200 answer: `data_extracted: false`, a `detail` line and the rendered page in `html` (billed like a page fetch). Replaces the `noDataExtracted` item from 0.1.17, which the API no longer produces
 - 0.2.0: Resources and operations: Web Page (Get Page Source, new Get Image) plus structured data from many popular sites (Amazon, eBay, Google, TikTok, YouTube, LinkedIn, Zillow, Booking.com and more), with a Simplify setting (Output for the AI tool), Options and Sort collections. Existing workflows keep working unchanged.
+- 0.2.1: Get Image keeps the image's own format and MIME type instead of re-encoding to PNG; a missing image (404/410 from its host) is output as an item with `imageNotFound` instead of a node error
+- 0.3.0: Google Search Images: Time Range (past hour, day, week, month or year), From Date and To Date options to return only images Google found in that period
