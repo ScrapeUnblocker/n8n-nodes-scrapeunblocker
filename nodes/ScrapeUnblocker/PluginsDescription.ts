@@ -13744,6 +13744,15 @@ export const pluginProperties: INodeProperties[] = [
 					'The country Google Images is opened from. Image results depend on the market, which follows this country unless Google Market is set.',
 			},
 			{
+				displayName: 'From Date',
+				name: 'date_from',
+				type: 'string',
+				default: '',
+				placeholder: 'e.g. 2026-01-01',
+				description:
+					'Only images Google found on or after this date (YYYY-MM-DD). Works alone or with To Date. Cannot be combined with Time Range.',
+			},
+			{
 				displayName: 'Google Market',
 				name: 'gl',
 				type: 'string',
@@ -13762,6 +13771,49 @@ export const pluginProperties: INodeProperties[] = [
 				},
 				default: 0,
 				description: 'The most images to return. 0 returns all images of the fetched pages.',
+			},
+			{
+				displayName: 'Time Range',
+				name: 'time_range',
+				type: 'options',
+				options: [
+					{
+						name: 'Any Time',
+						value: '',
+					},
+					{
+						name: 'Past Day',
+						value: 'day',
+					},
+					{
+						name: 'Past Hour',
+						value: 'hour',
+					},
+					{
+						name: 'Past Month',
+						value: 'month',
+					},
+					{
+						name: 'Past Week',
+						value: 'week',
+					},
+					{
+						name: 'Past Year',
+						value: 'year',
+					},
+				],
+				default: '',
+				description:
+					'Only images Google found within this recent period, like the Time filter under Tools in Google Images. Use it to get only the new images on repeated searches. Cannot be combined with From Date or To Date.',
+			},
+			{
+				displayName: 'To Date',
+				name: 'date_to',
+				type: 'string',
+				default: '',
+				placeholder: 'e.g. 2026-06-30',
+				description:
+					'Only images Google found on or before this date (YYYY-MM-DD). Works alone or with From Date. Cannot be combined with Time Range.',
 			},
 		],
 	},

@@ -7347,7 +7347,7 @@
      "Plugins"
     ],
     "summary": "Scrape Google Images results",
-    "description": "Runs the Google Images vertical (`udm=2`) for `q` and returns the image results as JSON. Every result carries `imageUrl` (the full-resolution origin image, not a Google thumbnail; for an image found inside a document such as a PDF, which has no URL of its own, it is Google's thumbnail and `sourcePageUrl` is the document), `sourceDomain` and `googleImagesUrl` (the Google Images viewer link, i.e. the `/imgres?...` URL a browser copies from the result tile), plus `sourcePageUrl`, `title`, `sourceName`, `thumbnailUrl`, `width`, `height` and `fileSize` where available. Set `proxy_country` to target a market: the Google market (`gl`) follows it automatically, and `gl` is only an optional override. `pages` fetches up to 5 result pages of ~100 each; every page fetched is billed as one request.",
+    "description": "Runs the Google Images vertical (`udm=2`) for `q` and returns the image results as JSON. Every result carries `imageUrl` (the full-resolution origin image, not a Google thumbnail; for an image found inside a document such as a PDF, which has no URL of its own, it is Google's thumbnail and `sourcePageUrl` is the document), `sourceDomain` and `googleImagesUrl` (the Google Images viewer link, i.e. the `/imgres?...` URL a browser copies from the result tile), plus `sourcePageUrl`, `title`, `sourceName`, `thumbnailUrl`, `width`, `height` and `fileSize` where available. Set `proxy_country` to target a market: the Google market (`gl`) follows it automatically, and `gl` is only an optional override. `pages` fetches up to 5 result pages of ~100 each; every page fetched is billed as one request. `time_range` (past hour/day/week/month/year) or `date_from`/`date_to` limit the results to images Google found in that period, so a repeated scan returns only what is new.",
     "operationId": "google_images_images_google_search_post",
     "parameters": [
      {
@@ -7374,10 +7374,10 @@
          "type": "null"
         }
        ],
-       "description": "Optional Google market override (ISO-2, e.g. 'us', 'de'). Leave empty and the market follows `proxy_country` ('us' when neither is set). The market, not the exit IP, is what decides which images rank.",
+       "description": "Optional Google market override (ISO-2, e.g. 'us', 'de'). Leave empty and the market follows `proxy_country` ('us' when neither is set). The market, not the proxy country, is what decides which images rank.",
        "title": "Gl"
       },
-      "description": "Optional Google market override (ISO-2, e.g. 'us', 'de'). Leave empty and the market follows `proxy_country` ('us' when neither is set). The market, not the exit IP, is what decides which images rank."
+      "description": "Optional Google market override (ISO-2, e.g. 'us', 'de'). Leave empty and the market follows `proxy_country` ('us' when neither is set). The market, not the proxy country, is what decides which images rank."
      },
      {
       "name": "pages",
@@ -7426,10 +7426,64 @@
          "type": "null"
         }
        ],
-       "description": "Exit-IP country (ISO-2). Image results are market-specific.",
+       "description": "Proxy country the request is sent from (ISO-2, e.g. 'US', 'DE'). Image results are market-specific.",
        "title": "Proxy Country"
       },
-      "description": "Exit-IP country (ISO-2). Image results are market-specific."
+      "description": "Proxy country the request is sent from (ISO-2, e.g. 'US', 'DE'). Image results are market-specific."
+     },
+     {
+      "name": "time_range",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "description": "Only images Google found within this recent period: `hour`, `day`, `week`, `month` or `year` (Google Images' Tools > Time filter). Use it to get just the new results on repeated scans. Cannot be combined with `date_from`/`date_to`.",
+       "title": "Time Range"
+      },
+      "description": "Only images Google found within this recent period: `hour`, `day`, `week`, `month` or `year` (Google Images' Tools > Time filter). Use it to get just the new results on repeated scans. Cannot be combined with `date_from`/`date_to`."
+     },
+     {
+      "name": "date_from",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "description": "Only images Google found on or after this date (YYYY-MM-DD). Works alone or with `date_to`; cannot be combined with `time_range`.",
+       "title": "Date From"
+      },
+      "description": "Only images Google found on or after this date (YYYY-MM-DD). Works alone or with `date_to`; cannot be combined with `time_range`."
+     },
+     {
+      "name": "date_to",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "description": "Only images Google found on or before this date (YYYY-MM-DD). Works alone or with `date_from`; cannot be combined with `time_range`.",
+       "title": "Date To"
+      },
+      "description": "Only images Google found on or before this date (YYYY-MM-DD). Works alone or with `date_from`; cannot be combined with `time_range`."
      }
     ],
     "responses": {
@@ -7441,14 +7495,14 @@
        }
       }
      },
+     "400": {
+      "description": "Invalid parameters, e.g. an unknown `time_range` or a date not in YYYY-MM-DD format (plain-text message)."
+     },
      "403": {
       "description": "Blocked by Google CAPTCHA after retries - try another proxy_country."
      },
      "502": {
-      "description": "No image results collected (upstream block or an unusable page)."
-     },
-     "504": {
-      "description": "Fetch timed out."
+      "description": "No image results collected (upstream block or an unusable page), or the call did not finish in time."
      },
      "422": {
       "description": "Validation Error",

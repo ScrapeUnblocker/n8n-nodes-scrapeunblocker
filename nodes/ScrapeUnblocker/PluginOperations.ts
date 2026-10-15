@@ -1597,6 +1597,18 @@ export const PLUGIN_OPERATIONS: Record<string, PluginOperation> = {
 				name: 'gl',
 				param: 'gl',
 			},
+			time_range: {
+				name: 'time_range',
+				param: 'time_range',
+			},
+			date_from: {
+				name: 'date_from',
+				param: 'date_from',
+			},
+			date_to: {
+				name: 'date_to',
+				param: 'date_to',
+			},
 			proxy_country: {
 				name: 'proxy_country',
 				param: 'proxy_country',

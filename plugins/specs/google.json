@@ -114,6 +114,53 @@
 					"description": "Two-letter country code of the Google market whose images rank. Empty follows Browse From Country, or the US when that is automatic."
 				},
 				{
+					"param": "time_range",
+					"displayName": "Time Range",
+					"type": "options",
+					"default": "",
+					"description": "Only images Google found within this recent period, like the Time filter under Tools in Google Images. Use it to get only the new images on repeated searches. Cannot be combined with From Date or To Date.",
+					"options": [
+						{
+							"name": "Any Time",
+							"value": ""
+						},
+						{
+							"name": "Past Hour",
+							"value": "hour"
+						},
+						{
+							"name": "Past Day",
+							"value": "day"
+						},
+						{
+							"name": "Past Week",
+							"value": "week"
+						},
+						{
+							"name": "Past Month",
+							"value": "month"
+						},
+						{
+							"name": "Past Year",
+							"value": "year"
+						}
+					]
+				},
+				{
+					"param": "date_from",
+					"displayName": "From Date",
+					"type": "string",
+					"placeholder": "2026-01-01",
+					"description": "Only images Google found on or after this date (YYYY-MM-DD). Works alone or with To Date. Cannot be combined with Time Range."
+				},
+				{
+					"param": "date_to",
+					"displayName": "To Date",
+					"type": "string",
+					"placeholder": "2026-06-30",
+					"description": "Only images Google found on or before this date (YYYY-MM-DD). Works alone or with From Date. Cannot be combined with Time Range."
+				},
+				{
 					"param": "proxy_country",
 					"displayName": "Browse From Country",
 					"type": "options",
