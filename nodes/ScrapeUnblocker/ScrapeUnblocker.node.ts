@@ -1,4 +1,5 @@
 import {
+	IDataObject,
 	IExecuteFunctions,
 	INodeExecutionData,
 	INodeType,
@@ -13,7 +14,15 @@ import {
 	INodeProperties,
 } from 'n8n-workflow';
 
-import { API_URL, callPlugin, pluginQuery, resultItems, shapeItems } from './GenericFunctions';
+import {
+	API_URL,
+	apiMessage,
+	callPlugin,
+	errorHint,
+	pluginQuery,
+	resultItems,
+	shapeItems,
+} from './GenericFunctions';
 import { PLUGIN_OPERATIONS } from './PluginOperations';
 import { pluginProperties, resourceProperty } from './PluginsDescription';
 
@@ -32,14 +41,20 @@ function targetGoneStatus(status: number, originStatus: unknown): number | null 
 	return TARGET_GONE.has(status) ? status : null;
 }
 
-// URL and country serve both Web Page operations; the rest belongs to Get Page Source only.
-const SHARED_WEB_PAGE_PARAMETERS = ['url', 'proxy_country'];
+// The Web Page operations that show each parameter; any other parameter is Get Page Source only.
+// Get Markdown has no Parsed Data or List Elements: the API refuses them with markdown (422).
+const WEB_PAGE_OPERATIONS: Record<string, string[]> = {
+	url: ['getImage', 'getMarkdown', 'getPageSource'],
+	proxy_country: ['getImage', 'getMarkdown', 'getPageSource'],
+	main_content_only: ['getMarkdown'],
+	method: ['getMarkdown', 'getPageSource'],
+	value: ['getMarkdown', 'getPageSource'],
+	steps: ['getMarkdown', 'getPageSource'],
+};
 
 /** The Web Page parameters keep the API's query keys as names, as before resources existed. */
 function webPageParameter(property: INodeProperties): INodeProperties {
-	const operation = SHARED_WEB_PAGE_PARAMETERS.includes(property.name)
-		? ['getImage', 'getPageSource']
-		: ['getPageSource'];
+	const operation = WEB_PAGE_OPERATIONS[property.name] ?? ['getPageSource'];
 	const show = {
 		resource: ['webPage'],
 		operation,
@@ -121,6 +136,13 @@ export class ScrapeUnblocker implements INodeType {
 						action: 'Get image',
 					},
 					{
+						name: 'Get Markdown',
+						value: 'getMarkdown',
+						description:
+							'Fetch any page past anti-bot protection as clean Markdown for LLMs, AI agents and RAG',
+						action: 'Get markdown',
+					},
+					{
 						name: 'Get Page Source',
 						value: 'getPageSource',
 						description: "Fetch any page's HTML (or structured JSON) past anti-bot protection",
@@ -186,6 +208,14 @@ export class ScrapeUnblocker implements INodeType {
 							{ name: 'United Kingdom (GB)', value: 'GB' },
 							{ name: 'United States (US)', value: 'US' },
 						] as INodePropertyOptions[],
+					},
+					{
+						displayName: 'Main Content Only',
+						name: 'main_content_only',
+						type: 'boolean',
+						default: true,
+						description:
+							"Whether to keep only the page's main content and drop navigation, the site header, footer and sidebars. Turn off to convert the whole page.",
 					},
 					{
 						displayName: 'Wait for Element Method',
@@ -271,33 +301,21 @@ export class ScrapeUnblocker implements INodeType {
 					continue;
 				}
 
-				if (this.getNodeParameter('operation', i) === 'getImage') {
+				const operation = this.getNodeParameter('operation', i);
+				if (operation === 'getImage') {
 					returnData.push(await getImage.call(this, i));
+					continue;
+				}
+				if (operation === 'getMarkdown') {
+					returnData.push(await getMarkdown.call(this, i));
 					continue;
 				}
 
 				const url = this.getNodeParameter('url', i) as string;
-				const proxyCountry = this.getNodeParameter('proxy_country', i) as string;
-				const method = this.getNodeParameter('method', i) as string;
 				const parsedData = this.getNodeParameter('parsed_data', i) as boolean;
 				const listElements = this.getNodeParameter('list_elements', i) as boolean;
-				const steps = this.getNodeParameter('steps', i, '') as string;
 
-				const query: Record<string, string | boolean> = {
-					url,
-				};
-
-				if (proxyCountry) {
-					query.proxy_country = proxyCountry;
-				}
-
-				if (method) {
-					query.method = method;
-					const value = this.getNodeParameter('value', i, '') as string;
-					if (value) {
-						query.value = value;
-					}
-				}
+				const query = pageQuery.call(this, i);
 
 				if (parsedData) {
 					query.parsed_data = true;
@@ -305,29 +323,6 @@ export class ScrapeUnblocker implements INodeType {
 
 				if (listElements) {
 					query.list_elements = true;
-				}
-
-				if (typeof steps === 'string' && steps.trim() !== '') {
-					let parsedSteps: unknown;
-					try {
-						parsedSteps = JSON.parse(steps);
-					} catch {
-						throw new NodeOperationError(
-							this.getNode(),
-							'Browser Steps must be a valid JSON array of actions',
-							{ itemIndex: i },
-						);
-					}
-					if (!Array.isArray(parsedSteps)) {
-						throw new NodeOperationError(
-							this.getNode(),
-							'Browser Steps must be a JSON array of actions',
-							{ itemIndex: i },
-						);
-					}
-					if (parsedSteps.length > 0) {
-						query.steps = JSON.stringify(parsedSteps);
-					}
 				}
 
 				const options: IHttpRequestOptions = {
@@ -390,6 +385,122 @@ export class ScrapeUnblocker implements INodeType {
 		}
 		return [returnData];
 	}
+}
+
+/**
+ * The `/getPageSource` query shared by Get Page Source and Get Markdown: the URL, the
+ * country, the element to wait for and the browser steps.
+ */
+function pageQuery(this: IExecuteFunctions, itemIndex: number): Record<string, string | boolean> {
+	const query: Record<string, string | boolean> = {
+		url: this.getNodeParameter('url', itemIndex) as string,
+	};
+	const proxyCountry = this.getNodeParameter('proxy_country', itemIndex, '') as string;
+	if (proxyCountry) {
+		query.proxy_country = proxyCountry;
+	}
+	const method = this.getNodeParameter('method', itemIndex, '') as string;
+	if (method) {
+		query.method = method;
+		const value = this.getNodeParameter('value', itemIndex, '') as string;
+		if (value) {
+			query.value = value;
+		}
+	}
+	const steps = this.getNodeParameter('steps', itemIndex, '') as string;
+	if (typeof steps === 'string' && steps.trim() !== '') {
+		let parsedSteps: unknown;
+		try {
+			parsedSteps = JSON.parse(steps);
+		} catch {
+			throw new NodeOperationError(
+				this.getNode(),
+				'Browser Steps must be a valid JSON array of actions',
+				{ itemIndex },
+			);
+		}
+		if (!Array.isArray(parsedSteps)) {
+			throw new NodeOperationError(this.getNode(), 'Browser Steps must be a JSON array of actions', {
+				itemIndex,
+			});
+		}
+		if (parsedSteps.length > 0) {
+			query.steps = JSON.stringify(parsedSteps);
+		}
+	}
+	return query;
+}
+
+/** The API's explanation in an error answer read as text: its JSON `detail`, or the text. */
+function errorMessage(text: string): string {
+	try {
+		const parsed: unknown = JSON.parse(text);
+		if (typeof parsed === 'object' && parsed !== null) {
+			return apiMessage(parsed as IDataObject);
+		}
+	} catch {
+		// Not JSON: the text itself is the explanation.
+	}
+	return apiMessage(text);
+}
+
+/**
+ * Fetches one page through `/getPageSource?markdown=true` and returns `{ url, markdown }`.
+ * The body is read as text, so a page whose Markdown happens to look like JSON stays text.
+ * A missing page (the site's 404/410) is an item with the site's own page as Markdown.
+ */
+async function getMarkdown(
+	this: IExecuteFunctions,
+	itemIndex: number,
+): Promise<INodeExecutionData> {
+	const qs = pageQuery.call(this, itemIndex);
+	const url = qs.url as string;
+	qs.markdown = true;
+	qs.main_content_only = this.getNodeParameter('main_content_only', itemIndex, true) as boolean;
+	const response = (await this.helpers.httpRequestWithAuthentication.call(
+		this,
+		'scrapeUnblockerApi',
+		{
+			method: 'POST',
+			url: `${API_URL}/getPageSource`,
+			qs,
+			encoding: 'text',
+			returnFullResponse: true,
+			ignoreHttpStatusErrors: true,
+		},
+	)) as IN8nHttpFullResponse;
+	const markdown = typeof response.body === 'string' ? response.body : String(response.body ?? '');
+	const gone = targetGoneStatus(response.statusCode, response.headers?.['x-origin-status']);
+	if (gone !== null) {
+		return {
+			json: {
+				url,
+				pageNotFound: true,
+				originStatus: gone,
+				billed: true,
+				message:
+					`The target page does not exist: it answered HTTP ${gone}. This is the ` +
+					"website's own answer, not a block or an API failure. The call was " +
+					'billed, and retrying returns the same result.',
+				markdown,
+			},
+			pairedItem: itemIndex,
+		};
+	}
+	if (response.statusCode >= 400) {
+		const message = errorMessage(markdown);
+		throw new NodeApiError(
+			this.getNode(),
+			{ message, httpCode: String(response.statusCode) } as JsonObject,
+			{
+				itemIndex,
+				httpCode: String(response.statusCode),
+				message,
+				description: errorHint(response.statusCode),
+			},
+		);
+	}
+	return { json: { url, markdown }, pairedItem: itemIndex };
 }
 
 /**

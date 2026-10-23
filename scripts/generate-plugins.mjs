@@ -361,10 +361,11 @@ const readme = readFileSync(README, 'utf8');
 if (!readme.includes(START) || !readme.includes(END)) fail('README.md has no plugin markers');
 writeFileSync(README, readme.replace(new RegExp(`${START}[\\s\\S]*?${END}`), table));
 
-// Codex aliases: the site names, so the node shows up when users search n8n for "eBay" or "TikTok".
+// Codex aliases: a few search words and the site names, so the node shows up when users search
+// n8n for "markdown", "eBay" or "TikTok".
 const CODEX = join(NODE_DIR, 'ScrapeUnblocker.node.json');
 const codex = JSON.parse(readFileSync(CODEX, 'utf8'));
-codex.alias = [...new Set(['scraper', 'web scraping', 'unblock', ...specs.map((spec) => spec.resource)])];
+codex.alias = [...new Set(['scraper', 'web scraping', 'unblock', 'markdown', ...specs.map((spec) => spec.resource)])];
 writeFileSync(CODEX, JSON.stringify(codex, null, '\t') + '\n');
 
 const files = ['nodes/ScrapeUnblocker/PluginsDescription.ts', 'nodes/ScrapeUnblocker/PluginOperations.ts'];

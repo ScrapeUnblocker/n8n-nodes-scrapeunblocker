@@ -1,6 +1,6 @@
 # n8n-nodes-scrapeunblocker
 
-This is an n8n community node. It lets you use the ScrapeUnblocker API in your n8n workflows: fetch any web page past captchas and anti-bot systems, or get ready-made structured data (products, listings, jobs, reviews, profiles, search results) from Amazon, eBay, Google, TikTok, YouTube, LinkedIn, Zillow, Booking.com and many more sites.
+This is an n8n community node. It lets you use the ScrapeUnblocker API in your n8n workflows: fetch any web page past captchas and anti-bot systems, as HTML or as clean Markdown for LLMs and AI agents, or get ready-made structured data (products, listings, jobs, reviews, profiles, search results) from Amazon, eBay, Google, TikTok, YouTube, LinkedIn, Zillow, Booking.com and many more sites.
 
 [n8n](https://n8n.io/) is a [fair-code licensed](https://docs.n8n.io/reference/license/) workflow automation platform.
 
@@ -79,6 +79,21 @@ Example:
 #### List elements
 
 Enable **List Elements** to receive structured JSON (`{ url, count, elements: [...] }`) describing the elements found on the page instead of raw HTML.
+
+#### Get Markdown (`POST /getPageSource?markdown=true`)
+
+Fetches a webpage past anti-bot protection and returns it as clean Markdown, ready for an LLM, an AI agent or a RAG pipeline: headings, lists, tables (GitHub-flavored), absolute links, images with their alt text and fenced code blocks, without scripts, styles, navigation, footers, forms or hidden elements. Each item is `{ url, markdown }`. The Markdown is usually a small fraction of the HTML's size, which keeps an AI agent's context small. The call is billed like Get Page Source.
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| **URL** | string | Yes | The URL of the webpage you want as Markdown. |
+| **Browse From Country** | string | No | The country the site is opened from. If not set, a European country is picked. |
+| **Main Content Only** | boolean | No | On by default: keeps the page's main content and drops navigation, the site header, footer and sidebars. Turn it off to convert the whole page. |
+| **Wait for Element Method** | string | No | Wait for an element to appear before the page is captured, as in Get Page Source. |
+| **Wait for Element Value** | string | No | The selector to wait for. Only shown when a method is selected. |
+| **Browser Steps** | json | No | Browser actions run after the page loads, before it is captured. See [Browser steps](#browser-steps). |
+
+Parsed Data and List Elements are not offered here, because each returns its own JSON format; use Get Page Source for them. A page that does not exist (the website answers HTTP 404 or 410) comes back as an item with `pageNotFound: true`, `originStatus`, `billed: true`, a `message` and the site's own page in `markdown`, as described in [When the page does not exist](#when-the-page-does-not-exist).
 
 #### Get Image (`POST /getImage`)
 

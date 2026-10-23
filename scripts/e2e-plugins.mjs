@@ -80,6 +80,36 @@ const CORE_TESTS = [
 		minItems: 1,
 		expectBinary: true,
 	},
+	// `expectText`: the first item's field must contain each string; `rejectText`: must not.
+	{
+		key: 'webPage:getMarkdown',
+		resource: 'webPage',
+		operation: 'getMarkdown',
+		params: { url: 'https://books.toscrape.com/catalogue/a-light-in-the-attic_1000/index.html' },
+		minItems: 1,
+		maxItems: 1,
+		expectText: { markdown: ['# A Light in the Attic', '£51.77'] },
+		rejectText: { markdown: ['We love being scraped!'] },
+	},
+	{
+		key: 'webPage:getMarkdownWholePage',
+		resource: 'webPage',
+		operation: 'getMarkdown',
+		params: {
+			url: 'https://books.toscrape.com/catalogue/a-light-in-the-attic_1000/index.html',
+			main_content_only: false,
+		},
+		minItems: 1,
+		expectText: { markdown: ['# A Light in the Attic', 'We love being scraped!'] },
+	},
+	{
+		key: 'webPage:getMarkdownMissingPage',
+		resource: 'webPage',
+		operation: 'getMarkdown',
+		params: { url: 'https://books.toscrape.com/no-such-page.html' },
+		minItems: 1,
+		expectText: { pageNotFound: ['true'], originStatus: ['404'], markdown: ['404'] },
+	},
 ];
 
 function loadTests(filters) {
@@ -165,6 +195,14 @@ function evaluate(test, raw) {
 	if (test.maxFields !== undefined && widest > test.maxFields) problems.push(`an item has ${widest} fields`);
 	if (test.expectError) problems.push('expected an error');
 	if (test.expectBinary && !hasBinary) problems.push('no binary data');
+	for (const [field, texts] of Object.entries(test.expectText ?? {})) {
+		const value = String(items[0]?.[field] ?? '');
+		for (const text of texts) if (!value.includes(text)) problems.push(`${field} lacks "${text}"`);
+	}
+	for (const [field, texts] of Object.entries(test.rejectText ?? {})) {
+		const value = String(items[0]?.[field] ?? '');
+		for (const text of texts) if (value.includes(text)) problems.push(`${field} has "${text}"`);
+	}
 	if (!problems.length && items.length) {
 		mkdirSync(join(ROOT, 'plugins', 'samples'), { recursive: true });
 		writeFileSync(join(ROOT, 'plugins', 'samples', `${test.key.replace(':', '--')}.json`), JSON.stringify(items[0], null, 2) + '\n');

@@ -102,7 +102,7 @@ export async function callPlugin(
 	return typeof body === 'object' && body !== null ? body : { result: body };
 }
 
-function apiMessage(body: IDataObject | string): string {
+export function apiMessage(body: IDataObject | string): string {
 	if (typeof body === 'string') {
 		return body.slice(0, 500) || 'The ScrapeUnblocker API returned no details';
 	}
@@ -114,7 +114,7 @@ function apiMessage(body: IDataObject | string): string {
 }
 
 // What to do next, per status class (n8n UX guidelines, "Errors").
-function errorHint(status: number): string {
+export function errorHint(status: number): string {
 	if (status === 401 || status === 403) {
 		return "Check the API key in the 'ScrapeUnblocker API' credential";
 	}
