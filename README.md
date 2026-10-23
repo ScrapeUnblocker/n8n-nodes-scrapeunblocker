@@ -275,3 +275,4 @@ n8n 2.8.3 and above
 - 0.2.0: Resources and operations: Web Page (Get Page Source, new Get Image) plus structured data from many popular sites (Amazon, eBay, Google, TikTok, YouTube, LinkedIn, Zillow, Booking.com and more), with a Simplify setting (Output for the AI tool), Options and Sort collections. Existing workflows keep working unchanged.
 - 0.2.1: Get Image keeps the image's own format and MIME type instead of re-encoding to PNG; a missing image (404/410 from its host) is output as an item with `imageNotFound` instead of a node error
 - 0.3.0: Google Search Images: Time Range (past hour, day, week, month or year), From Date and To Date options to return only images Google found in that period
+- 0.4.0: New Web Page operation Get Markdown: any page as clean Markdown (`{ url, markdown }`) for LLMs, AI agents and RAG, with a Main Content Only switch (on by default) and the same country, wait and browser step options as Get Page Source
