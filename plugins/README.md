@@ -63,7 +63,7 @@ A field:
 - **Country.** `proxy_country` is always an option: `"displayName": "Browse From Country"`, `"type": "options"`, `"options": "countries"`, and a description of what changes ("The country the site is opened from. ..."), keeping any hint from the API (e.g. "Automatic uses the US, which Yelp needs").
 - **No tech jargon.** No "exit IP", "ISO-2", "proxy", "slug", "browse-node", "Oxylabs", "warm pool" or other internals. Say "two-letter country code (e.g. us)", "the part of the profile URL after /organization/". Keep billing facts the user needs ("each page is one billed call").
 - **Placeholders** are realistic examples; booleans' descriptions start with `Whether`.
-- **Simplify** when a result has more than 10 top-level fields: list `outputFields` (all top-level keys of a real result), `idField`, and up to 10 `simplify` paths. Pick what a user of that site wants first (title/name, price, rating, URL, ID...). Skip internal fields such as `proxyCountry`, `exitCountry`, `exitProvider`.
+- **Simplify** when a result has more than 10 top-level fields: list `outputFields` (all top-level keys of a real result), `idField`, and up to 10 `simplify` paths. Pick what a user of that site wants first (title/name, price, rating, URL, ID...). Skip internal fields such as `proxyCountry` and `exitCountry`.
 - **Tests** use small limits (every test is a billed call) and a query that is known to return results.
 
 ## Testing

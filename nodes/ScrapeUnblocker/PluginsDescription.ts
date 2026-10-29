@@ -4141,10 +4141,6 @@ export const pluginProperties: INodeProperties[] = [
 				value: 'exitCountry',
 			},
 			{
-				name: 'Exit Provider',
-				value: 'exitProvider',
-			},
-			{
 				name: 'Features',
 				value: 'features',
 			},
@@ -5048,10 +5044,6 @@ export const pluginProperties: INodeProperties[] = [
 			{
 				name: 'Exit Country',
 				value: 'exitCountry',
-			},
-			{
-				name: 'Exit Provider',
-				value: 'exitProvider',
 			},
 			{
 				name: 'Histogram',

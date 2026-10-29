@@ -144,8 +144,7 @@
 				"image",
 				"images",
 				"proxyCountry",
-				"exitCountry",
-				"exitProvider"
+				"exitCountry"
 			],
 			"idField": "asin",
 			"simplify": [
@@ -509,8 +508,7 @@
 				"reviewsReturned",
 				"reviews",
 				"proxyCountry",
-				"exitCountry",
-				"exitProvider"
+				"exitCountry"
 			],
 			"idField": "asin",
 			"simplify": [
