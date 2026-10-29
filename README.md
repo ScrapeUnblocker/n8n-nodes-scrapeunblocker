@@ -276,3 +276,4 @@ n8n 2.8.3 and above
 - 0.2.1: Get Image keeps the image's own format and MIME type instead of re-encoding to PNG; a missing image (404/410 from its host) is output as an item with `imageNotFound` instead of a node error
 - 0.3.0: Google Search Images: Time Range (past hour, day, week, month or year), From Date and To Date options to return only images Google found in that period
 - 0.4.0: New Web Page operation Get Markdown: any page as clean Markdown (`{ url, markdown }`) for LLMs, AI agents and RAG, with a Main Content Only switch (on by default) and the same country, wait and browser step options as Get Page Source
+- 0.4.1: Amazon operations no longer list `exitProvider` among the selectable output fields: API responses no longer carry exit or proxy details
