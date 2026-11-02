@@ -140,7 +140,7 @@ Each operation returns the site's data as clean JSON fields, one n8n item per re
 | **Glassdoor** | Search Jobs | Find job listings with salary estimates that match a keyword | One item per result, Simplify |
 | **Glassdoor** | Get Reviews | Read what employees say about a company: ratings, pros and cons | One item per result, Simplify |
 | **Glassdoor** | Get Salaries | Pay ranges at a company for each job title, most-reported titles first | One item per result |
-| **Google** | Search | Get the organic results, ads and AI Overview Google shows for a query | One item per result |
+| **Google** | Search | Get the organic results, ads, AI Overview, People also ask, related searches, knowledge panel, news, videos, local and shopping results Google shows for a query | One item per result |
 | **Google** | Search Images | Find images that match a keyword, with links to the full-size image and the page it is on | One item per result |
 | **Google** | Search Jobs | Find job listings that Google collects from job boards and company sites | One item per result, Simplify |
 | **Google** | Search Local Businesses | Find businesses for a query such as coffee shops in a city, with rating, address, phone and website | One item per result, Simplify |
@@ -277,3 +277,4 @@ n8n 2.8.3 and above
 - 0.3.0: Google Search Images: Time Range (past hour, day, week, month or year), From Date and To Date options to return only images Google found in that period
 - 0.4.0: New Web Page operation Get Markdown: any page as clean Markdown (`{ url, markdown }`) for LLMs, AI agents and RAG, with a Main Content Only switch (on by default) and the same country, wait and browser step options as Get Page Source
 - 0.4.1: Amazon operations no longer list `exitProvider` among the selectable output fields: API responses no longer carry exit or proxy details
+- 0.4.2: Google Search also outputs the page's other blocks as items, tagged by `type`: `people_also_ask`, `related_search`, `knowledge_graph`, `top_story`, `video`, `local_result` and `shopping_result` (next to `organic`, `ad_top`, `ad_bottom` and `ai_overview`). Organic results now carry their real URL, `displayedUrl`, `domain`, `source` and `date`

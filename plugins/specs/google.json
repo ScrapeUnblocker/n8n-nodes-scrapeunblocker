@@ -6,7 +6,7 @@
 			"name": "Search",
 			"value": "search",
 			"action": "Search google",
-			"description": "Get the organic results, ads and AI Overview Google shows for a query",
+			"description": "Get the organic results, ads, AI Overview, People also ask, related searches, knowledge panel, news, videos, local and shopping results Google shows for a query",
 			"endpoint": "/serpApi",
 			"fields": [
 				{
@@ -60,6 +60,34 @@
 				{
 					"key": "aiOverview",
 					"type": "ai_overview"
+				},
+				{
+					"key": "peopleAlsoAsk",
+					"type": "people_also_ask"
+				},
+				{
+					"key": "relatedSearches",
+					"type": "related_search"
+				},
+				{
+					"key": "knowledgeGraph",
+					"type": "knowledge_graph"
+				},
+				{
+					"key": "topStories",
+					"type": "top_story"
+				},
+				{
+					"key": "videos",
+					"type": "video"
+				},
+				{
+					"key": "localResults",
+					"type": "local_result"
+				},
+				{
+					"key": "shoppingResults",
+					"type": "shopping_result"
 				}
 			],
 			"test": {

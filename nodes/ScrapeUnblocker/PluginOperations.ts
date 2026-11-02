@@ -1572,6 +1572,34 @@ export const PLUGIN_OPERATIONS: Record<string, PluginOperation> = {
 				key: 'aiOverview',
 				type: 'ai_overview',
 			},
+			{
+				key: 'peopleAlsoAsk',
+				type: 'people_also_ask',
+			},
+			{
+				key: 'relatedSearches',
+				type: 'related_search',
+			},
+			{
+				key: 'knowledgeGraph',
+				type: 'knowledge_graph',
+			},
+			{
+				key: 'topStories',
+				type: 'top_story',
+			},
+			{
+				key: 'videos',
+				type: 'video',
+			},
+			{
+				key: 'localResults',
+				type: 'local_result',
+			},
+			{
+				key: 'shoppingResults',
+				type: 'shopping_result',
+			},
 		],
 	},
 	'google:searchImages': {

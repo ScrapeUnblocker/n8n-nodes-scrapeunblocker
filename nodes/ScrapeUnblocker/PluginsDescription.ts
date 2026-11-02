@@ -675,7 +675,8 @@ export const pluginProperties: INodeProperties[] = [
 			{
 				name: 'Search',
 				value: 'search',
-				description: 'Get the organic results, ads and AI Overview Google shows for a query',
+				description:
+					'Get the organic results, ads, AI Overview, People also ask, related searches, knowledge panel, news, videos, local and shopping results Google shows for a query',
 				action: 'Search google',
 			},
 			{
