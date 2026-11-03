@@ -125,7 +125,7 @@ Each operation returns the site's data as clean JSON fields, one n8n item per re
 | **App Store** | Get Reviews | Get the customer reviews of an app, newest or most helpful first | One item per result |
 | **AutoScout24** | Search Listings | Find cars for sale across Europe by make, model and filters | One item per result, Simplify |
 | **Best Buy** | Search Products | Find electronics and appliances that match a keyword in the Best Buy US store | One item per result, Simplify |
-| **Bing** | Search | Get the organic results, ads and related searches Bing shows for a query | One item per result |
+| **Bing** | Search | Get the organic results, ads, AI summary and related searches Bing shows for a query | One item per result |
 | **Bing** | Search Images | Find images that match a keyword, with links to the full-size image and the page it is on | One item per result, Simplify |
 | **Booking.com** | Search Hotels | Find places to stay in a city with price, review score and address | One item per result, Simplify |
 | **Booking.com** | Get Reviews | Get the newest guest reviews of a hotel, with its likes, dislikes and score | One item per result, Simplify |
@@ -278,3 +278,4 @@ n8n 2.8.3 and above
 - 0.4.0: New Web Page operation Get Markdown: any page as clean Markdown (`{ url, markdown }`) for LLMs, AI agents and RAG, with a Main Content Only switch (on by default) and the same country, wait and browser step options as Get Page Source
 - 0.4.1: Amazon operations no longer list `exitProvider` among the selectable output fields: API responses no longer carry exit or proxy details
 - 0.4.2: Google Search also outputs the page's other blocks as items, tagged by `type`: `people_also_ask`, `related_search`, `knowledge_graph`, `top_story`, `video`, `local_result` and `shopping_result` (next to `organic`, `ad_top`, `ad_bottom` and `ai_overview`). Organic results now carry their real URL, `displayedUrl`, `domain`, `source` and `date`
+- 0.4.3: Bing Search also outputs Bing's AI summary (`ai_overview`) and its related searches (`related_search`) as items. Google and Bing organic results now carry `favicon`, `sitelinks`, `rating`, `richSnippet` and `thumbnail`, ads `favicon` and `sitelinks`; Bing results also `source` and `date`, and Bing ads the advertiser's real URL

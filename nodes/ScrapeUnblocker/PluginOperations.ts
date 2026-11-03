@@ -848,6 +848,14 @@ export const PLUGIN_OPERATIONS: Record<string, PluginOperation> = {
 				key: 'bottomAds',
 				type: 'ad_bottom',
 			},
+			{
+				key: 'aiOverview',
+				type: 'ai_overview',
+			},
+			{
+				key: 'relatedSearches',
+				type: 'related_search',
+			},
 		],
 	},
 	'bing:searchImages': {

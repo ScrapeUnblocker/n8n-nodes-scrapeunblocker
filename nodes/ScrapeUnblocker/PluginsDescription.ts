@@ -428,7 +428,8 @@ export const pluginProperties: INodeProperties[] = [
 			{
 				name: 'Search',
 				value: 'search',
-				description: 'Get the organic results, ads and related searches Bing shows for a query',
+				description:
+					'Get the organic results, ads, AI summary and related searches Bing shows for a query',
 				action: 'Search bing',
 			},
 			{
