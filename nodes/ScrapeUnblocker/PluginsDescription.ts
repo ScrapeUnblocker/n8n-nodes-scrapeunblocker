@@ -20329,6 +20329,10 @@ export const pluginProperties: INodeProperties[] = [
 				value: 'ad_archive_id',
 			},
 			{
+				name: 'Ad Library URL',
+				value: 'ad_library_url',
+			},
+			{
 				name: 'Ad Text',
 				value: 'ad_text',
 			},
@@ -20337,12 +20341,28 @@ export const pluginProperties: INodeProperties[] = [
 				value: 'caption',
 			},
 			{
+				name: 'Cards',
+				value: 'cards',
+			},
+			{
 				name: 'Categories',
 				value: 'categories',
 			},
 			{
+				name: 'Collation Count',
+				value: 'collation_count',
+			},
+			{
 				name: 'Collation ID',
 				value: 'collation_id',
+			},
+			{
+				name: 'Contains Digital Created Media',
+				value: 'contains_digital_created_media',
+			},
+			{
+				name: 'Contains Sensitive Content',
+				value: 'contains_sensitive_content',
 			},
 			{
 				name: 'Creatives',
@@ -20369,6 +20389,22 @@ export const pluginProperties: INodeProperties[] = [
 				value: 'ended',
 			},
 			{
+				name: 'Extra Links',
+				value: 'extra_links',
+			},
+			{
+				name: 'Extra Texts',
+				value: 'extra_texts',
+			},
+			{
+				name: 'Images',
+				value: 'images',
+			},
+			{
+				name: 'Impressions',
+				value: 'impressions',
+			},
+			{
 				name: 'Is Active',
 				value: 'is_active',
 			},
@@ -20385,8 +20421,16 @@ export const pluginProperties: INodeProperties[] = [
 				value: 'link_url',
 			},
 			{
+				name: 'Page Categories',
+				value: 'page_categories',
+			},
+			{
 				name: 'Page ID',
 				value: 'page_id',
+			},
+			{
+				name: 'Page Is Deleted',
+				value: 'page_is_deleted',
 			},
 			{
 				name: 'Page Like Count',
@@ -20395,6 +20439,10 @@ export const pluginProperties: INodeProperties[] = [
 			{
 				name: 'Page Name',
 				value: 'page_name',
+			},
+			{
+				name: 'Page Profile Picture URL',
+				value: 'page_profile_picture_url',
 			},
 			{
 				name: 'Page Profile Uri',
@@ -20409,12 +20457,28 @@ export const pluginProperties: INodeProperties[] = [
 				value: 'reach_estimate',
 			},
 			{
+				name: 'Spend',
+				value: 'spend',
+			},
+			{
 				name: 'Started Running',
 				value: 'started_running',
 			},
 			{
+				name: 'Targeted Or Reached Countries',
+				value: 'targeted_or_reached_countries',
+			},
+			{
 				name: 'Title',
 				value: 'title',
+			},
+			{
+				name: 'Total Active Time',
+				value: 'total_active_time',
+			},
+			{
+				name: 'Videos',
+				value: 'videos',
 			},
 		],
 		displayOptions: {
@@ -20467,7 +20531,7 @@ export const pluginProperties: INodeProperties[] = [
 				default: 'US',
 				placeholder: 'e.g. GB',
 				description:
-					'Two-letter code of the country whose ads to show (e.g. US, GB or DE). The Ad Library differs per country.',
+					'Two-letter code of the country whose ads to show (e.g. US, GB or DE), or ALL for every country. The Ad Library differs per country.',
 			},
 			{
 				displayName: 'Media Type',

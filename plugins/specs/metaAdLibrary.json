@@ -34,7 +34,7 @@
 					"type": "string",
 					"default": "US",
 					"placeholder": "GB",
-					"description": "Two-letter code of the country whose ads to show (e.g. US, GB or DE). The Ad Library differs per country."
+					"description": "Two-letter code of the country whose ads to show (e.g. US, GB or DE), or ALL for every country. The Ad Library differs per country."
 				},
 				{
 					"param": "active_status",
@@ -107,7 +107,23 @@
 				"creatives",
 				"categories",
 				"currency",
-				"reach_estimate"
+				"reach_estimate",
+				"ad_library_url",
+				"collation_count",
+				"contains_sensitive_content",
+				"contains_digital_created_media",
+				"total_active_time",
+				"impressions",
+				"spend",
+				"targeted_or_reached_countries",
+				"page_profile_picture_url",
+				"page_categories",
+				"page_is_deleted",
+				"images",
+				"videos",
+				"cards",
+				"extra_texts",
+				"extra_links"
 			],
 			"idField": "ad_archive_id",
 			"simplify": [
