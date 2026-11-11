@@ -71,6 +71,7 @@ function validate(specs) {
 			for (const field of allFields(operation)) {
 				const name = field.name ?? field.param;
 				if (!FIELD_TYPES.has(field.type)) fail(`${at}: ${name} has unknown type ${field.type}`);
+				if (field.skipFalse && field.type !== 'boolean') fail(`${at}: skipFalse on ${name}, which is not a boolean`);
 				if (!params.has(field.param)) fail(`${at}: ${field.param} is not a parameter of ${operation.endpoint}`);
 				if (names.has(name)) fail(`${at}: duplicate field ${name}`);
 				if (RESERVED.has(name)) fail(`${at}: ${name} is reserved for the node`);
@@ -144,6 +145,7 @@ function property(field, show) {
 		prop.placeholder = field.placeholder.startsWith('e.g.') ? field.placeholder : `e.g. ${field.placeholder}`;
 	}
 	if (field.description) prop.description = field.description;
+	if (field.hint) prop.hint = field.hint;
 	if (show) prop.displayOptions = { show };
 	return prop;
 }
@@ -245,6 +247,7 @@ function buildOperations(specs) {
 			const mapField = (field) => {
 				const entry = { name: field.name ?? field.param, param: field.param };
 				if (field.skipZero) entry.skipZero = true;
+				if (field.skipFalse) entry.skipFalse = true;
 				return entry;
 			};
 			const collectionFields = {};
@@ -318,6 +321,8 @@ export interface PluginField {
 	param: string;
 	/** 0 means "no limit" in the node, so it is not sent. */
 	skipZero?: boolean;
+	/** Off is the API's default, so only an on value is sent. */
+	skipFalse?: boolean;
 }
 
 export interface OutputShape {

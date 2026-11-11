@@ -7,7 +7,7 @@ import type {
 } from 'n8n-workflow';
 import { NodeApiError } from 'n8n-workflow';
 
-import type { OutputShape, PluginOperation } from './PluginOperations';
+import type { OutputShape, PluginField, PluginOperation } from './PluginOperations';
 
 export const API_URL = 'https://api.scrapeunblocker.com';
 
@@ -25,21 +25,22 @@ export function pluginQuery(
 ): IDataObject {
 	const query: IDataObject = { ...plugin.fixed };
 	for (const field of plugin.fields) {
-		addParam(query, field.param, this.getNodeParameter(field.name, itemIndex, ''), field.skipZero);
+		addParam(query, field, this.getNodeParameter(field.name, itemIndex, ''));
 	}
 	for (const collection of ['options', 'sorting']) {
 		const values = this.getNodeParameter(collection, itemIndex, {}) as IDataObject;
 		for (const [name, value] of Object.entries(values)) {
 			const field = plugin.collectionFields[name];
 			if (field) {
-				addParam(query, field.param, value, field.skipZero);
+				addParam(query, field, value);
 			}
 		}
 	}
 	return query;
 }
 
-function addParam(query: IDataObject, param: string, value: unknown, skipZero?: boolean): void {
+function addParam(query: IDataObject, field: PluginField, value: unknown): void {
+	const param = field.param;
 	if (value === undefined || value === null) {
 		return;
 	}
@@ -56,8 +57,11 @@ function addParam(query: IDataObject, param: string, value: unknown, skipZero?: 
 		}
 		return;
 	}
-	if (skipZero && value === 0) {
+	if (field.skipZero && value === 0) {
 		return; // 0 means "no limit" in the node, so the API gets no value at all
+	}
+	if (field.skipFalse && value === false) {
+		return;
 	}
 	query[param] = value as IDataObject[string];
 }

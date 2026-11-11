@@ -42,6 +42,15 @@
 					"type": "options",
 					"options": "countries",
 					"description": "The country Google is opened from. Results and ads are for that country. Automatic picks any available country, so set one when the results must be for a specific market."
+				},
+				{
+					"param": "full_urls",
+					"displayName": "Full URLs",
+					"type": "boolean",
+					"default": false,
+					"skipFalse": true,
+					"description": "Whether to wait until Google gives out every result's real URL. Google releases a results page's links a few at a time, the last ones up to about 40 seconds after the search. Without this, a result whose link has not come yet has the site's home page as its URL (or a Google redirect link when Google shows no site). Turn it on when you need the exact page of every result.",
+					"hint": "The call takes up to about 40 seconds longer. Billed the same."
 				}
 			],
 			"listKeys": [

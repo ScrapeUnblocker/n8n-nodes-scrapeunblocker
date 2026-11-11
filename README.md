@@ -203,6 +203,8 @@ Each operation returns the site's data as clean JSON fields, one n8n item per re
 | **Zillow** | Get Property | Get the full record of one home, with price and tax history, schools, facts and photos | One item, Simplify |
 <!-- plugins:end -->
 
+**Google Search: Full URLs.** Google gives out a results page's links a few at a time, the last ones up to about 40 seconds after the search. By default the search returns sooner, and a result whose link has not come yet has the site's home page as its `url` (or a Google redirect link when Google shows no site). Turn on **Full URLs** under **Options** when you need the exact page of every result: the call then takes up to about 40 seconds longer and is billed the same.
+
 ## Example workflow
 
 Copy the workflow below, paste it into the n8n editor (Ctrl+V / Cmd+V), open the **ScrapeUnblocker** node, select your **ScrapeUnblocker API** credential and click **Execute workflow**. It returns the first page of eBay listings for "nintendo switch", one simplified item per listing.
@@ -279,3 +281,4 @@ n8n 2.8.3 and above
 - 0.4.1: Amazon operations no longer list `exitProvider` among the selectable output fields: API responses no longer carry exit or proxy details
 - 0.4.2: Google Search also outputs the page's other blocks as items, tagged by `type`: `people_also_ask`, `related_search`, `knowledge_graph`, `top_story`, `video`, `local_result` and `shopping_result` (next to `organic`, `ad_top`, `ad_bottom` and `ai_overview`). Organic results now carry their real URL, `displayedUrl`, `domain`, `source` and `date`
 - 0.4.3: Bing Search also outputs Bing's AI summary (`ai_overview`) and its related searches (`related_search`) as items. Google and Bing organic results now carry `favicon`, `sitelinks`, `rating`, `richSnippet` and `thumbnail`, ads `favicon` and `sitelinks`; Bing results also `source` and `date`, and Bing ads the advertiser's real URL
+- 0.5.0: Google Search: Full URLs option to wait until Google gives out every result's real URL (the call takes up to about 40 seconds longer, billed the same)

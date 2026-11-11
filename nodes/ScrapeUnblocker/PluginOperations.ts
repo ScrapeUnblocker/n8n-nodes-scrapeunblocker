@@ -8,6 +8,8 @@ export interface PluginField {
 	param: string;
 	/** 0 means "no limit" in the node, so it is not sent. */
 	skipZero?: boolean;
+	/** Off is the API's default, so only an on value is sent. */
+	skipFalse?: boolean;
 }
 
 export interface OutputShape {
@@ -1561,6 +1563,11 @@ export const PLUGIN_OPERATIONS: Record<string, PluginOperation> = {
 			proxy_country: {
 				name: 'proxy_country',
 				param: 'proxy_country',
+			},
+			full_urls: {
+				name: 'full_urls',
+				param: 'full_urls',
+				skipFalse: true,
 			},
 		},
 		listKeys: [

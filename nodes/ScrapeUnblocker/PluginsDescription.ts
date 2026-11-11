@@ -13531,6 +13531,15 @@ export const pluginProperties: INodeProperties[] = [
 				description:
 					'Seconds to wait after each results page loads before reading it. Can help when ads show up late.',
 			},
+			{
+				displayName: 'Full URLs',
+				name: 'full_urls',
+				type: 'boolean',
+				default: false,
+				description:
+					"Whether to wait until Google gives out every result's real URL. Google releases a results page's links a few at a time, the last ones up to about 40 seconds after the search. Without this, a result whose link has not come yet has the site's home page as its URL (or a Google redirect link when Google shows no site). Turn it on when you need the exact page of every result.",
+				hint: 'The call takes up to about 40 seconds longer. Billed the same.',
+			},
 		],
 	},
 	{

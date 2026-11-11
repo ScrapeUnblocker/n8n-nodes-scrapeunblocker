@@ -48,9 +48,11 @@ A field:
   "default": "",                   // as in the API; options/number defaults must be valid values
   "placeholder": "iphone 13",      // a realistic example; "e.g." is added by the generator
   "description": "...",            // plain sentence; booleans start with "Whether"
+  "hint": "...",                   // optional: a short line shown under the field (e.g. what it costs in time)
   "options": [{ "name": "New", "value": "new" }],  // for options / multiOptions; "countries" = the country list
   "min": 1, "max": 100,            // number limits from the API description
-  "skipZero": true                 // a number whose 0 means "no limit", so 0 is not sent
+  "skipZero": true,                // a number whose 0 means "no limit", so 0 is not sent
+  "skipFalse": true                // a boolean whose off is the API default, so only true is sent
 }
 ```
 
