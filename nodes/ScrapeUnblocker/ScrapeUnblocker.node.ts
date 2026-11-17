@@ -251,7 +251,7 @@ export class ScrapeUnblocker implements INodeType {
 						type: 'boolean',
 						default: false,
 						description:
-							'Whether to return structured JSON extracted from the page for supported domains instead of raw HTML',
+							'Whether to return structured JSON extracted from the page for supported domains instead of raw HTML. Cannot be combined with List Elements.',
 					},
 					{
 						displayName: 'Browser Steps',
@@ -269,7 +269,7 @@ export class ScrapeUnblocker implements INodeType {
 						type: 'boolean',
 						default: false,
 						description:
-							'Whether to return structured JSON listing the elements found on the page (with a total count and per-element details) instead of raw HTML',
+							'Whether to return structured JSON listing the elements found on the page (with a total count and per-element details) instead of raw HTML. Cannot be combined with Parsed Data.',
 					},
 				] as INodeProperties[]
 			).map(webPageParameter),
@@ -314,6 +314,15 @@ export class ScrapeUnblocker implements INodeType {
 				const url = this.getNodeParameter('url', i) as string;
 				const parsedData = this.getNodeParameter('parsed_data', i) as boolean;
 				const listElements = this.getNodeParameter('list_elements', i) as boolean;
+
+				// Each returns its own format; the API answers 422 for the pair.
+				if (parsedData && listElements) {
+					throw new NodeOperationError(
+						this.getNode(),
+						'Parsed Data and List Elements cannot be combined: each returns its own format. Turn one of them off.',
+						{ itemIndex: i },
+					);
+				}
 
 				const query = pageQuery.call(this, i);
 

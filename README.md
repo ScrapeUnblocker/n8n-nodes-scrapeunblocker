@@ -32,9 +32,9 @@ Fetches the fully rendered HTML source of a webpage through a residential proxy.
 | **Browse From Country** | string | No | The country the site is opened from. If not set, a European country is picked. |
 | **Wait for Element Method** | string | No | Selector strategy to wait for a specific element before capturing HTML. Useful for JavaScript-rendered pages. Must be used together with **Wait for Element Value**. Allowed values: `css`, `xPath`, `className`, `tagName`. |
 | **Wait for Element Value** | string | No | The selector string to wait for, interpreted according to the chosen method. The request returns once a matching element appears (20 second timeout). Only shown when a method is selected. |
-| **Parsed Data** | boolean | No | If enabled, returns structured JSON extracted from the page for supported domains instead of raw HTML. Defaults to `false`. |
+| **Parsed Data** | boolean | No | If enabled, returns structured JSON extracted from the page for supported domains instead of raw HTML. Cannot be combined with List Elements. Defaults to `false`. |
 | **Browser Steps** | json | No | A JSON array of browser actions run in a real browser after the page loads, before the HTML is captured. Leave empty to skip. See [Browser steps](#browser-steps) below. |
-| **List Elements** | boolean | No | If enabled, returns structured JSON `{ url, count, elements }` describing the elements found on the page instead of raw HTML. Defaults to `false`. |
+| **List Elements** | boolean | No | If enabled, returns structured JSON `{ url, count, elements }` describing the elements found on the page instead of raw HTML. Cannot be combined with Parsed Data. Defaults to `false`. |
 
 #### Example: Wait for a CSS element
 
@@ -282,3 +282,4 @@ n8n 2.8.3 and above
 - 0.4.2: Google Search also outputs the page's other blocks as items, tagged by `type`: `people_also_ask`, `related_search`, `knowledge_graph`, `top_story`, `video`, `local_result` and `shopping_result` (next to `organic`, `ad_top`, `ad_bottom` and `ai_overview`). Organic results now carry their real URL, `displayedUrl`, `domain`, `source` and `date`
 - 0.4.3: Bing Search also outputs Bing's AI summary (`ai_overview`) and its related searches (`related_search`) as items. Google and Bing organic results now carry `favicon`, `sitelinks`, `rating`, `richSnippet` and `thumbnail`, ads `favicon` and `sitelinks`; Bing results also `source` and `date`, and Bing ads the advertiser's real URL
 - 0.5.0: Google Search: Full URLs option to wait until Google gives out every result's real URL (the call takes up to about 40 seconds longer, billed the same)
+- 0.5.1: Get Page Source stops with a clear error when both Parsed Data and List Elements are on (the API now refuses the pair with 422; before, List Elements silently won)
