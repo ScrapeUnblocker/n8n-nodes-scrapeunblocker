@@ -271,6 +271,15 @@ export class ScrapeUnblocker implements INodeType {
 						description:
 							'Whether to return structured JSON listing the elements found on the page (with a total count and per-element details) instead of raw HTML. Cannot be combined with Parsed Data.',
 					},
+					{
+						displayName: 'Capture API Calls (XHR)',
+						name: 'capture_xhr',
+						type: 'string',
+						default: '',
+						placeholder: 'e.g. /api/search',
+						description:
+							"A fragment of an API URL the page calls itself. The page is rendered in a real browser and every XHR/fetch response whose URL contains it comes back as JSON next to the HTML: html, xhr (each with its URL, method, status, content type and body), xhr_truncated and proxy. Up to 20 responses. Use Browser Steps to make the page fire the call (a search, load more). Leave empty to skip. Cannot be combined with Parsed Data or List Elements.",
+					},
 				] as INodeProperties[]
 			).map(webPageParameter),
 			...pluginProperties,
@@ -324,7 +333,20 @@ export class ScrapeUnblocker implements INodeType {
 					);
 				}
 
+				const captureXhr = (this.getNodeParameter('capture_xhr', i, '') as string).trim();
+				if (captureXhr && (parsedData || listElements)) {
+					throw new NodeOperationError(
+						this.getNode(),
+						'Capture API Calls cannot be combined with Parsed Data or List Elements: each returns its own format. Turn the other one off.',
+						{ itemIndex: i },
+					);
+				}
+
 				const query = pageQuery.call(this, i);
+
+				if (captureXhr) {
+					query.capture_xhr = captureXhr;
+				}
 
 				if (parsedData) {
 					query.parsed_data = true;
