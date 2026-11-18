@@ -35,6 +35,7 @@ Fetches the fully rendered HTML source of a webpage through a residential proxy.
 | **Parsed Data** | boolean | No | If enabled, returns structured JSON extracted from the page for supported domains instead of raw HTML. Cannot be combined with List Elements. Defaults to `false`. |
 | **Browser Steps** | json | No | A JSON array of browser actions run in a real browser after the page loads, before the HTML is captured. Leave empty to skip. See [Browser steps](#browser-steps) below. |
 | **List Elements** | boolean | No | If enabled, returns structured JSON `{ url, count, elements }` describing the elements found on the page instead of raw HTML. Cannot be combined with Parsed Data. Defaults to `false`. |
+| **Capture API Calls (XHR)** | string | No | A fragment of an API URL the page calls itself (e.g. `/api/search`). Returns JSON `{ html, xhr, xhr_truncated, proxy }`: every XHR/fetch response whose URL contains it, with `url`, `method`, `status`, `content_type` and `body`. Up to 20 responses. Combine with Browser Steps to make the page fire the call. Cannot be combined with Parsed Data or List Elements. |
 
 #### Example: Wait for a CSS element
 
@@ -79,6 +80,10 @@ Example:
 #### List elements
 
 Enable **List Elements** to receive structured JSON (`{ url, count, elements: [...] }`) describing the elements found on the page instead of raw HTML.
+
+#### Capture API calls (XHR)
+
+Many sites render from a JSON API the page calls itself, and that API often refuses direct requests (the page signs each call). Put a fragment of that API URL in **Capture API Calls (XHR)** (find it in the browser's DevTools, Network tab, Fetch/XHR): the page is rendered in a real browser and the item is `{ html, xhr: [{ url, method, status, content_type, body }], xhr_truncated, proxy }`, the calls in the order the page received them. Add **Browser Steps** to make the page fire the call (a search, "load more"). When the site answers every matching call with 403 or 429 the call fails like a block and is not billed.
 
 #### Get Markdown (`POST /getPageSource?markdown=true`)
 
@@ -283,3 +288,4 @@ n8n 2.8.3 and above
 - 0.4.3: Bing Search also outputs Bing's AI summary (`ai_overview`) and its related searches (`related_search`) as items. Google and Bing organic results now carry `favicon`, `sitelinks`, `rating`, `richSnippet` and `thumbnail`, ads `favicon` and `sitelinks`; Bing results also `source` and `date`, and Bing ads the advertiser's real URL
 - 0.5.0: Google Search: Full URLs option to wait until Google gives out every result's real URL (the call takes up to about 40 seconds longer, billed the same)
 - 0.5.1: Get Page Source stops with a clear error when both Parsed Data and List Elements are on (the API now refuses the pair with 422; before, List Elements silently won)
+- 0.6.0: Get Page Source: Capture API Calls (XHR) returns the page's own XHR/fetch responses whose URL contains a fragment, next to the HTML (`{ html, xhr, xhr_truncated, proxy }`)
